@@ -1,0 +1,298 @@
+/* Shared layout and visual language for the ACT Study Center. */
+:root {
+    --act-blue: #dceafa;
+    --act-blue-soft: #edf4fa;
+    --act-ivory: #f8f7f2;
+    --act-paper: #fffefa;
+    --act-navy: #26374b;
+    --act-text: #34465a;
+    --act-muted: #82909c;
+    --act-border: #e4e9ed;
+    --act-shadow: 0 12px 32px rgba(38, 55, 75, 0.06);
+    --act-serif: "Playfair Display", Georgia, serif;
+    --act-sans: "DM Sans", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--act-ivory);
+    color: var(--act-text);
+    font: 14px/1.6 var(--act-sans);
+}
+
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; }
+
+.act-layout { min-height: 100vh; }
+
+.act-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 5;
+    display: flex;
+    width: 252px;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 26px 18px;
+    background: #edf3f8;
+    border-right: 1px solid #e0e8ef;
+}
+
+.act-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 7px 28px;
+}
+
+.act-brand-mark {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid var(--act-border);
+    border-radius: 12px;
+    background: var(--act-paper);
+    color: var(--act-navy);
+    font-family: var(--act-serif);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.act-brand-name {
+    color: var(--act-navy);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.7px;
+}
+
+.act-brand-caption {
+    color: var(--act-muted);
+    font-size: 8px;
+    letter-spacing: 1.15px;
+}
+
+.act-nav-heading {
+    margin: 0 0 9px 10px;
+    color: #9aa8b4;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.7px;
+}
+
+.act-nav { display: grid; gap: 4px; }
+
+.act-nav-link,
+.act-nav-upcoming {
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 11px;
+    border-radius: 9px;
+    color: #617386;
+    font-size: 12px;
+}
+
+.act-nav-link:hover,
+.act-nav-link[aria-current="page"] {
+    background: #fffefa;
+    color: var(--act-navy);
+}
+
+.act-nav-link[aria-current="page"] { font-weight: 700; }
+
+.act-nav-icon {
+    width: 18px;
+    color: #8298aa;
+    font-size: 14px;
+    text-align: center;
+}
+
+.act-nav-upcoming { color: #9aa7b2; }
+
+.act-nav-upcoming small {
+    margin-left: auto;
+    color: #a6b0b8;
+    font-size: 9px;
+}
+
+.act-sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.act-back-link {
+    display: block;
+    padding: 12px 11px;
+    border-top: 1px solid #dfe7ed;
+    color: #607387;
+    font-size: 12px;
+}
+
+.act-main { min-width: 0; margin-left: 252px; }
+
+.act-topbar {
+    display: flex;
+    min-height: 62px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px clamp(20px, 4vw, 52px);
+    border-bottom: 1px solid var(--act-border);
+    background: rgba(255, 254, 250, 0.8);
+}
+
+.act-breadcrumb {
+    color: var(--act-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+}
+
+.act-breadcrumb span { padding: 0 8px; color: #b6c0c8; }
+
+.act-page-content {
+    width: min(1200px, 100%);
+    margin: 0 auto;
+    padding: 34px clamp(20px, 4vw, 52px) 48px;
+}
+
+.act-eyebrow {
+    margin: 0 0 7px;
+    color: #8398a9;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.act-page-title {
+    margin: 0;
+    color: var(--act-navy);
+    font: 500 clamp(29px, 4vw, 38px)/1.2 var(--act-serif);
+}
+
+.act-page-intro {
+    max-width: 620px;
+    margin: 10px 0 0;
+    color: #738292;
+    font-size: 13px;
+}
+
+.act-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--act-border);
+    border-radius: 15px;
+    background: var(--act-paper);
+    box-shadow: var(--act-shadow);
+}
+
+.act-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 17px;
+}
+
+.act-card-heading h2 {
+    margin: 0;
+    color: var(--act-navy);
+    font: 500 20px/1.35 var(--act-serif);
+}
+
+.act-card-heading p {
+    margin: 4px 0 0;
+    color: var(--act-muted);
+    font-size: 11px;
+}
+
+.act-button {
+    display: inline-flex;
+    min-height: 39px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 14px;
+    border: 1px solid #cad9e5;
+    border-radius: 9px;
+    background: #edf4fa;
+    color: var(--act-navy);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.act-button:hover { background: #e3eef7; }
+
+.act-button-primary {
+    border-color: var(--act-navy);
+    background: var(--act-navy);
+    color: white;
+}
+
+.act-button-primary:hover { background: #344b61; }
+
+.act-form-control {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 11px;
+    border: 1px solid #dce4e9;
+    border-radius: 8px;
+    background: white;
+    color: var(--act-text);
+}
+
+.act-form-control:focus {
+    outline: 3px solid rgba(185, 209, 232, 0.55);
+    border-color: #9fbad0;
+}
+
+.act-message {
+    min-height: 20px;
+    margin: 9px 0 0;
+    color: #5c7f68;
+    font-size: 11px;
+}
+
+.act-message.error { color: #a24f52; }
+
+.act-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 25px;
+    color: #a0a9b0;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+}
+
+@media (max-width: 800px) {
+    .act-sidebar {
+        position: static;
+        width: auto;
+        overflow: visible;
+        padding: 15px 16px 12px;
+        border-right: 0;
+        border-bottom: 1px solid #e0e8ef;
+    }
+
+    .act-brand { padding: 0 4px 12px; }
+    .act-nav-heading { display: none; }
+    .act-nav { display: flex; overflow-x: auto; padding-bottom: 3px; }
+    .act-nav-link, .act-nav-upcoming { flex: 0 0 auto; min-height: 36px; }
+    .act-nav-upcoming small { display: none; }
+    .act-sidebar-footer { margin-top: 7px; padding-top: 0; }
+    .act-back-link { display: inline-block; padding: 7px 5px 0; border-top: 0; }
+    .act-main { margin-left: 0; }
+    .act-topbar { min-height: 48px; }
+}
+
+@media (max-width: 480px) {
+    .act-card { padding: 17px; }
+    .act-footer { flex-direction: column; gap: 4px; }
+}

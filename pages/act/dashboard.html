@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>ACT Dashboard | Study Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/dashboard.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard">
+                <span class="act-brand-mark" aria-hidden="true">A</span>
+                <span>
+                    <span class="act-brand-name">STUDY ARCHIVE</span>
+                    <span class="act-brand-caption">ACT STUDY CENTER</span>
+                </span>
+            </a>
+
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies<small>UP NEXT</small></span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">▣</span>Practice Tests</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">?</span>Help</span>
+            </nav>
+            <div class="act-sidebar-footer">
+                <a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a>
+            </div>
+        </aside>
+
+        <main class="act-main">
+            <header class="act-topbar">
+                <div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Dashboard</div>
+            </header>
+
+            <div class="act-page-content">
+                <section class="dashboard-welcome" aria-labelledby="dashboardTitle">
+                    <div class="dashboard-welcome-copy">
+                        <p class="act-eyebrow">YOUR PERSONAL ACT ARCHIVE</p>
+                        <h1 id="dashboardTitle">Welcome to your study center.</h1>
+                        <p>A calm place to build your ACT skills, notice your progress, and choose one useful next step.</p>
+                    </div>
+                    <span class="welcome-seal" aria-hidden="true">ACT</span>
+                </section>
+
+                <section class="stats-grid" aria-label="ACT study statistics">
+                    <article class="stat-card">
+                        <span class="stat-label">Total study time</span>
+                        <strong class="stat-value" id="totalStudyTime">—</strong>
+                        <p class="stat-caption">Time logged in your ACT archive</p>
+                    </article>
+                    <article class="stat-card">
+                        <span class="stat-label">Lessons completed</span>
+                        <strong class="stat-value" id="lessonsCompleted">—</strong>
+                        <p class="stat-caption">Across English, Math, Reading & Science</p>
+                    </article>
+                    <article class="stat-card">
+                        <span class="stat-label">Practice tests taken</span>
+                        <strong class="stat-value" id="practiceTestsTaken">—</strong>
+                        <p class="stat-caption">Full tests and subject practice</p>
+                    </article>
+                    <article class="stat-card">
+                        <span class="stat-label">Overall progress</span>
+                        <strong class="stat-value" id="overallProgress">—</strong>
+                        <p class="stat-caption">Lessons completed toward your skill library</p>
+                    </article>
+                </section>
+
+                <section class="act-card overall-card" aria-labelledby="overallHeading">
+                    <div class="act-card-heading">
+                        <div>
+                            <h2 id="overallHeading">A little progress, consistently</h2>
+                            <p>Lesson completion across your 54 ACT skills.</p>
+                        </div>
+                    </div>
+                    <div class="progress-track" role="progressbar" aria-label="Overall ACT lesson progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <span id="overallProgressBar" style="width: 0%"></span>
+                    </div>
+                </section>
+
+                <div class="dashboard-columns">
+                    <section class="act-card" aria-labelledby="skillsHeading">
+                        <div class="act-card-heading">
+                            <div>
+                                <h2 id="skillsHeading">Current skill levels</h2>
+                                <p>Scores reflect your latest saved lesson or quiz practice.</p>
+                            </div>
+                        </div>
+                        <div class="subject-grid" id="subjectSkills"></div>
+                    </section>
+
+                    <section class="act-card" aria-labelledby="activityHeading">
+                        <div class="act-card-heading">
+                            <div>
+                                <h2 id="activityHeading">Recent activity</h2>
+                                <p>Your latest ACT study milestones.</p>
+                            </div>
+                        </div>
+                        <ul class="activity-list" id="recentActivity" aria-live="polite"></ul>
+                    </section>
+                </div>
+
+                <div class="dashboard-columns">
+                    <section class="act-card" aria-labelledby="recommendationsHeading">
+                        <div class="act-card-heading">
+                            <div>
+                                <h2 id="recommendationsHeading">Recommended next lessons</h2>
+                                <p>A gentle nudge toward skills with room to grow.</p>
+                            </div>
+                        </div>
+                        <ul class="recommendation-list" id="recommendedLessons"></ul>
+                        <p class="coming-soon-note">Lesson pages are being added one at a time.</p>
+                    </section>
+
+                    <section class="act-card" aria-labelledby="goalsHeading">
+                        <div class="act-card-heading">
+                            <div>
+                                <h2 id="goalsHeading">Study goals for today</h2>
+                                <p>Small, steady steps add up.</p>
+                            </div>
+                        </div>
+                        <div class="goal-grid">
+                            <div>
+                                <div class="goal-row"><span>Study time</span><strong id="dailyGoalMinutes">—</strong></div>
+                                <div class="progress-track" role="progressbar" aria-label="Daily study time goal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dailyGoalMinutesBar" style="width: 0%"></span></div>
+                            </div>
+                            <div>
+                                <div class="goal-row"><span>Lessons</span><strong id="dailyGoalLessons">—</strong></div>
+                                <div class="progress-track" role="progressbar" aria-label="Daily lesson goal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dailyGoalLessonsBar" style="width: 0%"></span></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="act-card" aria-labelledby="logTimeHeading">
+                    <div class="act-card-heading">
+                        <div>
+                            <h2 id="logTimeHeading">Log ACT study time</h2>
+                            <p>Record a completed study session. This updates ACT totals only.</p>
+                        </div>
+                    </div>
+                    <form id="studyTimeForm" class="study-form">
+                        <label for="studyMinutes">Minutes
+                            <input class="act-form-control" id="studyMinutes" name="minutes" type="number" min="1" max="1440" step="1" placeholder="25" required>
+                        </label>
+                        <label for="studyNote">What did you work on? <span>(optional)</span>
+                            <input class="act-form-control" id="studyNote" name="note" type="text" maxlength="80" placeholder="e.g. Math practice">
+                        </label>
+                        <button class="act-button act-button-primary" type="submit">Save study time</button>
+                    </form>
+                    <p class="act-message" id="dashboardMessage" role="status" aria-live="polite"></p>
+                </section>
+
+                <footer class="act-footer">
+                    <span>STUDY ARCHIVE · ACT CENTER</span>
+                    <span>YOUR PROGRESS IS SAVED IN THIS BROWSER</span>
+                </footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/dashboard.js"></script>
+</body>
+</html>

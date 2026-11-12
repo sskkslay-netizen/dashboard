@@ -1,0 +1,222 @@
+.dashboard-welcome {
+    display: flex;
+    min-height: 206px;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 26px;
+    margin: 25px 0 21px;
+    padding: 30px clamp(22px, 4vw, 42px);
+    border: 1px solid #d7e2e9;
+    border-radius: 17px;
+    background:
+        radial-gradient(circle at 88% 18%, rgba(255, 255, 255, 0.65), transparent 25%),
+        linear-gradient(120deg, #dceaf4, #edf3f6 62%, #f4eee4);
+}
+
+.dashboard-welcome-copy { max-width: 620px; }
+
+.dashboard-welcome h1 {
+    margin: 0;
+    color: var(--act-navy);
+    font: 500 clamp(29px, 4vw, 38px)/1.2 var(--act-serif);
+}
+
+.dashboard-welcome p:not(.act-eyebrow) {
+    max-width: 540px;
+    margin: 10px 0 0;
+    color: #68798a;
+    font-size: 13px;
+}
+
+.welcome-seal {
+    flex: 0 0 auto;
+    display: grid;
+    width: 76px;
+    height: 76px;
+    place-items: center;
+    border: 1px solid rgba(38, 55, 75, 0.16);
+    border-radius: 50%;
+    color: #536b80;
+    font: 500 24px var(--act-serif);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 13px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    padding: 17px 18px;
+    border: 1px solid var(--act-border);
+    border-radius: 13px;
+    background: var(--act-paper);
+}
+
+.stat-label {
+    display: block;
+    color: var(--act-muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    display: block;
+    margin-top: 6px;
+    color: var(--act-navy);
+    font: 500 26px/1.2 var(--act-serif);
+}
+
+.stat-caption { margin: 5px 0 0; color: #98a2ab; font-size: 10px; }
+
+.overall-card { margin-bottom: 22px; }
+
+.overall-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 9px;
+}
+
+.overall-row strong { color: var(--act-navy); font: 500 22px var(--act-serif); }
+.overall-row span { color: var(--act-muted); font-size: 10px; }
+
+.progress-track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #edf0f2;
+}
+
+.progress-track > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #9dbbd2;
+    transition: width 0.25s ease;
+}
+
+.dashboard-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 18px;
+}
+
+.subject-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+
+.subject-card {
+    padding: 15px;
+    border: 1px solid #e7ebee;
+    border-radius: 11px;
+    background: #fbfcfc;
+}
+
+.subject-card-top { display: flex; align-items: center; gap: 7px; }
+.subject-dot { width: 8px; height: 8px; border-radius: 50%; background: #9fb9cd; }
+.subject-card.math .subject-dot { background: #c5b9d8; }
+.subject-card.reading .subject-dot { background: #c0d1bf; }
+.subject-card.science .subject-dot { background: #d4bd9f; }
+
+.subject-label { color: var(--act-navy); font-size: 11px; font-weight: 700; }
+
+.subject-level {
+    margin-left: auto;
+    padding: 2px 7px;
+    border-radius: 99px;
+    background: #eef4f7;
+    color: #72889a;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.subject-progress-copy { display: flex; align-items: baseline; gap: 7px; margin: 12px 0 7px; }
+.subject-progress-copy strong { color: var(--act-navy); font: 500 20px var(--act-serif); }
+.subject-progress-copy span, .mastery-note { color: var(--act-muted); font-size: 9px; }
+.mastery-note { margin: 7px 0 0; }
+.subject-card .progress-track { height: 5px; }
+
+.activity-list,
+.recommendation-list { display: grid; gap: 13px; margin: 0; padding: 0; list-style: none; }
+
+.activity-item { display: flex; align-items: flex-start; gap: 10px; }
+
+.activity-mark {
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: #adc5d8;
+}
+
+.activity-mark.study { background: #b9cfb8; }
+.activity-mark.quiz { background: #c7b9d8; }
+.activity-mark.test { background: #d6bd9d; }
+
+.activity-item strong,
+.recommendation-list strong { display: block; color: #4a5b6d; font-size: 10px; font-weight: 600; }
+
+.activity-item p {
+    margin: 2px 0 0;
+    color: #8d99a4;
+    font-size: 9px;
+}
+
+.activity-item p span { color: #a3adb5; }
+.empty-state { color: var(--act-muted); font-size: 11px; }
+
+.recommendation-list { gap: 0; }
+
+.recommendation-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf0f2;
+}
+
+.recommendation-list li:first-child { padding-top: 0; }
+.recommendation-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+.recommendation-subject { grid-column: 1 / -1; color: #93a2ae; font-size: 8px; }
+.recommendation-score { align-self: center; color: #93a2ae; font-size: 8px; white-space: nowrap; }
+
+.goal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px; }
+.goal-row { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 7px; }
+.goal-row span { color: #708092; font-size: 10px; }
+.goal-row strong { color: var(--act-navy); font-size: 10px; }
+.goal-grid .progress-track { height: 6px; }
+
+.study-form {
+    display: grid;
+    grid-template-columns: minmax(100px, 0.6fr) minmax(120px, 1fr) auto;
+    gap: 9px;
+    align-items: end;
+}
+
+.study-form label { display: grid; gap: 5px; color: #748394; font-size: 9px; font-weight: 600; }
+.study-form input { min-width: 0; }
+.study-form .act-button { min-height: 40px; }
+
+.coming-soon-note { margin: 14px 0 0; color: #a0aab2; font-size: 10px; }
+
+@media (max-width: 1000px) {
+    .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dashboard-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 580px) {
+    .dashboard-welcome { min-height: 0; margin-top: 18px; padding: 23px 20px; }
+    .welcome-seal { width: 54px; height: 54px; font-size: 18px; }
+    .subject-grid, .goal-grid { grid-template-columns: 1fr; }
+    .study-form { grid-template-columns: 1fr 1fr; }
+    .study-form label:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+    .study-form button { grid-column: 1 / -1; grid-row: 3; }
+    .stat-card { padding: 14px; }
+    .stat-value { font-size: 23px; }
+}
