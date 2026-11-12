@@ -338,14 +338,24 @@ const Gacha = {
     // ======================================
 
     getRandomCharacter(rarity) {
-        const pool = this.characters.filter(character =>
-            character.rarity === rarity
-        );
+        const fallbackRarities = {
+            SSR: ["SR", "R"],
+            SR: ["R", "SSR"],
+            R: ["SR", "SSR"]
+        };
+        const availableRarity = [rarity, ...(fallbackRarities[rarity] || [])]
+            .find(candidate => this.characters.some(character =>
+                character.rarity === candidate
+            ));
 
-        if (pool.length === 0) {
+        if (!availableRarity) {
             console.error("No characters available for rarity:", rarity);
             return null;
         }
+
+        const pool = this.characters.filter(character =>
+            character.rarity === availableRarity
+        );
 
         return pool[Math.floor(Math.random() * pool.length)];
     },
@@ -359,16 +369,12 @@ const Gacha = {
 
         const data = StudyArchive.data.gacha;
 
-        data.pity++;
-        data.srPity++;
-        data.totalPulls++;
-
         let rarity;
         const roll = Math.random();
 
-        if (data.pity >= this.pityLimit) {
+        if (data.pity + 1 >= this.pityLimit) {
             rarity = "SSR";
-        } else if (data.srPity >= this.srPityLimit) {
+        } else if (data.srPity + 1 >= this.srPityLimit) {
             rarity = roll < 0.12 ? "SSR" : "SR";
         } else if (roll < this.rates.SSR) {
             rarity = "SSR";
@@ -384,10 +390,14 @@ const Gacha = {
             return null;
         }
 
-        if (rarity === "SSR") {
+        data.pity++;
+        data.srPity++;
+        data.totalPulls++;
+
+        if (character.rarity === "SSR") {
             data.pity = 0;
             data.srPity = 0;
-        } else if (rarity === "SR") {
+        } else if (character.rarity === "SR") {
             data.srPity = 0;
         }
 

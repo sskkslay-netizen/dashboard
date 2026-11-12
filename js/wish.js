@@ -59,7 +59,7 @@ const WishRoom = {
             return;
         }
 
-        StudyArchive.spendCrystals(cost);
+        if (!StudyArchive.spendCrystals(cost)) return;
 
         const results = amount === 10
             ? Gacha.pullTen(this.currentBanner)

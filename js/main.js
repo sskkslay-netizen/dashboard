@@ -6,9 +6,11 @@
 
 const StudyArchive = {
     STORAGE_KEY: "studyArchiveData",
+    INITIAL_CRYSTALS: 1600,
 
     defaultData: {
         crystals: 0,
+        welcomeCrystalsGranted: false,
         totalFocusMinutes: 0,
         completedMissions: [],
         assignments: [],
@@ -68,7 +70,14 @@ const StudyArchive = {
             this.data.totalFocusMinutes = 0;
         }
 
-        this.updateDisplay();
+        if (this.data.welcomeCrystalsGranted !== true) {
+            this.data.crystals += this.INITIAL_CRYSTALS;
+            this.data.welcomeCrystalsGranted = true;
+            this.save();
+        } else {
+            this.updateDisplay();
+        }
+
         console.log("Study Archive initialized!");
     },
 
@@ -190,6 +199,7 @@ const StudyArchive = {
 
     resetData() {
         this.data = JSON.parse(JSON.stringify(this.defaultData));
+        this.data.welcomeCrystalsGranted = true;
         this.save();
     }
 };
