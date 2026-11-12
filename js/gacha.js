@@ -93,7 +93,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Hinokami Kagura",
-            image: "../assets/characters/kny-tanjiro.png"
+            image: "../assets/characters/kny-tanjiro.PNG"
         },
         {
             id: "kny_nezuko",
@@ -101,7 +101,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Demon Form",
-            image: "../assets/characters/kny-nezuko.png"
+            image: "../assets/characters/kny-nezuko.PNG"
         },
         {
             id: "kny_zenitsu",
@@ -109,7 +109,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SR",
             title: "Thunder Breathing",
-            image: "../assets/characters/kny-zenitsu.png"
+            image: "../assets/characters/kny-zenitsu.PNG"
         },
         {
             id: "kny_inosuke",
@@ -117,7 +117,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SR",
             title: "Beast Breathing",
-            image: "../assets/characters/kny-inosuke.png"
+            image: "../assets/characters/kny-inosuke.PNG"
         },
         {
             id: "kny_giyu",
@@ -125,7 +125,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Water Hashira",
-            image: "../assets/characters/kny-giyu.png"
+            image: "../assets/characters/kny-giyu.PNG"
         },
         {
             id: "kny_shinobu",
@@ -133,7 +133,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Insect Hashira",
-            image: "../assets/characters/kny-shinobu.png"
+            image: "../assets/characters/kny-shinobu.PNG"
         },
         {
             id: "kny_rengoku",
@@ -141,7 +141,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Flame Hashira",
-            image: "../assets/characters/kny-rengoku.png"
+            image: "../assets/characters/kny-rengoku.PNG"
         },
         {
             id: "kny_mitsuri",
@@ -149,7 +149,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SR",
             title: "Love Hashira",
-            image: "../assets/characters/kny-mitsuri.png"
+            image: "../assets/characters/kny-mitsuri.PNG"
         },
 
         // MY HERO ACADEMIA
@@ -159,7 +159,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "One For All",
-            image: "../assets/characters/mha-deku.png"
+            image: "../assets/characters/mha-deku.PNG"
         },
         {
             id: "mha_bakugo",
@@ -167,7 +167,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "Explosion",
-            image: "../assets/characters/mha-bakugo.png"
+            image: "../assets/characters/mha-bakugo.PNG"
         },
         {
             id: "mha_todoroki",
@@ -175,7 +175,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "Half-Cold Half-Hot",
-            image: "../assets/characters/mha-todoroki.png"
+            image: "../assets/characters/mha-todoroki.PNG"
         },
         {
             id: "mha_uraraka",
@@ -183,7 +183,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SR",
             title: "Zero Gravity",
-            image: "../assets/characters/mha-uraraka.png"
+            image: "../assets/characters/mha-uraraka.PNG"
         },
         {
             id: "mha_aizawa",
@@ -191,7 +191,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SR",
             title: "Erasure",
-            image: "../assets/characters/mha-aizawa.png"
+            image: "../assets/characters/mha-aizawa.PNG"
         },
         {
             id: "mha_dabi",
@@ -199,7 +199,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "Blueflame",
-            image: "../assets/characters/mha-dabi.png"
+            image: "../assets/characters/mha-dabi.PNG"
         },
         {
             id: "mha_hawks",
@@ -207,7 +207,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SR",
             title: "Fierce Wings",
-            image: "../assets/characters/mha-hawks.png"
+            image: "../assets/characters/mha-hawks.PNG"
         },
 
         // ALIEN STAGE
@@ -217,7 +217,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "The Brightest Star",
-            image: "../assets/characters/alnst-mizi.png"
+            image: "../assets/characters/alnst-mizi.PNG"
         },
         {
             id: "alnst_sua",
@@ -225,7 +225,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "A Quiet Melody",
-            image: "../assets/characters/alnst-sua.png"
+            image: "../assets/characters/alnst-sua.PNG"
         },
         {
             id: "alnst_till",
@@ -233,7 +233,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "The Rebel Musician",
-            image: "../assets/characters/alnst-till.png"
+            image: "../assets/characters/alnst-till.PNG"
         },
         {
             id: "alnst_ivan",
@@ -241,7 +241,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "The Silent Observer",
-            image: "../assets/characters/alnst-ivan.png"
+            image: "../assets/characters/alnst-ivan.PNG"
         },
         {
             id: "alnst_luka",
@@ -249,7 +249,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SR",
             title: "The Golden Performer",
-            image: "../assets/characters/alnst-luka.png"
+            image: "../assets/characters/alnst-luka.PNG"
         },
         {
             id: "alnst_hyuna",
@@ -257,7 +257,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SR",
             title: "The Runaway Star",
-            image: "../assets/characters/alnst-hyuna.png"
+            image: "../assets/characters/alnst-hyuna.PNG"
         },
 
         // THE APOTHECARY DIARIES
@@ -267,7 +267,7 @@ const Gacha = {
             series: "The Apothecary Diaries",
             rarity: "SSR",
             title: "The Curious Apothecary",
-            image: "../assets/characters/ap-maomao.png"
+            image: "../assets/characters/ap-maomao.PNG"
         },
         {
             id: "ap_jinshi",
@@ -275,7 +275,7 @@ const Gacha = {
             series: "The Apothecary Diaries",
             rarity: "SSR",
             title: "The Moon Prince",
-            image: "../assets/characters/ap-jinshi.png"
+            image: "../assets/characters/ap-jinshi.PNG"
         },
 
         // ADD MORE SERIES BELOW
