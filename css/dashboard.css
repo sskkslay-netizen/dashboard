@@ -324,6 +324,17 @@
     margin-top: 5px;
 }
 
+.welcome-section .act-center-button {
+    margin-left: 8px;
+    background: #fffefa;
+    border: 1px solid #cbd9e4;
+    color: #26374b;
+}
+
+.welcome-section .act-center-button:hover {
+    background: #f5f8fa;
+}
+
 .statistics-grid {
     gap: 14px;
 }
@@ -651,6 +662,11 @@
     .welcome-section {
         min-height: 240px;
         padding: 25px;
+    }
+
+    .welcome-section .act-center-button {
+        margin-left: 0;
+        margin-top: 10px;
     }
 
     .welcome-section::after {
