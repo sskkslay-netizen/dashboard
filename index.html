@@ -515,23 +515,46 @@
     </div>
 
     <div class="profile-modal-overlay" id="profileModal" aria-hidden="true">
-        <section class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+        <section class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle" aria-describedby="profileModalDescription" tabindex="-1">
             <div class="profile-modal-heading">
                 <div>
                     <p class="eyebrow">YOUR ACCOUNT</p>
-                    <h2 id="profileModalTitle">Edit profile</h2>
+                    <h2 id="profileModalTitle">Your profile</h2>
                 </div>
                 <button type="button" id="closeProfileModal" aria-label="Close profile editor">×</button>
             </div>
-            <form id="profileForm">
-                <label for="profileName">Display name</label>
-                <input id="profileName" type="text" maxlength="40" required>
-                <label for="profilePhoto">Profile photo (optional)</label>
-                <input id="profilePhoto" type="file" accept="image/*">
-                <div class="profile-preview-wrap">
+            <p class="profile-modal-description" id="profileModalDescription">Make your study space feel like yours.</p>
+            <div class="profile-overview">
+                <div class="profile-preview-avatar">
+                    <span id="profilePreviewInitial" aria-hidden="true">S</span>
                     <img id="profilePhotoPreview" alt="Profile photo preview" hidden>
+                </div>
+                <div class="profile-preview-information">
+                    <strong id="profilePreviewName">Scholar</strong>
+                    <span>STUDY ARCHIVE MEMBER</span>
                     <button type="button" id="removeProfilePhoto" hidden>Remove photo</button>
                 </div>
+            </div>
+            <section class="profile-stats" aria-label="Your archive at a glance">
+                <div>
+                    <span>Focus time</span>
+                    <strong id="profileFocusStat">0m</strong>
+                </div>
+                <div>
+                    <span>Study notes</span>
+                    <strong id="profileNotesStat">0</strong>
+                </div>
+                <div>
+                    <span>Characters</span>
+                    <strong id="profileCharactersStat">0</strong>
+                </div>
+            </section>
+            <form id="profileForm">
+                <label for="profileName">Display name</label>
+                <input id="profileName" type="text" maxlength="40" autocomplete="nickname" required>
+                <label for="profilePhoto">Profile photo</label>
+                <input id="profilePhoto" type="file" accept="image/*" aria-describedby="profilePhotoHelp">
+                <small class="profile-photo-help" id="profilePhotoHelp">Optional. Choose an image under 8 MB; it is resized and saved in this browser.</small>
                 <p class="profile-form-message" id="profileFormMessage" role="status" aria-live="polite"></p>
                 <div class="profile-modal-actions">
                     <button type="button" id="cancelProfileEdit">Cancel</button>

@@ -19,24 +19,32 @@ const Dashboard = {
     setupProfileEditor() {
         const modal = document.getElementById("profileModal");
         const photoInput = document.getElementById("profilePhoto");
-        const preview = document.getElementById("profilePhotoPreview");
         const removeButton = document.getElementById("removeProfilePhoto");
         const form = document.getElementById("profileForm");
+        const nameInput = document.getElementById("profileName");
 
         document.getElementById("editProfileButton")
             .addEventListener("click", () => {
                 form.reset();
-                document.getElementById("profileName").value =
+                const profileName =
                     StudyArchive.data.profile.name || "Scholar";
+                nameInput.value = profileName;
+                this.updateProfileNamePreview(profileName);
                 photoInput.dataset.removeImage = "false";
                 this.setProfilePreview(StudyArchive.data.profile.avatar || "");
                 removeButton.hidden = !StudyArchive.data.profile.avatar;
+                this.updateProfileStats();
                 const message = document.getElementById("profileFormMessage");
                 message.textContent = "";
+                message.classList.remove("error");
                 modal.classList.add("open");
                 modal.setAttribute("aria-hidden", "false");
-                document.getElementById("profileName").focus();
+                nameInput.focus();
             });
+
+        nameInput.addEventListener("input", () => {
+            this.updateProfileNamePreview(nameInput.value);
+        });
 
         document.getElementById("closeProfileModal")
             .addEventListener("click", () => this.closeProfileEditor());
@@ -63,7 +71,26 @@ const Dashboard = {
 
         form.addEventListener("submit", event => this.saveProfile(event));
         document.addEventListener("keydown", event => {
-            if (event.key === "Escape") this.closeProfileEditor();
+            if (!modal.classList.contains("open")) return;
+            if (event.key === "Escape") {
+                this.closeProfileEditor();
+                return;
+            }
+            if (event.key !== "Tab") return;
+
+            const focusable = [...modal.querySelectorAll(
+                'button:not(:disabled):not([hidden]), input:not(:disabled):not([hidden])'
+            )];
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
         });
     },
 
@@ -74,14 +101,38 @@ const Dashboard = {
         }
         preview.src = source;
         preview.hidden = !source;
+        document.getElementById("profilePreviewInitial").hidden = !!source;
+    },
+
+    updateProfileNamePreview(name) {
+        const profileName = name.trim() || "Scholar";
+        document.getElementById("profilePreviewName").textContent = profileName;
+        document.getElementById("profilePreviewInitial").textContent =
+            profileName.charAt(0).toUpperCase();
+    },
+
+    updateProfileStats() {
+        const data = StudyArchive.data;
+        const minutes = Math.max(0, Number(data.totalFocusMinutes) || 0);
+        const focusTime = minutes >= 60
+            ? `${Math.floor(minutes / 60)}h ${minutes % 60}m`
+            : `${minutes}m`;
+
+        document.getElementById("profileFocusStat").textContent = focusTime;
+        document.getElementById("profileNotesStat").textContent =
+            Array.isArray(data.notes) ? data.notes.length : 0;
+        document.getElementById("profileCharactersStat").textContent =
+            Array.isArray(data.characters) ? data.characters.length : 0;
     },
 
     closeProfileEditor() {
         const modal = document.getElementById("profileModal");
         if (!modal) return;
+        const wasOpen = modal.classList.contains("open");
         modal.classList.remove("open");
         modal.setAttribute("aria-hidden", "true");
         this.setProfilePreview("");
+        if (wasOpen) document.getElementById("editProfileButton").focus();
     },
 
     async saveProfile(event) {
@@ -109,6 +160,7 @@ const Dashboard = {
             StudyArchive.data.profile = { name, avatar };
             StudyArchive.save();
             this.closeProfileEditor();
+            this.showMessage("Profile saved.");
         } catch (error) {
             StudyArchive.data.profile = previousProfile;
             StudyArchive.updateDisplay();
