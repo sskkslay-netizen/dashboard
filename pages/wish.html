@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wish Room | Study Archive</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/wish.css">
+    <link rel="stylesheet" href="../css/polish.css">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" aria-label="Main sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon"><i data-lucide="book-open" aria-hidden="true"></i></span>
+            <div>
+                <h2>STUDY ARCHIVE</h2>
+                <span>YOUR PERSONAL WORKSPACE</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">WORKSPACE</p>
+            <nav class="sidebar-nav" aria-label="Workspace">
+                <a href="../index.html" class="nav-link" title="Dashboard">
+                    <i class="nav-icon" data-lucide="house" aria-hidden="true"></i><span class="nav-link-label">Dashboard</span>
+                </a>
+                <a href="assignments.html" class="nav-link" title="Assignments">
+                    <i class="nav-icon" data-lucide="list-checks" aria-hidden="true"></i><span class="nav-link-label">Assignments</span>
+                </a>
+                <a href="calendar.html" class="nav-link" title="Calendar">
+                    <i class="nav-icon" data-lucide="calendar-days" aria-hidden="true"></i><span class="nav-link-label">Calendar</span>
+                </a>
+                <a href="notes.html" class="nav-link" title="Notes">
+                    <i class="nav-icon" data-lucide="notebook-pen" aria-hidden="true"></i><span class="nav-link-label">Notes</span>
+                </a>
+                <a href="focus.html" class="nav-link" title="Focus Room">
+                    <i class="nav-icon" data-lucide="timer" aria-hidden="true"></i><span class="nav-link-label">Focus Room</span>
+                </a>
+                <a href="quizzes.html" class="nav-link" title="Study Quizzes">
+                    <i class="nav-icon" data-lucide="clipboard-check" aria-hidden="true"></i><span class="nav-link-label">Study Quizzes</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">COLLECTION</p>
+            <nav class="sidebar-nav" aria-label="Collection">
+                <a href="wish.html" class="nav-link active" aria-current="page" title="Wish Room">
+                    <i class="nav-icon" data-lucide="star" aria-hidden="true"></i><span class="nav-link-label">Wish Room</span>
+                </a>
+                <a href="characters.html" class="nav-link" title="Character Archive">
+                    <i class="nav-icon" data-lucide="library" aria-hidden="true"></i><span class="nav-link-label">Character Archive</span>
+                </a>
+                <a href="history.html" class="nav-link" title="Wish History">
+                    <i class="nav-icon" data-lucide="history" aria-hidden="true"></i><span class="nav-link-label">Wish History</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">PERSONAL</p>
+            <nav class="sidebar-nav" aria-label="Personal">
+                <a href="achievements.html" class="nav-link" title="Achievements">
+                    <i class="nav-icon" data-lucide="trophy" aria-hidden="true"></i><span class="nav-link-label">Achievements</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="main-content wish-page">
+
+        <header class="topbar">
+            <div class="breadcrumb">Collection <span>/</span> Wish Room</div>
+            <div class="topbar-crystals">
+                <i data-lucide="gem" aria-hidden="true"></i> <span id="crystalBalance">0</span>
+            </div>
+        </header>
+
+        <section class="wish-content">
+
+            <!-- WISH HEADER -->
+
+            <div class="wish-heading">
+                <div>
+                    <p class="eyebrow">THE STARS HAVE ALIGNED</p>
+                    <h1>Wish Room</h1>
+                    <p>Perhaps something wonderful awaits you.</p>
+                </div>
+
+                <div class="wish-currency">
+                    <i data-lucide="gem" aria-hidden="true"></i>
+                    <div>
+                        <small>AVAILABLE CRYSTALS</small>
+                        <strong id="wishCrystalBalance">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURED BANNER -->
+
+            <section class="wish-banner">
+
+                <div class="banner-background">
+                    <div class="banner-stars"></div>
+                    <div class="banner-orb"></div>
+                </div>
+
+                <div class="banner-content">
+
+                    <div class="banner-label">
+                        <i data-lucide="star" aria-hidden="true"></i> LIMITED CHARACTER WISH
+                    </div>
+
+                    <h2>Whispers Beyond<br>the Starlight</h2>
+
+                    <p class="banner-description">
+                        A new constellation is waiting to be discovered.
+                    </p>
+
+                    <div class="banner-details">
+                        <span class="rarity-star" role="img" aria-label="5-star rarity">
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                            <i data-lucide="star" aria-hidden="true"></i>
+                        </span>
+                        <span>FEATURED SSR CHARACTER</span>
+                    </div>
+
+                    <div class="banner-footer">
+                        <span>Event Wish · Permanent fictional currency</span>
+                        <span id="bannerCountdown">YOUR ADVENTURE AWAITS</span>
+                    </div>
+
+                </div>
+
+                <div class="banner-art-placeholder" aria-label="Featured character">
+                    <div class="banner-art-glow"></div>
+                    <img
+                        class="banner-character-photo"
+                        src="../assets/characters/bsd_dazai.PNG"
+                        alt="Osamu Dazai"
+                    >
+                    <span>FEATURED HERO</span>
+                </div>
+
+            </section>
+
+            <!-- BANNER SELECTOR -->
+
+            <div class="wish-banner-tabs">
+                <button class="wish-tab active" data-banner="featured">
+                    Featured Wish
+                </button>
+
+                <button class="wish-tab" data-banner="standard">
+                    Standard Wish
+                </button>
+            </div>
+
+            <!-- WISH DETAILS -->
+
+            <section class="wish-main-panel">
+
+                <div class="wish-information">
+                    <div>
+                        <p class="eyebrow">CURRENT WISH BANNER</p>
+                        <h2 id="wishBannerTitle">Whispers Beyond the Starlight</h2>
+                    </div>
+
+                    <div class="pity-display">
+                        <i data-lucide="timer" aria-hidden="true"></i>
+                        <div>
+                            <small>SSR PITY</small>
+                            <strong id="pityCounter">0 / 90</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="wish-description">
+                    Every wish brings you closer to a new discovery.
+                    Keep studying to earn crystals for more wishes!
+                </p>
+
+                <div class="wish-rates">
+                    <span role="img" aria-label="SSR rarity">
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        SSR
+                    </span>
+                    <span role="img" aria-label="SR rarity">
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        SR
+                    </span>
+                    <span role="img" aria-label="R rarity">
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        R
+                    </span>
+                </div>
+
+                <div class="wish-pull-area">
+
+                    <button class="wish-button single-wish" id="singleWish">
+                        <i class="wish-button-icon" data-lucide="gem" aria-hidden="true"></i>
+                        <span>
+                            <strong>Wish x1</strong>
+                            <small>160 crystals</small>
+                        </span>
+                    </button>
+
+                    <button class="wish-button ten-wish" id="tenWish">
+                        <i class="wish-button-icon" data-lucide="gem" aria-hidden="true"></i>
+                        <span>
+                            <strong>Wish x10</strong>
+                            <small>1,600 crystals</small>
+                        </span>
+                    </button>
+
+                </div>
+
+                <p class="wish-footnote">
+                    This is a fictional study reward system. No real money or purchases.
+                </p>
+
+            </section>
+
+            <!-- RECENT PULLS -->
+
+            <section class="recent-wishes">
+                <div class="recent-wishes-heading">
+                    <div>
+                        <p class="eyebrow">YOUR COLLECTION JOURNEY</p>
+                        <h2>Recently obtained</h2>
+                    </div>
+
+                    <a href="history.html">View history →</a>
+                </div>
+
+                <div id="recentWishGrid" class="recent-wish-grid">
+                    <div class="wish-empty-state">
+                        <i data-lucide="star" aria-hidden="true"></i>
+                        <p>Your next discovery could be just one wish away.</p>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+    </main>
+</div>
+
+<!-- WISH RESULT OVERLAY -->
+
+<div class="wish-result-overlay hidden" id="wishResultOverlay">
+
+    <div class="wish-result-container">
+
+        <button class="wish-result-close" id="closeWishResults">×</button>
+
+        <p class="eyebrow">THE STARS HAVE ANSWERED</p>
+        <h2>Your Wishes</h2>
+
+        <div id="wishResultsGrid" class="wish-results-grid"></div>
+
+        <button class="wish-result-continue" id="continueWish">
+            Continue
+        </button>
+
+    </div>
+
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/gacha.js"></script>
+<script src="../js/wish.js"></script>
+<script src="https://unpkg.com/lucide@1.72.0/dist/umd/lucide.min.js" defer></script>
+<script src="../js/icons.js" defer></script>
+
+</body>
+</html>

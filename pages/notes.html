@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes | Study Archive</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notes.css">
+    <link rel="stylesheet" href="../css/polish.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" aria-label="Main sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon"><i data-lucide="book-open" aria-hidden="true"></i></span>
+            <div>
+                <h2>STUDY ARCHIVE</h2>
+                <span>YOUR PERSONAL WORKSPACE</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">WORKSPACE</p>
+            <nav class="sidebar-nav" aria-label="Workspace">
+                <a href="../index.html" class="nav-link" title="Dashboard">
+                    <i class="nav-icon" data-lucide="house" aria-hidden="true"></i><span class="nav-link-label">Dashboard</span>
+                </a>
+                <a href="assignments.html" class="nav-link" title="Assignments">
+                    <i class="nav-icon" data-lucide="list-checks" aria-hidden="true"></i><span class="nav-link-label">Assignments</span>
+                </a>
+                <a href="calendar.html" class="nav-link" title="Calendar">
+                    <i class="nav-icon" data-lucide="calendar-days" aria-hidden="true"></i><span class="nav-link-label">Calendar</span>
+                </a>
+                <a href="notes.html" class="nav-link active" aria-current="page" title="Notes">
+                    <i class="nav-icon" data-lucide="notebook-pen" aria-hidden="true"></i><span class="nav-link-label">Notes</span>
+                </a>
+                <a href="focus.html" class="nav-link" title="Focus Room">
+                    <i class="nav-icon" data-lucide="timer" aria-hidden="true"></i><span class="nav-link-label">Focus Room</span>
+                </a>
+                <a href="quizzes.html" class="nav-link" title="Study Quizzes">
+                    <i class="nav-icon" data-lucide="clipboard-check" aria-hidden="true"></i><span class="nav-link-label">Study Quizzes</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">COLLECTION</p>
+            <nav class="sidebar-nav" aria-label="Collection">
+                <a href="wish.html" class="nav-link" title="Wish Room">
+                    <i class="nav-icon" data-lucide="star" aria-hidden="true"></i><span class="nav-link-label">Wish Room</span>
+                </a>
+                <a href="characters.html" class="nav-link" title="Character Archive">
+                    <i class="nav-icon" data-lucide="library" aria-hidden="true"></i><span class="nav-link-label">Character Archive</span>
+                </a>
+                <a href="history.html" class="nav-link" title="Wish History">
+                    <i class="nav-icon" data-lucide="history" aria-hidden="true"></i><span class="nav-link-label">Wish History</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">PERSONAL</p>
+            <nav class="sidebar-nav" aria-label="Personal">
+                <a href="achievements.html" class="nav-link" title="Achievements">
+                    <i class="nav-icon" data-lucide="trophy" aria-hidden="true"></i><span class="nav-link-label">Achievements</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="main-content notes-page">
+
+        <header class="topbar">
+            <div class="breadcrumb">Workspace <span>/</span> Notes</div>
+            <div class="topbar-crystals"><i data-lucide="gem" aria-hidden="true"></i> <span id="crystalBalance">0</span></div>
+        </header>
+
+        <section class="notes-content">
+
+            <div class="notes-heading">
+                <div>
+                    <p class="eyebrow">YOUR PERSONAL LIBRARY</p>
+                    <h1>My Notes</h1>
+                    <p class="notes-subtitle">A little place for everything you're learning.</p>
+                </div>
+
+                <button class="notes-primary-button" id="newNoteButton">
+                    ＋ New note
+                </button>
+            </div>
+
+            <div class="notes-layout">
+
+                <!-- SUBJECT FOLDERS -->
+                <aside class="notes-folder-panel">
+
+                    <div class="folder-heading">
+                        <h3>My folders</h3>
+                        <button id="addFolderButton" title="Add folder">＋</button>
+                    </div>
+
+                    <div class="folder-list" id="folderList">
+
+                        <button class="folder-button active" data-subject="all">
+                            <i data-lucide="notebook-tabs" aria-hidden="true"></i>
+                            <span>All notes</span>
+                            <span class="folder-count" id="allNotesCount">0</span>
+                        </button>
+
+                        <button class="folder-button" data-subject="Biology">
+                            <i data-lucide="flower-2" aria-hidden="true"></i>
+                            <span>Biology</span>
+                            <span class="folder-count"></span>
+                        </button>
+
+                        <button class="folder-button" data-subject="History">
+                            <i data-lucide="landmark" aria-hidden="true"></i>
+                            <span>History</span>
+                            <span class="folder-count"></span>
+                        </button>
+
+                        <button class="folder-button" data-subject="Math">
+                            <i data-lucide="sigma" aria-hidden="true"></i>
+                            <span>Math</span>
+                            <span class="folder-count"></span>
+                        </button>
+
+                        <button class="folder-button" data-subject="French">
+                            <i data-lucide="languages" aria-hidden="true"></i>
+                            <span>French</span>
+                            <span class="folder-count"></span>
+                        </button>
+
+                        <button class="folder-button" data-subject="Other">
+                            <i data-lucide="folder" aria-hidden="true"></i>
+                            <span>Other</span>
+                            <span class="folder-count"></span>
+                        </button>
+
+                    </div>
+
+                    <div class="folder-divider"></div>
+
+                    <h3 class="folder-section-title">Quick filters</h3>
+
+                    <button class="folder-button" data-filter="pinned">
+                        <i data-lucide="pin" aria-hidden="true"></i>
+                        <span>Pinned notes</span>
+                    </button>
+
+                    <button class="folder-button" data-filter="recent">
+                        <i data-lucide="clock-3" aria-hidden="true"></i>
+                        <span>Recently edited</span>
+                    </button>
+
+                </aside>
+
+                <!-- NOTES LIBRARY -->
+                <section class="notes-library">
+
+                    <div class="notes-toolbar">
+
+                        <div class="notes-search">
+                            <span>⌕</span>
+                            <input
+                                type="search"
+                                id="notesSearch"
+                                placeholder="Search your notes..."
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <select id="notesSort" aria-label="Sort notes">
+                            <option value="newest">Newest first</option>
+                            <option value="oldest">Oldest first</option>
+                            <option value="alphabetical">Alphabetical</option>
+                            <option value="updated">Recently edited</option>
+                        </select>
+
+                    </div>
+
+                    <div class="notes-filter-row">
+                        <div>
+                            <span class="notes-filter-label">TAG:</span>
+
+                            <button class="tag-filter active" data-tag="all">All</button>
+                            <button class="tag-filter" data-tag="Study Guide">Study Guide</button>
+                            <button class="tag-filter" data-tag="Exam">Exam</button>
+                            <button class="tag-filter" data-tag="Homework">Homework</button>
+                            <button class="tag-filter" data-tag="Important">Important</button>
+                        </div>
+
+                        <span class="notes-total" id="notesTotal">0 notes</span>
+                    </div>
+
+                    <div class="pinned-section" id="pinnedSection" hidden>
+                        <h3><i data-lucide="pin" aria-hidden="true"></i> Pinned notes</h3>
+                        <div class="notes-grid" id="pinnedNotes"></div>
+                    </div>
+
+                    <div class="notes-results-heading">
+                        <h2 id="notesSectionTitle">All notes</h2>
+                    </div>
+
+                    <div class="notes-grid" id="notesGrid">
+                        <div class="notes-empty-state">
+                            <i data-lucide="book-open" aria-hidden="true"></i>
+                            <h3>Your notebook is waiting</h3>
+                            <p>Create your first note to get started.</p>
+                            <button class="notes-primary-button" id="emptyNewNoteButton">
+                                Create your first note
+                            </button>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<!-- NOTE EDITOR -->
+<div class="note-modal-overlay" id="noteModal" aria-hidden="true">
+
+    <section class="note-modal" role="dialog" aria-modal="true" aria-labelledby="noteModalTitle">
+
+        <div class="note-modal-heading">
+            <div>
+                <p class="eyebrow">YOUR NOTEBOOK</p>
+                <h2 id="noteModalTitle">Create a note</h2>
+            </div>
+
+            <button type="button" id="closeNoteModal" class="note-close-button">×</button>
+        </div>
+
+        <form id="noteForm">
+
+            <input type="hidden" id="noteId">
+
+            <label for="noteTitle">Note title</label>
+            <input
+                type="text"
+                id="noteTitle"
+                placeholder="Give your note a title..."
+                maxlength="100"
+                required
+            >
+
+            <div class="note-form-row">
+
+                <div>
+                    <label for="noteSubject">Subject folder</label>
+                    <select id="noteSubject">
+                        <option value="Biology">Biology</option>
+                        <option value="History">History</option>
+                        <option value="Math">Math</option>
+                        <option value="French">French</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="noteTag">Note type</label>
+                    <select id="noteTag">
+                        <option value="Study Guide">Study Guide</option>
+                        <option value="Exam">Exam</option>
+                        <option value="Homework">Homework</option>
+                        <option value="Important">Important</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <label for="noteContent">Your notes</label>
+            <textarea
+                id="noteContent"
+                rows="12"
+                placeholder="Start writing your thoughts here..."
+                required
+            ></textarea>
+
+            <label class="pin-note-option">
+                <input type="checkbox" id="notePinned">
+                <span><i data-lucide="pin" aria-hidden="true"></i> Pin this note to the top</span>
+            </label>
+
+            <div class="note-modal-actions">
+                <button type="button" id="deleteNoteButton" class="note-delete-button" hidden>
+                    Delete note
+                </button>
+
+                <div>
+                    <button type="button" id="cancelNoteButton" class="note-cancel-button">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="notes-primary-button">
+                        Save note
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </section>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/notes.js"></script>
+<script src="https://unpkg.com/lucide@1.72.0/dist/umd/lucide.min.js" defer></script>
+<script src="../js/icons.js" defer></script>
+
+</body>
+</html>

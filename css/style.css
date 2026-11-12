@@ -1,0 +1,1070 @@
+
+/* =========================================
+   STUDY ARCHIVE
+   Main Shared Stylesheet
+   ========================================= */
+
+/* ---------- 1. VARIABLES ---------- */
+
+:root {
+    --blue: #dceafa;
+    --blue-dark: #b9d1e8;
+    --blue-soft: #edf4fa;
+
+    --navy: #26374b;
+    --navy-light: #52677d;
+
+    --cream: #f8f7f2;
+    --white: #ffffff;
+
+    --text: #34465a;
+    --muted: #8996a5;
+
+    --border: #e5e9ed;
+
+    --green: #c9ddcf;
+    --pink: #ead6dc;
+    --lavender: #dcd9eb;
+    --yellow: #f0e7cc;
+
+    --shadow: 0 8px 30px rgba(38, 55, 75, 0.05);
+
+    --heading-font: "Playfair Display", serif;
+    --body-font: "DM Sans", sans-serif;
+}
+
+
+/* ---------- 2. RESET ---------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: var(--body-font);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+/* ---------- 3. MAIN LAYOUT ---------- */
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    margin-left: 255px;
+}
+
+.dashboard-content {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 32px 42px 50px;
+}
+
+
+/* ---------- 4. SIDEBAR ---------- */
+
+.sidebar {
+    width: 255px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    padding: 30px 20px;
+
+    background: #edf3f8;
+    border-right: 1px solid #e0e8ef;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 5px 32px;
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    color: var(--navy);
+    font-size: 22px;
+}
+
+.sidebar-brand h2 {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--navy);
+    font-weight: 700;
+}
+
+.sidebar-brand span {
+    display: block;
+    font-size: 8px;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+}
+
+.sidebar-brand > .brand-icon {
+    display: grid;
+    place-items: center;
+    color: var(--navy);
+    font-size: 22px;
+}
+
+.sidebar-section {
+    width: 100%;
+    margin-bottom: 26px;
+}
+
+.sidebar-heading {
+    margin: 0 0 10px 9px;
+
+    color: #a0aab5;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 11px 12px;
+
+    color: #778596;
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    transition: 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--navy);
+    transform: translateX(2px);
+}
+
+.nav-link.active {
+    color: var(--navy);
+    background: white;
+    box-shadow: 0 3px 12px rgba(38, 55, 75, 0.05);
+    font-weight: 700;
+}
+
+.nav-icon {
+    width: 20px;
+    flex: 0 0 20px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.nav-link-label {
+    min-width: 0;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+
+    padding: 20px 15px;
+
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid #e4eaf0;
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+.footer-decoration {
+    font-size: 22px;
+    color: #9bb7d1;
+    margin-bottom: 7px;
+}
+
+.sidebar-footer p {
+    font-size: 9px;
+    letter-spacing: 1.3px;
+    color: var(--navy);
+    font-weight: 700;
+}
+
+.sidebar-footer span {
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.6px;
+}
+
+
+/* ---------- 5. TOPBAR ---------- */
+
+.topbar {
+    height: 72px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 42px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+    color: #9ba6b2;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+}
+
+.breadcrumb span {
+    padding: 0 8px;
+    color: #c1c9d1;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.currency-display {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 13px;
+
+    background: #f1f5fa;
+    border: 1px solid #e5ebf1;
+    border-radius: 20px;
+
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.currency-display span:first-child {
+    color: #94afce;
+    font-size: 16px;
+}
+
+.profile-icon {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--blue);
+    border-radius: 50%;
+
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 17px;
+}
+
+
+/* ---------- 6. WELCOME SECTION ---------- */
+
+.welcome-section {
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 245px;
+    padding: 42px 48px;
+    margin-bottom: 25px;
+
+    background: linear-gradient(
+        115deg,
+        #e5eff8,
+        #edf3f7 65%,
+        #f4f5f1
+    );
+
+    border: 1px solid #e0e9f1;
+    border-radius: 16px;
+}
+
+.welcome-text {
+    position: relative;
+    z-index: 2;
+    max-width: 570px;
+}
+
+.eyebrow {
+    color: #8ca4bc;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.welcome-section h1 {
+    margin: 13px 0;
+
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: clamp(30px, 4vw, 43px);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.welcome-description {
+    max-width: 460px;
+    color: #78899b;
+    font-size: 12px;
+    line-height: 1.9;
+    margin-bottom: 20px;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 11px 18px;
+
+    background: var(--navy);
+    color: white;
+
+    border-radius: 7px;
+
+    font-size: 9px;
+    letter-spacing: 1.1px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.primary-button:hover {
+    background: #52677d;
+    transform: translateY(-2px);
+}
+
+.primary-button span {
+    font-size: 15px;
+}
+
+
+/* ---------- 7. STATISTICS ---------- */
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    padding: 20px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    box-shadow: var(--shadow);
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #9aa6b3;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.stat-icon {
+    font-size: 19px;
+}
+
+.stat-card h2 {
+    margin: 12px 0 2px;
+
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.stat-card p {
+    color: #9ba5af;
+    font-size: 10px;
+}
+
+
+/* ---------- 8. DASHBOARD GRID ---------- */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 24px;
+}
+
+.dashboard-section {
+    min-width: 0;
+    margin-bottom: 27px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    margin-top: 4px;
+
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.text-link {
+    color: #8ba8c3;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+
+    transition: 0.2s ease;
+}
+
+.text-link:hover {
+    color: var(--navy);
+}
+
+.mission-date {
+    color: #94a8ba;
+    font-size: 9px;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+
+/* ---------- 9. SUBJECT CARDS ---------- */
+
+.subject-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.subject-card {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 135px;
+    padding: 18px;
+
+    border: 1px solid transparent;
+    border-radius: 11px;
+
+    transition: 0.2s ease;
+}
+
+.subject-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.subject-card.biology {
+    background: #edf4ee;
+    border-color: #e3ede4;
+}
+
+.subject-card.history {
+    background: #f4eee8;
+    border-color: #eee5dc;
+}
+
+.subject-card.mathematics {
+    background: #edf1f8;
+    border-color: #e3e9f2;
+}
+
+.subject-card.languages {
+    background: #eaf3fa;
+    border-color: #dceaf4;
+}
+
+.subject-symbol {
+    font-size: 22px;
+}
+
+.subject-card h3 {
+    margin-top: 10px;
+
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.subject-card p {
+    color: #8c98a4;
+    font-size: 10px;
+}
+
+.subject-arrow {
+    position: absolute;
+    top: 15px;
+    right: 17px;
+
+    color: #9aaab8;
+    font-size: 15px;
+}
+
+
+/* ---------- 10. MISSIONS ---------- */
+
+.mission-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.mission-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #edf0f2;
+    cursor: pointer;
+}
+
+.mission-item:last-child {
+    border-bottom: none;
+}
+
+.mission-item input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mission-check {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+
+    border: 1px solid #cbd7e1;
+    border-radius: 5px;
+
+    transition: 0.2s ease;
+}
+
+.mission-item input:checked + .mission-check {
+    background: #a9c7b4;
+    border-color: #a9c7b4;
+}
+
+.mission-item input:checked + .mission-check::after {
+    content: "✓";
+
+    display: grid;
+    place-items: center;
+
+    color: white;
+    font-size: 12px;
+}
+
+.mission-information {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.mission-information strong {
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.mission-information small {
+    color: #a1abb5;
+    font-size: 9px;
+}
+
+.mission-reward {
+    color: #a3a8bd;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.mission-item input:checked ~ .mission-information strong {
+    color: #9aa7a0;
+    text-decoration: line-through;
+}
+
+
+/* ---------- 11. PROGRESS ---------- */
+
+.progress-information {
+    margin-bottom: 14px;
+}
+
+.progress-information strong {
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 31px;
+    font-weight: 500;
+}
+
+.progress-information span {
+    color: #a0aab4;
+    font-size: 11px;
+}
+
+.progress-information p {
+    color: #9aa6b1;
+    font-size: 10px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 8px;
+
+    margin-bottom: 16px;
+
+    background: #edf0f3;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background: #adc7df;
+    border-radius: 20px;
+
+    transition: width 0.4s ease;
+}
+
+.progress-icon {
+    color: #a5bdd4;
+    font-size: 22px;
+}
+
+
+/* ---------- 12. QUICK ACCESS ---------- */
+
+.quick-access-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.quick-access-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 100px;
+    padding: 15px 8px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    transition: 0.2s ease;
+}
+
+.quick-access-card:hover {
+    background: #f0f5fa;
+    border-color: #d7e3ef;
+    transform: translateY(-2px);
+}
+
+.quick-access-card span {
+    color: #91acc7;
+    font-size: 23px;
+}
+
+.quick-access-card strong {
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* ---------- 13. ACTIVITY ---------- */
+
+.activity-list {
+    padding: 20px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+}
+
+.empty-message {
+    color: #a1acb6;
+    text-align: center;
+    font-size: 11px;
+}
+
+.activity-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+
+/* ---------- 14. BUTTONS ---------- */
+
+.btn,
+.primary-button {
+    cursor: pointer;
+}
+
+.btn {
+    padding: 11px 18px;
+
+    background: var(--navy);
+    color: white;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    transition: 0.2s ease;
+}
+
+.btn:hover {
+    background: #536a81;
+    transform: translateY(-1px);
+}
+
+.btn.secondary {
+    background: #edf2f6;
+    color: var(--navy);
+}
+
+.btn.secondary:hover {
+    background: #dce7f0;
+}
+
+
+/* ---------- 15. INPUTS ---------- */
+
+.input,
+input:not([type="checkbox"]),
+textarea,
+select {
+    width: 100%;
+    padding: 12px 14px;
+
+    color: var(--text);
+    background: white;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.input:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #b4cbe0;
+    box-shadow: 0 0 0 3px rgba(180, 203, 224, 0.15);
+}
+
+textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+
+/* ---------- 16. PANELS ---------- */
+
+.panel {
+    padding: 22px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    box-shadow: var(--shadow);
+}
+
+
+/* ---------- 17. FOOTER ---------- */
+
+.main-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding-top: 25px;
+    margin-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+    color: #a6afb8;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+
+/* ---------- 18. RESPONSIVE DESIGN ---------- */
+
+@media (max-width: 1100px) {
+
+    .dashboard-content {
+        padding: 25px;
+    }
+
+    .statistics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 72px;
+        padding: 20px 9px;
+    }
+
+    .sidebar-brand {
+        justify-content: center;
+        padding: 0 0 25px;
+    }
+
+    .sidebar-brand h2,
+    .sidebar-brand div:last-child,
+    .sidebar-heading,
+    .sidebar-footer {
+        display: none;
+    }
+
+    .sidebar-brand .brand-icon {
+        display: grid;
+        flex: 0 0 40px;
+    }
+
+    .sidebar-nav {
+        align-items: center;
+    }
+
+    .nav-link {
+        display: flex;
+        justify-content: center;
+        width: 48px;
+        height: 45px;
+        padding: 0;
+        font-size: 0;
+    }
+
+    .nav-link-label {
+        display: none;
+    }
+
+    .nav-icon {
+        font-size: 19px;
+    }
+
+    .main-content {
+        margin-left: 72px;
+    }
+
+    .topbar {
+        padding: 0 18px;
+    }
+
+    .dashboard-content {
+        padding: 20px 15px;
+    }
+
+    .welcome-section {
+        min-height: 220px;
+        padding: 25px;
+    }
+
+    .quick-access-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .main-footer {
+        flex-wrap: wrap;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .statistics-grid {
+        gap: 9px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-card h2 {
+        font-size: 25px;
+    }
+
+    .subject-grid {
+        gap: 8px;
+    }
+
+    .subject-card {
+        padding: 13px;
+        min-height: 125px;
+    }
+
+    .topbar {
+        height: 60px;
+    }
+
+    .breadcrumb {
+        font-size: 8px;
+    }
+
+    .welcome-section h1 {
+        font-size: 29px;
+    }
+
+}
+
+
+/* ---------- 19. SHARED PAGE UTILITIES ---------- */
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    color: var(--navy);
+    font-family: var(--heading-font);
+    font-size: 34px;
+    font-weight: 500;
+}
+
+.page-header p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.card {
+    padding: 22px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background: var(--blue-soft);
+    color: var(--navy-light);
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 18px 0;
+}
+
+.hidden {
+    display: none !important;
+}

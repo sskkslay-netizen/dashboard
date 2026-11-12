@@ -1,0 +1,402 @@
+/* Shared finishing touches for every Study Archive page. */
+
+:root {
+    --page-surface: #ffffff;
+    --page-surface-soft: #fbfcfd;
+    --page-border: #e2eaf1;
+    --page-shadow: 0 12px 32px rgba(48, 77, 104, 0.07);
+    --page-radius: 18px;
+    --page-accent: #87afd0;
+    --page-blue-soft: #eaf3fa;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 86% 0%, rgba(220, 237, 249, 0.58), transparent 34rem),
+        linear-gradient(145deg, #fbfcfd 0%, #f3f8fc 54%, #f7fafc 100%);
+}
+
+.sidebar {
+    background: linear-gradient(180deg, #f4f9fd 0%, #eef5fa 100%);
+    border-right-color: #deebf4;
+}
+
+.brand-icon {
+    color: #587d9b;
+    background: linear-gradient(145deg, #fff, #eaf4fb);
+    border-color: #dce9f2;
+    box-shadow: 0 5px 14px rgba(58, 103, 138, 0.1);
+}
+
+.brand-icon svg {
+    width: 21px;
+    height: 21px;
+    stroke-width: 1.8;
+}
+
+.nav-link {
+    border-radius: 12px;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.82);
+    color: #496d89;
+}
+
+.nav-link.active {
+    color: #496d89;
+    background: linear-gradient(105deg, #fff 20%, #e8f2f9 100%);
+    box-shadow: inset 3px 0 #86afd0, 0 5px 14px rgba(58, 103, 138, 0.07);
+}
+
+.nav-icon {
+    width: 19px;
+    height: 19px;
+    color: #8299ab;
+    stroke-width: 1.8;
+    transition: color 180ms ease, transform 180ms ease;
+}
+
+.nav-link:hover .nav-icon,
+.nav-link.active .nav-icon {
+    color: #5d829f;
+}
+
+.nav-link:hover .nav-icon {
+    transform: translateY(-1px);
+}
+
+.currency-display > svg,
+.topbar-crystals > svg {
+    width: 16px;
+    height: 16px;
+    color: #6e9ab9;
+    stroke-width: 1.9;
+}
+
+.stat-icon {
+    width: 20px;
+    height: 20px;
+    color: #7398b5;
+    stroke-width: 1.8;
+}
+
+.progress-icon {
+    width: 23px;
+    height: 23px;
+}
+
+.quick-access-card > svg {
+    width: 23px;
+    height: 23px;
+    color: #7398b5;
+    stroke-width: 1.8;
+}
+
+.folder-button > svg {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    color: #7398b5;
+    stroke-width: 1.8;
+}
+
+.achievement-icon svg {
+    width: 28px;
+    height: 28px;
+    color: #638bad;
+    stroke-width: 1.7;
+}
+
+.achievement-reward svg,
+.note-pin svg,
+.pinned-section h3 svg,
+.note-form label svg {
+    width: 15px;
+    height: 15px;
+    color: #6f98b7;
+    vertical-align: middle;
+}
+
+.focus-page,
+.wish-page {
+    background: transparent;
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 5px 20px rgba(48, 77, 104, 0.045);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.topbar .page-eyebrow {
+    display: block;
+    margin-bottom: 2px;
+    color: #8296aa;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.topbar .page-eyebrow + h2 {
+    color: #34465a;
+    font-family: var(--heading-font);
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.topbar-right,
+.topbar-crystals,
+.currency-display,
+.crystal-display {
+    align-items: center;
+}
+
+.currency-display,
+.crystal-display,
+.topbar-crystals {
+    min-height: 38px;
+    padding: 7px 13px;
+    border: 1px solid #e3eaf0;
+    border-radius: 22px;
+    background: #f2f6fa;
+    color: #40566d;
+    font-weight: 700;
+}
+
+.page-content,
+.calendar-content,
+.notes-content,
+.focus-content,
+.wish-content,
+.collection-content {
+    width: 100%;
+    max-width: 1600px;
+    margin-inline: auto;
+    padding: clamp(22px, 3vw, 40px) clamp(18px, 3.2vw, 42px) 50px;
+}
+
+.page-header h1,
+.calendar-heading h1,
+.notes-heading h1,
+.focus-heading h1,
+.wish-heading h1,
+.collection-heading h1 {
+    color: #26374b;
+    font-family: var(--heading-font);
+    font-size: clamp(30px, 3vw, 38px);
+    font-weight: 500;
+    line-height: 1.18;
+}
+
+.page-header h1,
+.calendar-heading h1,
+.notes-heading h1,
+.focus-heading h1,
+.wish-heading h1,
+.collection-heading h1 {
+    letter-spacing: -0.035em;
+}
+
+.page-header p:last-child,
+.calendar-subtitle,
+.notes-subtitle,
+.focus-subtitle,
+.wish-heading > div:first-child > p:last-child,
+.collection-heading p {
+    color: #7d8b99;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.assignment-stat,
+.task-column,
+.notes-folder-panel,
+.focus-timer-card,
+.focus-goal-card,
+.focus-stats-card,
+.focus-history-card,
+.calendar-main-card,
+.mini-calendar-card,
+.upcoming-card,
+.collection-stat,
+.collection-total,
+.achievement-progress,
+.achievement-card {
+    border: 1px solid var(--page-border);
+    border-radius: var(--page-radius);
+    box-shadow: var(--page-shadow);
+}
+
+.assignment-stat,
+.task-column,
+.notes-folder-panel,
+.focus-timer-card,
+.focus-goal-card,
+.focus-stats-card,
+.focus-history-card,
+.calendar-main-card,
+.mini-calendar-card,
+.upcoming-card,
+.collection-stat,
+.collection-total,
+.achievement-progress,
+.achievement-card {
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.primary-button,
+.wish-button,
+.collection-wish-link {
+    border-radius: 12px;
+}
+
+.primary-button {
+    box-shadow: 0 8px 18px rgba(58, 103, 138, 0.14);
+}
+
+.primary-button:hover,
+.wish-button:hover {
+    box-shadow: 0 10px 24px rgba(58, 103, 138, 0.16);
+}
+
+.stat-card,
+.dashboard-card,
+.subject-card,
+.quick-access-card,
+.task-card,
+.note-card,
+.pinned-note-card,
+.upcoming-event {
+    border-color: var(--page-border);
+    box-shadow: 0 8px 24px rgba(48, 77, 104, 0.055);
+}
+
+.stat-card,
+.dashboard-card,
+.subject-card,
+.quick-access-card {
+    border-radius: 18px;
+}
+
+.achievement-card.locked {
+    opacity: 1;
+    background: linear-gradient(145deg, #fff, #fbfcfd);
+}
+
+.achievement-card.locked .achievement-icon {
+    background: #eaf3fa;
+}
+
+.achievement-card.unlocked .achievement-icon {
+    background: #e4f0f8;
+}
+
+.achievement-card.locked h3 {
+    color: #40566d;
+}
+
+.achievement-card.locked p {
+    color: #748597;
+}
+
+.achievement-card.locked .achievement-status {
+    color: #75879a;
+}
+
+.assignment-stat span,
+.collection-heading p,
+.achievement-card p,
+.collection-stat small,
+.character-details p {
+    color: #718295;
+}
+
+.empty-tasks,
+.empty-message,
+.empty-state {
+    color: #718295;
+}
+
+.task-card,
+.note-card,
+.pinned-note-card,
+.upcoming-event {
+    border-radius: 12px;
+}
+
+body :focus-visible {
+    outline: 3px solid rgba(126, 158, 190, 0.75) !important;
+    outline-offset: 3px !important;
+}
+
+.main-content button:disabled {
+    cursor: not-allowed;
+}
+
+.main-content button,
+.main-content a,
+.sidebar .nav-link {
+    transition-duration: 180ms;
+}
+
+@media (max-width: 750px) {
+    .topbar {
+        height: 64px;
+        padding-inline: 16px;
+    }
+
+    .page-content,
+    .calendar-content,
+    .notes-content,
+    .focus-content,
+    .wish-content,
+    .collection-content {
+        padding: 22px 16px 38px;
+    }
+}
+
+@media (max-width: 520px) {
+    .page-header,
+    .calendar-heading,
+    .notes-heading,
+    .wish-heading,
+    .collection-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .page-header > *,
+    .calendar-heading > *,
+    .notes-heading > *,
+    .wish-heading > *,
+    .collection-heading > * {
+        max-width: 100%;
+    }
+
+    .page-header button,
+    .calendar-heading button,
+    .notes-heading button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

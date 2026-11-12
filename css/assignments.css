@@ -1,0 +1,236 @@
+
+/* ==========================================
+   STUDY ARCHIVE
+   Assignments Page Styling
+   ========================================== */
+
+.page-content {
+    padding: 30px 35px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    gap: 20px;
+}
+
+.eyebrow {
+    color: #91aabe;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+
+.page-header h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: #26374b;
+    margin-bottom: 7px;
+}
+
+.page-header p:last-child {
+    color: #8997a4;
+    font-size: 13px;
+}
+
+/* New Assignment Button */
+
+.add-task-button {
+    padding: 13px 20px;
+    border: 1px solid #c9dce9;
+    border-radius: 10px;
+    background: #dceaf4;
+    color: #344b61;
+    font-family: "DM Sans", sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.add-task-button:hover {
+    background: #cbdfea;
+    transform: translateY(-2px);
+}
+
+/* Statistics */
+
+.assignment-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.assignment-stat {
+    background: #ffffff;
+    border: 1px solid #e4eaf0;
+    border-radius: 13px;
+    padding: 20px;
+}
+
+.assignment-stat span {
+    display: block;
+    color: #8b99a6;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.assignment-stat strong {
+    font-family: "Playfair Display", serif;
+    font-size: 27px;
+    font-weight: 500;
+    color: #344b61;
+}
+
+/* Assignment Board */
+
+.assignment-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.task-column {
+    background: #f7f9fa;
+    border: 1px solid #e4eaf0;
+    border-radius: 14px;
+    padding: 17px;
+    min-height: 350px;
+}
+
+.column-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e5eaee;
+}
+
+.column-heading h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #344b61;
+}
+
+.column-heading span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 25px;
+    height: 25px;
+    padding: 0 7px;
+    background: #e3edf4;
+    color: #607b91;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+/* Task Cards */
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-card {
+    background: #ffffff;
+    border: 1px solid #e5eaee;
+    border-radius: 11px;
+    padding: 16px;
+    transition: 0.2s ease;
+}
+
+.task-card:hover {
+    border-color: #c5d9e7;
+    box-shadow: 0 5px 15px rgba(38, 55, 75, 0.05);
+}
+
+.task-card h3 {
+    color: #344b61;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.task-card p {
+    color: #8b99a6;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.task-subject {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: #edf3f7;
+    color: #718da3;
+    font-size: 10px;
+}
+
+.task-priority {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 10px;
+    color: #9a8c7b;
+}
+
+.task-actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.task-actions button {
+    border: 1px solid #e2e9ee;
+    border-radius: 7px;
+    background: #f7f9fa;
+    color: #60778b;
+    padding: 7px 9px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.task-actions button:hover {
+    background: #e8f0f5;
+}
+
+.empty-tasks {
+    color: #a1adb7;
+    font-size: 12px;
+    text-align: center;
+    padding: 25px 10px;
+    font-style: italic;
+}
+
+/* Responsive */
+
+@media (max-width: 1000px) {
+    .assignment-board {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .assignment-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .page-content {
+        padding: 20px;
+    }
+}
