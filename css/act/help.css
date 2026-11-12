@@ -1,0 +1,18 @@
+.help-intro { margin: 25px 0 22px; }
+.help-search-card { display: grid; grid-template-columns: minmax(200px, 1fr) auto; align-items: end; gap: 14px; margin-bottom: 17px; }
+.help-search-card label { display: grid; gap: 5px; color: #748394; font-size: 10px; font-weight: 600; }
+.help-search-card > span { padding-bottom: 10px; color: #98a2ab; font-size: 9px; }
+.help-topics { display: grid; gap: 9px; }
+.help-item { overflow: hidden; border: 1px solid var(--act-border); border-radius: 12px; background: var(--act-paper); box-shadow: var(--act-shadow); }
+.help-item summary { position: relative; padding: 16px 45px 16px 18px; color: #40566d; font: 500 16px/1.4 var(--act-serif); cursor: pointer; list-style: none; }
+.help-item summary::-webkit-details-marker { display: none; }
+.help-item summary::after { position: absolute; top: 50%; right: 18px; color: #8299ab; content: "+"; font: 400 20px var(--act-sans); transform: translateY(-50%); }
+.help-item[open] summary::after { content: "−"; }
+.help-item p { margin: 0; padding: 0 18px 17px; color: #738292; font-size: 11px; line-height: 1.8; }
+.help-item code { padding: 2px 5px; border-radius: 4px; background: #eef2f4; color: #596e80; }
+.help-no-results { padding: 23px; border: 1px dashed #dce4e9; border-radius: 12px; color: #83909b; text-align: center; font-size: 11px; }
+@media (max-width: 520px) {
+    .help-search-card { grid-template-columns: 1fr; gap: 4px; }
+    .help-search-card > span { padding-bottom: 0; }
+    .help-item summary { font-size: 14px; }
+}

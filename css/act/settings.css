@@ -1,0 +1,22 @@
+.settings-intro { margin: 25px 0 22px; }
+.settings-card, .skill-settings-card, .backup-card { margin-bottom: 17px; }
+.goal-settings-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; align-items: end; }
+.goal-settings-form > label, .skill-settings-controls > label { display: grid; gap: 5px; color: #748394; font-size: 10px; font-weight: 600; }
+.setting-input-unit { position: relative; display: flex; align-items: center; }
+.setting-input-unit input { padding-right: 58px; }
+.setting-input-unit small { position: absolute; right: 10px; color: #98a2ab; font-size: 9px; font-weight: 400; }
+.settings-actions { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; }
+.settings-actions .act-message { margin: 0; }
+.skill-settings-controls { display: grid; grid-template-columns: minmax(160px, 0.7fr) minmax(220px, 1.2fr) minmax(160px, 0.7fr) auto; gap: 10px; align-items: end; }
+.skill-setting-summary { margin: 13px 0 0; color: #8795a1; font-size: 10px; }
+.skill-settings-card .act-message, .backup-card .act-message { margin-bottom: -8px; }
+.backup-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.backup-row strong { color: #506477; font-size: 11px; }
+.backup-row p { margin: 4px 0 0; color: #82909c; font-size: 10px; }
+.backup-row code { padding: 2px 5px; border-radius: 4px; background: #f0f3f5; color: #536a7e; font-size: 10px; }
+@media (max-width: 850px) { .skill-settings-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+    .goal-settings-form, .skill-settings-controls { grid-template-columns: 1fr; }
+    .settings-actions { grid-column: auto; align-items: flex-start; flex-direction: column; }
+    .backup-row { align-items: flex-start; flex-direction: column; }
+}

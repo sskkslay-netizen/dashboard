@@ -1,0 +1,48 @@
+.lessons-intro { margin: 25px 0 22px; }
+.lesson-filters { display: grid; grid-template-columns: minmax(170px, 0.6fr) minmax(230px, 1fr) auto; gap: 12px; align-items: end; margin-bottom: 17px; }
+.lesson-filters label { display: grid; gap: 5px; color: #748394; font-size: 10px; font-weight: 600; }
+.lesson-filters .show-completed-filter { display: flex; align-items: center; gap: 7px; min-height: 40px; white-space: nowrap; }
+.show-completed-filter input { accent-color: #536f87; }
+.lesson-layout { display: grid; grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.25fr); gap: 15px; align-items: start; }
+.lesson-skill-list { display: grid; gap: 12px; }
+.lesson-subject-group { padding: 16px; border: 1px solid var(--act-border); border-radius: 12px; background: var(--act-paper); box-shadow: var(--act-shadow); }
+.lesson-subject-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
+.lesson-subject-heading h2 { margin: 0; color: var(--act-navy); font: 500 18px var(--act-serif); }
+.lesson-subject-heading span { color: #98a2ab; font-size: 8px; }
+.lesson-skill-button { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 9px; padding: 9px 7px; border: 0; border-top: 1px solid #edf0f2; background: transparent; color: #536579; text-align: left; cursor: pointer; }
+.lesson-skill-button:hover, .lesson-skill-button[aria-current="true"] { color: #314b63; background: #f5f8fa; }
+.lesson-skill-name { min-width: 0; font-size: 9px; line-height: 1.5; }
+.lesson-skill-status { flex: 0 0 auto; color: #8d9ba7; font-size: 8px; }
+.lesson-skill-status.complete { color: #66816d; }
+.lesson-detail { position: sticky; top: 16px; min-height: 300px; }
+.lesson-placeholder { display: grid; min-height: 250px; place-content: center; justify-items: center; text-align: center; }
+.lesson-placeholder-mark { display: grid; width: 45px; height: 45px; place-items: center; border: 1px solid #dfe8ee; border-radius: 50%; color: #7993a8; font: 500 20px var(--act-serif); }
+.lesson-placeholder h2 { margin: 14px 0 4px; color: var(--act-navy); font: 500 21px var(--act-serif); }
+.lesson-placeholder p { margin: 0; color: #8996a1; font-size: 10px; }
+.lesson-detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.lesson-detail-header h2 { margin: 3px 0 0; color: var(--act-navy); font: 500 23px/1.35 var(--act-serif); }
+.lesson-detail-subject { color: #8b9aa6; font-size: 9px; }
+.lesson-score-pill { flex: 0 0 auto; padding: 4px 8px; border-radius: 99px; background: #edf4fa; color: #6b8194; font-size: 8px; font-weight: 700; }
+.lesson-detail h3 { margin: 16px 0 6px; color: #465c70; font: 500 14px var(--act-serif); }
+.lesson-detail-copy { color: #718091; font-size: 11px; line-height: 1.8; white-space: pre-wrap; }
+.lesson-example { padding: 12px; border-left: 3px solid #afc5d6; border-radius: 0 8px 8px 0; background: #f4f7f9; color: #53687a; font-size: 10px; line-height: 1.7; white-space: pre-wrap; }
+.lesson-check { margin-top: 19px; padding-top: 15px; border-top: 1px solid #edf0f2; }
+.lesson-check legend { margin-bottom: 10px; color: #354d63; font: 500 15px var(--act-serif); }
+.lesson-check-options { display: grid; gap: 7px; }
+.lesson-check-option { display: flex; gap: 8px; padding: 9px; border: 1px solid #e8edf0; border-radius: 8px; color: #667789; font-size: 10px; cursor: pointer; }
+.lesson-check-option input { margin-top: 2px; accent-color: #536f87; }
+.lesson-check-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+.lesson-check-feedback { margin: 10px 0 0; color: #64806c; font-size: 10px; }
+.lesson-check-feedback.error { color: #9e5559; }
+.lesson-completed-note { padding: 10px; border-radius: 8px; background: #eef3ed; color: #5f7965; font-size: 10px; }
+.lesson-empty { padding: 20px; border: 1px dashed #dce4e9; border-radius: 10px; color: #8b98a4; text-align: center; font-size: 10px; }
+.lesson-detail .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 930px) {
+    .lesson-layout { grid-template-columns: 1fr; }
+    .lesson-detail { position: static; }
+    .lesson-skill-list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+}
+@media (max-width: 620px) {
+    .lesson-filters, .lesson-skill-list { grid-template-columns: 1fr; }
+    .lesson-detail-header h2 { font-size: 20px; }
+}

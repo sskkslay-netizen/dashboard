@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>Incorrect Answers | ACT Study Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/incorrect.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard">
+                <span class="act-brand-mark" aria-hidden="true">A</span>
+                <span><span class="act-brand-name">STUDY ARCHIVE</span><span class="act-brand-caption">ACT STUDY CENTER</span></span>
+            </a>
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <a class="act-nav-link" href="lessons.html"><span class="act-nav-icon" aria-hidden="true">▣</span>Lessons</a>
+                <a class="act-nav-link" href="strategies.html"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies</a>
+                <a class="act-nav-link" href="progress.html"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</a>
+                <a class="act-nav-link" href="incorrect.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</a>
+                <a class="act-nav-link" href="quiz-generator.html"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</a>
+                <a class="act-nav-link" href="practice-tests.html"><span class="act-nav-icon" aria-hidden="true">▧</span>Practice Tests</a>
+                <a class="act-nav-link" href="statistics.html"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</a>
+                <a class="act-nav-link" href="settings.html"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</a>
+                <a class="act-nav-link" href="help.html"><span class="act-nav-icon" aria-hidden="true">?</span>Help</a>
+            </nav>
+            <div class="act-sidebar-footer"><a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a></div>
+        </aside>
+
+        <main class="act-main">
+            <header class="act-topbar"><div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Incorrect Answers</div></header>
+            <div class="act-page-content">
+                <header class="incorrect-intro">
+                    <p class="act-eyebrow">A NOTEBOOK FOR THE NEXT TRY</p>
+                    <h1 class="act-page-title">Learn from the misses.</h1>
+                    <p class="act-page-intro">Save tricky questions with both answers and your reasoning. Reviewing a mistake is a useful part of progress.</p>
+                </header>
+
+                <section class="incorrect-toolbar act-card" aria-label="Search and filter missed questions">
+                    <label for="incorrectSearch">Search notebook
+                        <input class="act-form-control" id="incorrectSearch" type="search" placeholder="Search question, skill, or explanation">
+                    </label>
+                    <label for="incorrectSubjectFilter">Subject
+                        <select class="act-form-control" id="incorrectSubjectFilter">
+                            <option value="all">All subjects</option>
+                            <option>English</option><option>Math</option><option>Reading</option><option>Science</option>
+                        </select>
+                    </label>
+                    <label for="incorrectStatusFilter">Review status
+                        <select class="act-form-control" id="incorrectStatusFilter">
+                            <option value="all">All questions</option>
+                            <option value="unreviewed">Not reviewed</option>
+                            <option value="reviewed">Reviewed</option>
+                        </select>
+                    </label>
+                    <button class="act-button act-button-primary" id="startIncorrectPractice" type="button">Practice missed questions</button>
+                </section>
+
+                <section class="practice-panel act-card" id="incorrectPractice" aria-labelledby="practiceHeading" hidden>
+                    <div class="act-card-heading">
+                        <div><h2 id="practiceHeading">Practice a missed question</h2><p id="practicePosition"></p></div>
+                        <button class="act-button" id="closeIncorrectPractice" type="button">Close practice</button>
+                    </div>
+                    <div id="practiceCard"></div>
+                    <div class="practice-controls">
+                        <button class="act-button" id="practicePrevious" type="button">Previous</button>
+                        <button class="act-button" id="checkPracticeAnswer" type="button">Check answer</button>
+                        <button class="act-button act-button-primary" id="practiceNext" type="button">Next question</button>
+                    </div>
+                    <p id="practiceMessage" class="act-message" role="status" aria-live="polite"></p>
+                </section>
+
+                <section class="incorrect-list-section" aria-labelledby="notebookHeading">
+                    <div class="incorrect-section-heading">
+                        <div><p class="act-eyebrow">YOUR SAVED QUESTIONS</p><h2 id="notebookHeading">Incorrect answer notebook</h2></div>
+                        <span id="incorrectCount" class="incorrect-count" aria-live="polite"></span>
+                    </div>
+                    <div id="incorrectList" class="incorrect-list" aria-live="polite"></div>
+                </section>
+
+                <section class="act-card add-incorrect-card" aria-labelledby="addIncorrectHeading">
+                    <div class="act-card-heading">
+                        <div><h2 id="addIncorrectHeading">Add a missed question</h2><p>Capture the question and what you want to remember next time.</p></div>
+                    </div>
+                    <form id="incorrectForm" class="incorrect-form">
+                        <label for="incorrectSubject">Subject
+                            <select class="act-form-control" id="incorrectSubject" name="subject" required>
+                                <option value="">Choose subject</option>
+                                <option>English</option><option>Math</option><option>Reading</option><option>Science</option>
+                            </select>
+                        </label>
+                        <label for="incorrectSkill">Skill
+                            <select class="act-form-control" id="incorrectSkill" name="skill" required disabled><option value="">Choose subject first</option></select>
+                        </label>
+                        <label class="incorrect-form-wide" for="incorrectQuestion">Question
+                            <textarea class="act-form-control" id="incorrectQuestion" name="question" rows="3" maxlength="1500" required></textarea>
+                        </label>
+                        <label for="originalAnswer">My original answer
+                            <textarea class="act-form-control" id="originalAnswer" name="originalAnswer" rows="2" maxlength="500" required></textarea>
+                        </label>
+                        <label for="correctAnswer">Correct answer
+                            <textarea class="act-form-control" id="correctAnswer" name="correctAnswer" rows="2" maxlength="500" required></textarea>
+                        </label>
+                        <label for="whyWrong">Why I got it wrong <span>(optional)</span>
+                            <textarea class="act-form-control" id="whyWrong" name="whyWrong" rows="2" maxlength="500"></textarea>
+                        </label>
+                        <label for="correctExplanation">Correct explanation
+                            <textarea class="act-form-control" id="correctExplanation" name="explanation" rows="2" maxlength="800" required></textarea>
+                        </label>
+                        <div class="incorrect-form-actions">
+                            <button class="act-button act-button-primary" type="submit">Save to notebook</button>
+                            <p id="incorrectMessage" class="act-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </form>
+                </section>
+                <footer class="act-footer"><span>STUDY ARCHIVE · ACT CENTER</span><span>YOUR NOTEBOOK IS SAVED IN THIS BROWSER</span></footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/incorrect.js"></script>
+</body>
+</html>

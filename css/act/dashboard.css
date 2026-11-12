@@ -174,15 +174,19 @@
 .recommendation-list { gap: 0; }
 
 .recommendation-list li {
+    padding: 0;
+    border-bottom: 1px solid #edf0f2;
+}
+
+.recommendation-list li:first-child .recommendation-link { padding-top: 0; }
+.recommendation-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+.recommendation-link {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 2px 10px;
     padding: 10px 0;
-    border-bottom: 1px solid #edf0f2;
 }
-
-.recommendation-list li:first-child { padding-top: 0; }
-.recommendation-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+.recommendation-link:hover strong { color: #304b64; }
 .recommendation-subject { grid-column: 1 / -1; color: #93a2ae; font-size: 8px; }
 .recommendation-score { align-self: center; color: #93a2ae; font-size: 8px; white-space: nowrap; }
 

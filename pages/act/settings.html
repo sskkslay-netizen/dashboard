@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>Settings | ACT Study Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/settings.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard"><span class="act-brand-mark" aria-hidden="true">A</span><span><span class="act-brand-name">STUDY ARCHIVE</span><span class="act-brand-caption">ACT STUDY CENTER</span></span></a>
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <a class="act-nav-link" href="lessons.html"><span class="act-nav-icon" aria-hidden="true">▣</span>Lessons</a>
+                <a class="act-nav-link" href="strategies.html"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies</a>
+                <a class="act-nav-link" href="progress.html"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</a>
+                <a class="act-nav-link" href="incorrect.html"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</a>
+                <a class="act-nav-link" href="quiz-generator.html"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</a>
+                <a class="act-nav-link" href="practice-tests.html"><span class="act-nav-icon" aria-hidden="true">▧</span>Practice Tests</a>
+                <a class="act-nav-link" href="statistics.html"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</a>
+                <a class="act-nav-link" href="settings.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</a>
+                <a class="act-nav-link" href="help.html"><span class="act-nav-icon" aria-hidden="true">?</span>Help</a>
+            </nav>
+            <div class="act-sidebar-footer"><a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a></div>
+        </aside>
+        <main class="act-main">
+            <header class="act-topbar"><div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Settings</div></header>
+            <div class="act-page-content">
+                <header class="settings-intro">
+                    <p class="act-eyebrow">MAKE THIS SPACE YOURS</p>
+                    <h1 class="act-page-title">Your ACT preferences.</h1>
+                    <p class="act-page-intro">Set study goals, adjust a skill level when you need to, and save a personal backup of your ACT archive.</p>
+                </header>
+                <section class="act-card settings-card" aria-labelledby="goalsHeading">
+                    <div class="act-card-heading"><div><h2 id="goalsHeading">Study goals</h2><p>These goals appear on your ACT Dashboard.</p></div></div>
+                    <form id="goalSettingsForm" class="goal-settings-form">
+                        <label for="settingDailyMinutes">Daily study time
+                            <span class="setting-input-unit"><input class="act-form-control" id="settingDailyMinutes" name="dailyMinutes" type="number" min="1" max="1440" required><small>minutes</small></span>
+                        </label>
+                        <label for="settingDailyLessons">Daily lessons
+                            <span class="setting-input-unit"><input class="act-form-control" id="settingDailyLessons" name="dailyLessons" type="number" min="1" max="20" required><small>lessons</small></span>
+                        </label>
+                        <label for="settingWeeklyLessons">Weekly lessons
+                            <span class="setting-input-unit"><input class="act-form-control" id="settingWeeklyLessons" name="weeklyLessons" type="number" min="1" max="100" required><small>lessons</small></span>
+                        </label>
+                        <div class="settings-actions"><button class="act-button act-button-primary" type="submit">Save goals</button><p id="goalMessage" class="act-message" role="status" aria-live="polite"></p></div>
+                    </form>
+                </section>
+
+                <section class="act-card skill-settings-card" aria-labelledby="skillSettingsHeading">
+                    <div class="act-card-heading"><div><h2 id="skillSettingsHeading">Manual skill levels</h2><p>Automatic levels follow scores. Choose a level to override it, or return to Automatic.</p></div></div>
+                    <div class="skill-settings-controls">
+                        <label for="settingSubject">Subject
+                            <select class="act-form-control" id="settingSubject"><option>English</option><option>Math</option><option>Reading</option><option>Science</option></select>
+                        </label>
+                        <label for="settingSkill">Skill
+                            <select class="act-form-control" id="settingSkill"></select>
+                        </label>
+                        <label for="settingSkillLevel">Displayed level
+                            <select class="act-form-control" id="settingSkillLevel">
+                                <option>Automatic</option><option>Core</option><option>Advanced</option><option>Mastery</option><option>Paused</option>
+                            </select>
+                        </label>
+                        <button class="act-button" id="saveSkillLevel" type="button">Save skill level</button>
+                    </div>
+                    <p id="skillSettingSummary" class="skill-setting-summary"></p>
+                    <p id="skillSettingMessage" class="act-message" role="status" aria-live="polite"></p>
+                </section>
+
+                <section class="act-card backup-card" aria-labelledby="backupHeading">
+                    <div class="act-card-heading"><div><h2 id="backupHeading">Your ACT data</h2><p>ACT information is stored separately in this browser.</p></div></div>
+                    <div class="backup-row">
+                        <div><strong>Storage key</strong><p><code>studyArchiveACT</code> · separate from your main Study Archive data.</p></div>
+                        <button class="act-button" id="exportACTData" type="button">Download ACT backup</button>
+                    </div>
+                    <p id="backupMessage" class="act-message" role="status" aria-live="polite"></p>
+                </section>
+                <footer class="act-footer"><span>STUDY ARCHIVE · ACT CENTER</span><span>SETTINGS SAVE AUTOMATICALLY</span></footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>Help | ACT Study Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/help.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard"><span class="act-brand-mark" aria-hidden="true">A</span><span><span class="act-brand-name">STUDY ARCHIVE</span><span class="act-brand-caption">ACT STUDY CENTER</span></span></a>
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <a class="act-nav-link" href="lessons.html"><span class="act-nav-icon" aria-hidden="true">▣</span>Lessons</a>
+                <a class="act-nav-link" href="strategies.html"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies</a>
+                <a class="act-nav-link" href="progress.html"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</a>
+                <a class="act-nav-link" href="incorrect.html"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</a>
+                <a class="act-nav-link" href="quiz-generator.html"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</a>
+                <a class="act-nav-link" href="practice-tests.html"><span class="act-nav-icon" aria-hidden="true">▧</span>Practice Tests</a>
+                <a class="act-nav-link" href="statistics.html"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</a>
+                <a class="act-nav-link" href="settings.html"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</a>
+                <a class="act-nav-link" href="help.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">?</span>Help</a>
+            </nav>
+            <div class="act-sidebar-footer"><a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a></div>
+        </aside>
+        <main class="act-main">
+            <header class="act-topbar"><div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Help</div></header>
+            <div class="act-page-content">
+                <header class="help-intro">
+                    <p class="act-eyebrow">A QUICK GUIDE TO YOUR SPACE</p>
+                    <h1 class="act-page-title">A few helpful notes.</h1>
+                    <p class="act-page-intro">Find answers about saving progress, practice tools, skill scores, and your ACT archive.</p>
+                </header>
+                <section class="help-search-card act-card">
+                    <label for="helpSearch">Search help
+                        <input class="act-form-control" id="helpSearch" type="search" placeholder="Search a question or topic">
+                    </label>
+                    <span id="helpCount" aria-live="polite"></span>
+                </section>
+                <section class="help-topics" id="helpTopics" aria-label="Frequently asked questions">
+                    <details class="help-item" open>
+                        <summary>Where is my ACT data saved?</summary>
+                        <p>Your ACT activity is saved in this browser under <code>studyArchiveACT</code>, separate from the main Study Archive data. It stays after refreshes on this browser. Download a backup from Settings if you want a separate copy.</p>
+                    </details>
+                    <details class="help-item">
+                        <summary>How do skill levels work?</summary>
+                        <p>Skills use a 0–100 score: Core is 0–39, Advanced is 40–84, and Mastery is 85–100. A quiz or lesson updates the score. You can manually set Core, Advanced, Mastery, or Paused in Settings, or return to Automatic.</p>
+                    </details>
+                    <details class="help-item">
+                        <summary>Are quiz and practice-test questions official ACT questions?</summary>
+                        <p>No. Questions in this study center are original ACT-style practice. Practice-test scaled scores are rough estimates for these short practice sets, not official score conversions.</p>
+                    </details>
+                    <details class="help-item">
+                        <summary>How do I keep track of a question I missed?</summary>
+                        <p>Save it in Incorrect Answers with your answer, the correct answer, and an explanation. You can filter the notebook, mark questions reviewed, and practice them again.</p>
+                    </details>
+                    <details class="help-item">
+                        <summary>Why does the dashboard include 18 completed lessons?</summary>
+                        <p>The ACT center starts with the lesson history you provided as sample data. New lessons and quizzes add to that history and update your progress.</p>
+                    </details>
+                    <details class="help-item">
+                        <summary>Does ACT study time change my main dashboard?</summary>
+                        <p>No. ACT time is tracked separately in the ACT archive, so it is not added to or double-counted with your main Study Archive focus time.</p>
+                    </details>
+                    <p class="help-no-results" id="helpNoResults" hidden>No help topics match that search. Try another word.</p>
+                </section>
+                <footer class="act-footer"><span>STUDY ARCHIVE · ACT CENTER</span><span>TAKE IT ONE QUESTION AT A TIME</span></footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/help.js"></script>
+</body>
+</html>

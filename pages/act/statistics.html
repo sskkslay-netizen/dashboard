@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>Statistics | ACT Study Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/statistics.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard"><span class="act-brand-mark" aria-hidden="true">A</span><span><span class="act-brand-name">STUDY ARCHIVE</span><span class="act-brand-caption">ACT STUDY CENTER</span></span></a>
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <a class="act-nav-link" href="lessons.html"><span class="act-nav-icon" aria-hidden="true">▣</span>Lessons</a>
+                <a class="act-nav-link" href="strategies.html"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies</a>
+                <a class="act-nav-link" href="progress.html"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</a>
+                <a class="act-nav-link" href="incorrect.html"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</a>
+                <a class="act-nav-link" href="quiz-generator.html"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</a>
+                <a class="act-nav-link" href="practice-tests.html"><span class="act-nav-icon" aria-hidden="true">▧</span>Practice Tests</a>
+                <a class="act-nav-link" href="statistics.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</a>
+                <a class="act-nav-link" href="settings.html"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</a>
+                <a class="act-nav-link" href="help.html"><span class="act-nav-icon" aria-hidden="true">?</span>Help</a>
+            </nav>
+            <div class="act-sidebar-footer"><a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a></div>
+        </aside>
+        <main class="act-main">
+            <header class="act-topbar"><div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Statistics</div></header>
+            <div class="act-page-content">
+                <header class="statistics-intro">
+                    <p class="act-eyebrow">A QUIET LOOK AT THE NUMBERS</p>
+                    <h1 class="act-page-title">Your study, in perspective.</h1>
+                    <p class="act-page-intro">See what you’ve practiced, where you’re strongest, and how your recent study time is adding up.</p>
+                </header>
+                <section id="statisticsSummary" class="statistics-summary" aria-label="Study statistics"></section>
+                <section class="statistics-columns">
+                    <article class="act-card weekly-study-card">
+                        <div class="act-card-heading"><div><h2>Weekly study time</h2><p>Minutes logged to your ACT archive over the last eight weeks.</p></div></div>
+                        <div id="weeklyStudyChart" class="weekly-study-chart"></div>
+                    </article>
+                    <article class="act-card subject-statistics-card">
+                        <div class="act-card-heading"><div><h2>Subject snapshot</h2><p>Average scores among skills you’ve practiced.</p></div></div>
+                        <div id="subjectStatistics" class="subject-statistics"></div>
+                    </article>
+                </section>
+                <footer class="act-footer"><span>STUDY ARCHIVE · ACT CENTER</span><span>STATISTICS UPDATE AS YOU PRACTICE</span></footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/statistics.js"></script>
+</body>
+</html>

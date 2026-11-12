@@ -1,0 +1,31 @@
+.statistics-intro { margin: 25px 0 22px; }
+.statistics-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 17px; }
+.statistics-card { padding: 17px; border: 1px solid var(--act-border); border-radius: 12px; background: var(--act-paper); }
+.statistics-card span { display: block; color: #84919b; font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+.statistics-card strong { display: block; margin-top: 7px; color: var(--act-navy); font: 500 24px/1.2 var(--act-serif); }
+.statistics-card p { margin: 5px 0 0; color: #98a2ab; font-size: 9px; }
+.statistics-columns { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr); gap: 15px; align-items: start; }
+.weekly-study-chart { min-height: 220px; }
+.weekly-study-chart svg { display: block; width: 100%; height: auto; }
+.study-bar-track { fill: #eef1f3; }
+.study-bar { fill: #a7bfd2; }
+.study-bar.current { fill: #617f99; }
+.study-bar-label { fill: #8997a2; font: 9px var(--act-sans); }
+.study-bar-value { fill: #718091; font: 9px var(--act-sans); }
+.study-chart-empty { display: grid; min-height: 190px; place-items: center; color: #98a2ab; font-size: 10px; text-align: center; }
+.subject-statistics { display: grid; gap: 14px; }
+.subject-stat-row { display: grid; grid-template-columns: 80px 1fr auto; gap: 9px; align-items: center; }
+.subject-stat-row strong { color: #526476; font-size: 10px; }
+.subject-stat-row span { color: #8d99a4; font-size: 9px; }
+.subject-stat-row .progress-track { height: 6px; }
+.subject-stat-empty { color: #98a2ab; font-size: 10px; }
+@media (max-width: 930px) {
+    .statistics-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .statistics-columns { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+    .statistics-summary { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .statistics-card { padding: 13px; }
+    .statistics-card strong { font-size: 20px; }
+    .subject-stat-row { grid-template-columns: 65px 1fr auto; }
+}

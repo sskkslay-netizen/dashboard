@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>Lessons | ACT Study Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/lessons.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard"><span class="act-brand-mark" aria-hidden="true">A</span><span><span class="act-brand-name">STUDY ARCHIVE</span><span class="act-brand-caption">ACT STUDY CENTER</span></span></a>
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <a class="act-nav-link" href="lessons.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">▣</span>Lessons</a>
+                <a class="act-nav-link" href="strategies.html"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies</a>
+                <a class="act-nav-link" href="progress.html"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</a>
+                <a class="act-nav-link" href="incorrect.html"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</a>
+                <a class="act-nav-link" href="quiz-generator.html"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</a>
+                <a class="act-nav-link" href="practice-tests.html"><span class="act-nav-icon" aria-hidden="true">▧</span>Practice Tests</a>
+                <a class="act-nav-link" href="statistics.html"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</a>
+                <a class="act-nav-link" href="settings.html"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</a>
+                <a class="act-nav-link" href="help.html"><span class="act-nav-icon" aria-hidden="true">?</span>Help</a>
+            </nav>
+            <div class="act-sidebar-footer"><a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a></div>
+        </aside>
+        <main class="act-main">
+            <header class="act-topbar"><div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Lessons</div></header>
+            <div class="act-page-content">
+                <header class="lessons-intro">
+                    <p class="act-eyebrow">A LIBRARY OF SMALL NEXT STEPS</p>
+                    <h1 class="act-page-title">Choose a skill to practice.</h1>
+                    <p class="act-page-intro">Browse the four ACT subjects, read a short original lesson, check your understanding, and save the result.</p>
+                </header>
+                <section class="lesson-filters act-card" aria-label="Filter lessons">
+                    <label for="lessonSubject">Subject
+                        <select class="act-form-control" id="lessonSubject"><option value="all">All subjects</option><option>English</option><option>Math</option><option>Reading</option><option>Science</option></select>
+                    </label>
+                    <label for="lessonSearch">Find a skill
+                        <input class="act-form-control" id="lessonSearch" type="search" placeholder="Search lessons">
+                    </label>
+                    <label class="show-completed-filter"><input id="showIncompleteOnly" type="checkbox"> Show incomplete only</label>
+                </section>
+                <div class="lesson-layout">
+                    <section class="lesson-browser" aria-label="ACT lessons by skill">
+                        <div id="lessonSkillList" class="lesson-skill-list"></div>
+                    </section>
+                    <section id="lessonDetail" class="lesson-detail act-card" aria-live="polite">
+                        <div class="lesson-placeholder"><span class="lesson-placeholder-mark" aria-hidden="true">A</span><h2>Pick a skill to begin.</h2><p>Your lesson, example, and short check will open here.</p></div>
+                    </section>
+                </div>
+                <footer class="act-footer"><span>STUDY ARCHIVE · ACT CENTER</span><span>LESSON PROGRESS IS SAVED IN THIS BROWSER</span></footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/lessons.js"></script>
+</body>
+</html>

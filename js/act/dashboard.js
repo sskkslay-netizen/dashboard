@@ -111,9 +111,11 @@
 
         document.getElementById("recommendedLessons").innerHTML = recommendations.map(skill => `
             <li>
-                <span class="recommendation-subject">${escapeHTML(skill.subject)}</span>
-                <strong>${escapeHTML(skill.name)}</strong>
-                <span class="recommendation-score">${skill.score}% skill score</span>
+                <a class="recommendation-link" href="lessons.html?subject=${encodeURIComponent(skill.subject)}&skill=${encodeURIComponent(skill.name)}">
+                    <span class="recommendation-subject">${escapeHTML(skill.subject)}</span>
+                    <strong>${escapeHTML(skill.name)}</strong>
+                    <span class="recommendation-score">${skill.score}% skill score</span>
+                </a>
             </li>`).join("");
     }
 

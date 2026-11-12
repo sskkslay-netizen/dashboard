@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>Practice Tests | ACT Study Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/practice-tests.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard"><span class="act-brand-mark" aria-hidden="true">A</span><span><span class="act-brand-name">STUDY ARCHIVE</span><span class="act-brand-caption">ACT STUDY CENTER</span></span></a>
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <a class="act-nav-link" href="lessons.html"><span class="act-nav-icon" aria-hidden="true">▣</span>Lessons</a>
+                <a class="act-nav-link" href="strategies.html"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies</a>
+                <a class="act-nav-link" href="progress.html"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</a>
+                <a class="act-nav-link" href="incorrect.html"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</a>
+                <a class="act-nav-link" href="quiz-generator.html"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</a>
+                <a class="act-nav-link" href="practice-tests.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">▧</span>Practice Tests</a>
+                <a class="act-nav-link" href="statistics.html"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</a>
+                <a class="act-nav-link" href="settings.html"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</a>
+                <a class="act-nav-link" href="help.html"><span class="act-nav-icon" aria-hidden="true">?</span>Help</a>
+            </nav>
+            <div class="act-sidebar-footer"><a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a></div>
+        </aside>
+        <main class="act-main">
+            <header class="act-topbar"><div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Practice Tests</div></header>
+            <div class="act-page-content">
+                <header class="practice-intro">
+                    <p class="act-eyebrow">PRACTICE WITH A PLAN</p>
+                    <h1 class="act-page-title">Test your pacing and recall.</h1>
+                    <p class="act-page-intro">Take an original short practice set, mark questions to revisit, or log scores from a test you took elsewhere.</p>
+                </header>
+
+                <section class="act-card practice-builder">
+                    <div class="act-card-heading"><div><h2>Start a practice test</h2><p>Questions are original practice, not copied from official ACT tests.</p></div></div>
+                    <form id="practiceBuilder" class="practice-builder-form">
+                        <label for="practiceSubject">Test section
+                            <select class="act-form-control" id="practiceSubject">
+                                <option value="all">Full practice test</option>
+                                <option>English</option><option>Math</option><option>Reading</option><option>Science</option>
+                            </select>
+                        </label>
+                        <label for="practiceQuestionCount">Questions
+                            <input class="act-form-control" id="practiceQuestionCount" type="number" min="1" max="16" value="12" required>
+                        </label>
+                        <button class="act-button act-button-primary" type="submit">Start test</button>
+                    </form>
+                    <p class="act-message" id="practiceBuilderMessage" role="status" aria-live="polite"></p>
+                </section>
+
+                <section id="testWorkspace" class="test-workspace" hidden aria-labelledby="testHeading">
+                    <div class="test-heading">
+                        <div><p class="act-eyebrow" id="testMeta"></p><h2 id="testHeading">Practice test</h2></div>
+                        <span id="testPosition" class="test-position"></span>
+                    </div>
+                    <div class="test-layout">
+                        <nav class="question-navigation act-card" id="questionNavigation" aria-label="Test questions"></nav>
+                        <section class="test-question-panel act-card">
+                            <div id="testQuestion"></div>
+                            <div class="test-controls">
+                                <button class="act-button" id="testPrevious" type="button">Previous</button>
+                                <button class="act-button" id="markForReview" type="button" aria-pressed="false">Mark for review</button>
+                                <button class="act-button act-button-primary" id="testNext" type="button">Next</button>
+                                <button class="act-button act-button-primary" id="submitPracticeTest" type="button">Submit test</button>
+                            </div>
+                            <p id="testMessage" class="act-message" role="status" aria-live="polite"></p>
+                        </section>
+                    </div>
+                    <section id="testResults" class="act-card test-results" hidden aria-live="polite"></section>
+                </section>
+
+                <section class="act-card external-score-card" aria-labelledby="externalScoreHeading">
+                    <div class="act-card-heading"><div><h2 id="externalScoreHeading">Log an outside practice test</h2><p>Enter scores from a test you took elsewhere. Writing is optional.</p></div></div>
+                    <form id="externalScoreForm" class="external-score-form">
+                        <label for="externalTestName">Test name
+                            <input class="act-form-control" id="externalTestName" name="name" type="text" maxlength="80" placeholder="e.g. Practice test 2" required>
+                        </label>
+                        <label for="externalTestDate">Date
+                            <input class="act-form-control" id="externalTestDate" name="date" type="date" required>
+                        </label>
+                        <label for="externalComposite">Composite score
+                            <input class="act-form-control" id="externalComposite" name="compositeScore" type="number" min="1" max="36" step="1" required>
+                        </label>
+                        <label for="externalEnglish">English
+                            <input class="act-form-control" id="externalEnglish" name="English" type="number" min="1" max="36" step="1">
+                        </label>
+                        <label for="externalMath">Math
+                            <input class="act-form-control" id="externalMath" name="Math" type="number" min="1" max="36" step="1">
+                        </label>
+                        <label for="externalReading">Reading
+                            <input class="act-form-control" id="externalReading" name="Reading" type="number" min="1" max="36" step="1">
+                        </label>
+                        <label for="externalScience">Science
+                            <input class="act-form-control" id="externalScience" name="Science" type="number" min="1" max="36" step="1">
+                        </label>
+                        <label for="externalWriting">Writing <span>(optional, 2–12)</span>
+                            <input class="act-form-control" id="externalWriting" name="writingScore" type="number" min="2" max="12" step="1">
+                        </label>
+                        <div class="external-score-actions">
+                            <button class="act-button act-button-primary" type="submit">Save test scores</button>
+                            <p class="act-message" id="externalScoreMessage" role="status" aria-live="polite"></p>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="act-card saved-tests-card">
+                    <div class="act-card-heading"><div><h2>Saved practice tests</h2><p>Your in-app and outside test records.</p></div></div>
+                    <ul id="savedPracticeTests" class="saved-test-list"></ul>
+                </section>
+                <footer class="act-footer"><span>STUDY ARCHIVE · ACT CENTER</span><span>TEST RESULTS ARE SAVED IN THIS BROWSER</span></footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/question-bank.js"></script>
+    <script src="../../js/act/practice-tests.js"></script>
+</body>
+</html>

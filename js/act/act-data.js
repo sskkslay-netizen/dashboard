@@ -121,6 +121,10 @@
         return `${subject.toLowerCase()}-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
     }
 
+    function makeId(prefix) {
+        return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+
     function skillLevel(score) {
         if (score >= 85) return "Mastery";
         if (score >= 40) return "Advanced";
@@ -167,6 +171,7 @@
             skills,
             studySessions: [],
             quizResults: [],
+            quizSessions: [],
             practiceTests: [],
             incorrectAnswers: [],
             strategies: [],
@@ -223,6 +228,123 @@
         });
     }
 
+    function recordQuizSession(session) {
+        if (!session || !Array.isArray(session.skillResults) || !session.skillResults.length) {
+            throw new Error("Quiz results must include at least one practiced skill.");
+        }
+        if (!Number.isInteger(session.totalQuestions) || session.totalQuestions < 1 ||
+            !Number.isInteger(session.correctCount) || session.correctCount < 0 ||
+            session.correctCount > session.totalQuestions) {
+            throw new RangeError("Quiz question totals are invalid.");
+        }
+
+        const date = new Date().toISOString();
+        const id = makeId("quiz-session");
+        return update(data => {
+            data.quizSessions.push({
+                id,
+                date,
+                subject: session.subject,
+                skill: session.skill || "",
+                difficulty: session.difficulty || "Mixed",
+                totalQuestions: session.totalQuestions,
+                correctCount: session.correctCount,
+                score: Math.round(session.correctCount / session.totalQuestions * 100)
+            });
+
+            session.skillResults.forEach(result => {
+                const idForSkill = skillId(result.subject, result.skill);
+                const skill = data.skills[idForSkill];
+                if (!skill || !Number.isInteger(result.total) || result.total < 1 ||
+                    !Number.isInteger(result.correct) || result.correct < 0 ||
+                    result.correct > result.total) {
+                    throw new Error("A quiz result contains an invalid ACT skill or score.");
+                }
+
+                const score = Math.round(result.correct / result.total * 100);
+                data.quizResults.push({
+                    id: makeId("quiz-result"),
+                    sessionId: id,
+                    date,
+                    subject: result.subject,
+                    skill: result.skill,
+                    correct: result.correct,
+                    total: result.total,
+                    score,
+                    difficulty: session.difficulty || "Mixed"
+                });
+                skill.score = Math.round((skill.score + score) / 2);
+                if (skill.manualLevel !== "Paused") skill.manualLevel = null;
+            });
+        });
+    }
+
+    function addIncorrectAnswer(entry) {
+        if (!entry || !Object.hasOwn(SUBJECTS, entry.subject) ||
+            !SUBJECTS[entry.subject].includes(entry.skill)) {
+            throw new Error("Choose a valid ACT subject and skill.");
+        }
+        const question = String(entry.question || "").trim();
+        const originalAnswer = String(entry.originalAnswer || "").trim();
+        const correctAnswer = String(entry.correctAnswer || "").trim();
+        const explanation = String(entry.explanation || "").trim();
+        if (!question || !originalAnswer || !correctAnswer || !explanation) {
+            throw new Error("Add the question, both answers, and a correct explanation.");
+        }
+
+        return update(data => {
+            data.incorrectAnswers.unshift({
+                id: makeId("incorrect"),
+                subject: entry.subject,
+                skill: entry.skill,
+                question,
+                originalAnswer,
+                correctAnswer,
+                whyWrong: String(entry.whyWrong || "").trim(),
+                explanation,
+                reviewed: false,
+                createdAt: new Date().toISOString(),
+                reviewedAt: null
+            });
+        });
+    }
+
+    function setIncorrectReviewed(id, reviewed) {
+        if (typeof reviewed !== "boolean") {
+            throw new Error("Choose whether the missed question has been reviewed.");
+        }
+        return update(data => {
+            const entry = data.incorrectAnswers.find(item => item.id === id);
+            if (!entry) throw new Error("The saved missed question could not be found.");
+            entry.reviewed = reviewed;
+            entry.reviewedAt = reviewed ? new Date().toISOString() : null;
+        });
+    }
+
+    function removeIncorrectAnswer(id) {
+        return update(data => {
+            const index = data.incorrectAnswers.findIndex(item => item.id === id);
+            if (index < 0) throw new Error("The saved missed question could not be found.");
+            data.incorrectAnswers.splice(index, 1);
+        });
+    }
+
+    function updateGoals(goals) {
+        const values = {
+            dailyMinutes: Number(goals.dailyMinutes),
+            dailyLessons: Number(goals.dailyLessons),
+            weeklyLessons: Number(goals.weeklyLessons)
+        };
+        if (!Number.isInteger(values.dailyMinutes) || values.dailyMinutes < 1 || values.dailyMinutes > 1440 ||
+            !Number.isInteger(values.dailyLessons) || values.dailyLessons < 1 || values.dailyLessons > 20 ||
+            !Number.isInteger(values.weeklyLessons) || values.weeklyLessons < 1 || values.weeklyLessons > 100) {
+            throw new RangeError("Set goals within the allowed ranges shown in Settings.");
+        }
+        return update(data => {
+            data.goals = { ...data.goals, ...values };
+        });
+    }
+
     function completeLesson(subject, skill, score, skillScore) {
         return update(data => {
             const id = skillId(subject, skill);
@@ -230,17 +352,27 @@
             if (!Number.isFinite(score) || score < 0 || score > 100) {
                 throw new RangeError("Lesson quiz score must be between 0 and 100.");
             }
+            if (skillScore !== undefined &&
+                (!Number.isFinite(skillScore) || skillScore < 0 || skillScore > 100)) {
+                throw new RangeError("Skill score must be between 0 and 100.");
+            }
 
+            const previousScore = data.skills[id].score;
+            const updatedScore = Math.round(skillScore === undefined
+                ? (previousScore + score) / 2
+                : skillScore);
             data.lessons.push({
-                id: `lesson-${Date.now()}`,
+                id: makeId("lesson"),
                 subject,
                 skill,
                 date: new Date().toISOString().slice(0, 10),
                 score,
+                skillScore: updatedScore,
                 completed: true,
                 source: "lesson"
             });
-            if (Number.isFinite(skillScore)) data.skills[id].score = Math.round(skillScore);
+            data.skills[id].score = updatedScore;
+            if (data.skills[id].manualLevel !== "Paused") data.skills[id].manualLevel = null;
         });
     }
 
@@ -258,21 +390,38 @@
     }
 
     function setSkillLevel(id, level) {
-        if (!["Core", "Advanced", "Mastery", "Paused"].includes(level)) {
-            throw new Error("Choose Core, Advanced, Mastery, or Paused for a skill level.");
+        if (!["Automatic", "Core", "Advanced", "Mastery", "Paused"].includes(level)) {
+            throw new Error("Choose Automatic, Core, Advanced, Mastery, or Paused for a skill level.");
         }
         return update(data => {
             const skill = data.skills[id];
             if (!skill) throw new Error("The selected ACT skill could not be found.");
-            skill.manualLevel = level === getSkillLevel(skill) ? null : level;
+            skill.manualLevel = level === "Automatic" ? null : level;
         });
     }
 
     function recordPracticeTest(test) {
         if (!test || typeof test !== "object") throw new Error("Practice test details are required.");
+        if (test.compositeScore !== undefined &&
+            (!Number.isInteger(Number(test.compositeScore)) ||
+                Number(test.compositeScore) < 1 || Number(test.compositeScore) > 36)) {
+            throw new RangeError("Composite score must be between 1 and 36.");
+        }
+        if (test.score !== undefined &&
+            (!Number.isFinite(Number(test.score)) || Number(test.score) < 0 || Number(test.score) > 100)) {
+            throw new RangeError("Practice-test percentage must be between 0 and 100.");
+        }
+        if (test.writingScore !== undefined && test.writingScore !== null &&
+            (!Number.isInteger(Number(test.writingScore)) ||
+                Number(test.writingScore) < 2 || Number(test.writingScore) > 12)) {
+            throw new RangeError("Writing score must be between 2 and 12.");
+        }
+        if (test.date !== undefined && !Number.isFinite(new Date(test.date).getTime())) {
+            throw new Error("Enter a valid practice-test date.");
+        }
         return update(data => {
             data.practiceTests.push({
-                id: `practice-test-${Date.now()}`,
+                id: makeId("practice-test"),
                 date: new Date().toISOString(),
                 ...test
             });
@@ -363,7 +512,12 @@
         recordStudyMinutes,
         completeLesson,
         recordQuizResult,
+        recordQuizSession,
         recordPracticeTest,
+        addIncorrectAnswer,
+        setIncorrectReviewed,
+        removeIncorrectAnswer,
+        updateGoals,
         addStrategy,
         toggleStrategyBookmark,
         setSkillLevel
