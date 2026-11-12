@@ -279,6 +279,42 @@
         });
     }
 
+    function addStrategy(strategy) {
+        if (!strategy || !Object.hasOwn(SUBJECTS, strategy.subject)) {
+            throw new Error("Choose a valid ACT subject for your strategy.");
+        }
+
+        const title = String(strategy.title || "").trim();
+        const explanation = String(strategy.explanation || "").trim();
+        if (!title || !explanation) {
+            throw new Error("A strategy needs a title and an explanation.");
+        }
+
+        return update(data => {
+            data.strategies.push({
+                id: `strategy-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                subject: strategy.subject,
+                title,
+                explanation,
+                tips: String(strategy.tips || "").trim(),
+                example: String(strategy.example || "").trim(),
+                mistakes: String(strategy.mistakes || "").trim(),
+                createdAt: new Date().toISOString()
+            });
+        });
+    }
+
+    function toggleStrategyBookmark(id) {
+        if (typeof id !== "string" || !id) {
+            throw new Error("Choose a strategy to bookmark.");
+        }
+        return update(data => {
+            const index = data.bookmarks.indexOf(id);
+            if (index === -1) data.bookmarks.push(id);
+            else data.bookmarks.splice(index, 1);
+        });
+    }
+
     function subscribe(listener) {
         listeners.add(listener);
         return () => listeners.delete(listener);
@@ -328,6 +364,8 @@
         completeLesson,
         recordQuizResult,
         recordPracticeTest,
+        addStrategy,
+        toggleStrategyBookmark,
         setSkillLevel
     };
 }());

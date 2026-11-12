@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#dceafa">
+    <title>Progress | ACT Study Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/act/act.css">
+    <link rel="stylesheet" href="../../css/act/progress.css">
+</head>
+<body>
+    <div class="act-layout">
+        <aside class="act-sidebar" aria-label="ACT Study Center navigation">
+            <a class="act-brand" href="dashboard.html" aria-label="ACT Study Center dashboard">
+                <span class="act-brand-mark" aria-hidden="true">A</span>
+                <span>
+                    <span class="act-brand-name">STUDY ARCHIVE</span>
+                    <span class="act-brand-caption">ACT STUDY CENTER</span>
+                </span>
+            </a>
+            <p class="act-nav-heading">YOUR ACT WORKSPACE</p>
+            <nav class="act-nav" aria-label="ACT pages">
+                <a class="act-nav-link" href="dashboard.html"><span class="act-nav-icon" aria-hidden="true">⌂</span>ACT Dashboard</a>
+                <a class="act-nav-link" href="strategies.html"><span class="act-nav-icon" aria-hidden="true">↗</span>Strategies</a>
+                <a class="act-nav-link" href="progress.html" aria-current="page"><span class="act-nav-icon" aria-hidden="true">▥</span>Progress</a>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">✎</span>Incorrect Answers</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">▤</span>Quiz Generator</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">▣</span>Practice Tests</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">◷</span>Statistics</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">⚙</span>Settings</span>
+                <span class="act-nav-upcoming" aria-disabled="true"><span class="act-nav-icon" aria-hidden="true">?</span>Help</span>
+            </nav>
+            <div class="act-sidebar-footer">
+                <a class="act-back-link" href="../../index.html">← Back to Main Dashboard</a>
+            </div>
+        </aside>
+
+        <main class="act-main">
+            <header class="act-topbar">
+                <div class="act-breadcrumb">Study Archive <span>/</span> ACT <span>/</span> Progress</div>
+            </header>
+            <div class="act-page-content">
+                <header class="progress-intro">
+                    <p class="act-eyebrow">YOUR WORK, MADE VISIBLE</p>
+                    <h1 class="act-page-title">Progress, at your pace.</h1>
+                    <p class="act-page-intro">Follow your subject scores, revisit completed lessons, and notice where your practice is starting to click.</p>
+                </header>
+
+                <section class="act-card progress-filters" aria-label="Filter progress">
+                    <label for="subjectFilter">Subject
+                        <select class="act-form-control" id="subjectFilter">
+                            <option value="all">All subjects</option>
+                            <option>English</option>
+                            <option>Math</option>
+                            <option>Reading</option>
+                            <option>Science</option>
+                        </select>
+                    </label>
+                    <label for="levelFilter">Skill level
+                        <select class="act-form-control" id="levelFilter">
+                            <option value="all">All skill levels</option>
+                            <option>Core</option>
+                            <option>Advanced</option>
+                            <option>Mastery</option>
+                            <option>Paused</option>
+                        </select>
+                    </label>
+                </section>
+
+                <section class="act-card trend-card" aria-labelledby="trendHeading">
+                    <div class="act-card-heading">
+                        <div>
+                            <h2 id="trendHeading">Quiz scores over time</h2>
+                            <p>Weekly average from completed lesson quizzes and saved quizzes.</p>
+                        </div>
+                    </div>
+                    <div id="scoreTrend" class="score-trend"></div>
+                </section>
+
+                <section class="progress-section" aria-labelledby="subjectProgressHeading">
+                    <div class="progress-section-heading">
+                        <div>
+                            <p class="act-eyebrow">THE BIG PICTURE</p>
+                            <h2 id="subjectProgressHeading">Subject progress</h2>
+                        </div>
+                    </div>
+                    <div id="subjectProgress" class="subject-progress-grid"></div>
+                </section>
+
+                <section class="act-card skill-progress-card" aria-labelledby="skillProgressHeading">
+                    <div class="act-card-heading">
+                        <div>
+                            <h2 id="skillProgressHeading">Individual skills</h2>
+                            <p>Score and level for every skill in your ACT library.</p>
+                        </div>
+                    </div>
+                    <div id="skillProgress" class="skill-progress-list"></div>
+                </section>
+
+                <div class="progress-columns">
+                    <section class="act-card" aria-labelledby="improvementsHeading">
+                        <div class="act-card-heading">
+                            <div>
+                                <h2 id="improvementsHeading">Recent improvements</h2>
+                                <p>Skills with a higher score than on the previous attempt.</p>
+                            </div>
+                        </div>
+                        <ul id="recentImprovements" class="progress-record-list"></ul>
+                    </section>
+
+                    <section class="act-card" aria-labelledby="lessonsHeading">
+                        <div class="act-card-heading">
+                            <div>
+                                <h2 id="lessonsHeading">Completed lessons</h2>
+                                <p id="lessonCount">Your finished lesson history.</p>
+                            </div>
+                        </div>
+                        <ul id="completedLessons" class="progress-record-list"></ul>
+                    </section>
+                </div>
+
+                <section class="act-card quiz-history-card" aria-labelledby="quizScoresHeading">
+                    <div class="act-card-heading">
+                        <div>
+                            <h2 id="quizScoresHeading">Quiz scores</h2>
+                            <p>Saved quiz attempts, newest first.</p>
+                        </div>
+                    </div>
+                    <ul id="quizScores" class="progress-record-list"></ul>
+                </section>
+                <footer class="act-footer">
+                    <span>STUDY ARCHIVE · ACT CENTER</span>
+                    <span>YOUR PROGRESS IS SAVED IN THIS BROWSER</span>
+                </footer>
+            </div>
+        </main>
+    </div>
+    <script src="../../js/act/act-data.js"></script>
+    <script src="../../js/act/progress.js"></script>
+</body>
+</html>

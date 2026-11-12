@@ -1,0 +1,127 @@
+.strategies-intro { margin: 25px 0 23px; }
+
+.strategy-tools {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(160px, 0.4fr) auto;
+    gap: 14px;
+    align-items: end;
+    margin-bottom: 30px;
+}
+
+.strategy-tools label,
+.strategy-form label {
+    display: grid;
+    gap: 6px;
+    color: #748394;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.strategy-tools .act-form-control,
+.strategy-form .act-form-control { min-width: 0; }
+.strategy-form textarea { resize: vertical; }
+.strategy-tools input[type="search"] { background: #fff; }
+
+.bookmark-filter {
+    display: flex !important;
+    min-height: 40px;
+    align-items: center;
+    gap: 8px !important;
+    padding: 0 4px;
+    color: #617386 !important;
+    white-space: nowrap;
+}
+
+.bookmark-filter input { accent-color: #536b80; }
+
+.strategy-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.strategy-section-heading .act-eyebrow { margin-bottom: 3px; }
+.strategy-section-heading h2 {
+    margin: 0;
+    color: var(--act-navy);
+    font: 500 25px/1.3 var(--act-serif);
+}
+
+.strategy-count { color: #98a2ab; font-size: 10px; }
+.strategy-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+
+.strategy-card {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    padding: 19px;
+    border: 1px solid var(--act-border);
+    border-radius: 13px;
+    background: var(--act-paper);
+    box-shadow: var(--act-shadow);
+}
+
+.strategy-card-top { display: flex; align-items: center; gap: 8px; }
+.strategy-subject {
+    padding: 4px 8px;
+    border-radius: 99px;
+    background: #edf4fa;
+    color: #657f94;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.strategy-card.math .strategy-subject { background: #f0edf5; color: #796c8a; }
+.strategy-card.reading .strategy-subject { background: #eef3ed; color: #6f826f; }
+.strategy-card.science .strategy-subject { background: #f4f0e9; color: #897a62; }
+.strategy-personal { color: #a0a9b0; font-size: 9px; }
+
+.strategy-bookmark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    margin: -5px -5px -5px auto;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: #8594a1;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.strategy-bookmark:hover { border-color: #e4e9ed; background: #f8fafb; }
+.strategy-bookmark[aria-pressed="true"] { color: #8c7655; }
+
+.strategy-card h3 {
+    margin: 12px 0 7px;
+    color: var(--act-navy);
+    font: 500 19px/1.35 var(--act-serif);
+}
+
+.strategy-explanation { margin: 0 0 13px; color: #718091; font-size: 11px; }
+.strategy-detail { margin-top: 9px; padding-top: 9px; border-top: 1px solid #edf0f2; }
+.strategy-detail strong { display: block; margin-bottom: 3px; color: #73869a; font-size: 9px; letter-spacing: 0.4px; text-transform: uppercase; }
+.strategy-detail p { margin: 0; color: #718091; font-size: 10px; }
+.strategy-empty { grid-column: 1 / -1; padding: 26px; border: 1px dashed #dce4e9; border-radius: 12px; color: #83909b; text-align: center; font-size: 12px; }
+
+.add-strategy-card { margin-top: 32px; }
+.strategy-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.strategy-form-wide, .strategy-form-actions { grid-column: 1 / -1; }
+.strategy-form .act-form-control { font-size: 12px; }
+.strategy-form-actions { display: flex; align-items: center; gap: 12px; }
+.strategy-form-actions .act-message { margin: 0; }
+
+@media (max-width: 800px) {
+    .strategy-tools { grid-template-columns: minmax(0, 1fr) minmax(140px, 0.6fr); }
+    .bookmark-filter { grid-column: 1 / -1; min-height: 25px; }
+}
+
+@media (max-width: 580px) {
+    .strategy-grid, .strategy-form, .strategy-tools { grid-template-columns: 1fr; }
+    .strategy-form-wide, .strategy-form-actions, .bookmark-filter { grid-column: auto; }
+    .strategy-section-heading h2 { font-size: 22px; }
+    .strategy-card { padding: 16px; }
+}

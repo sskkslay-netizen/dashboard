@@ -141,7 +141,14 @@
         document.getElementById("lessonsCompleted").textContent = data.lessons.filter(lesson => lesson.completed).length;
         document.getElementById("practiceTestsTaken").textContent = data.practiceTests.length;
         const skillCount = Object.keys(data.skills).length;
-        const progress = skillCount ? Math.min(100, Math.round(data.lessons.length / skillCount * 100)) : 0;
+        const completedSkillCount = new Set(
+            data.lessons
+                .filter(lesson => lesson.completed)
+                .map(lesson => ACTData.skillId(lesson.subject, lesson.skill))
+        ).size;
+        const progress = skillCount
+            ? Math.min(100, Math.round(completedSkillCount / skillCount * 100))
+            : 0;
         document.getElementById("overallProgress").textContent = `${progress}%`;
         document.getElementById("overallProgressBar").style.width = `${Math.min(100, progress)}%`;
         document.getElementById("overallProgressBar").parentElement.setAttribute("aria-valuenow", Math.min(100, progress));
