@@ -10,9 +10,110 @@ const Dashboard = {
         this.updateStats();
         this.updateDateLabels();
         this.setupMissions();
+        this.setupProfileEditor();
         this.updateProgress();
         this.renderUpcoming();
         this.updateRecentActivity();
+    },
+
+    setupProfileEditor() {
+        const modal = document.getElementById("profileModal");
+        const photoInput = document.getElementById("profilePhoto");
+        const preview = document.getElementById("profilePhotoPreview");
+        const removeButton = document.getElementById("removeProfilePhoto");
+        const form = document.getElementById("profileForm");
+
+        document.getElementById("editProfileButton")
+            .addEventListener("click", () => {
+                form.reset();
+                document.getElementById("profileName").value =
+                    StudyArchive.data.profile.name || "Scholar";
+                photoInput.dataset.removeImage = "false";
+                this.setProfilePreview(StudyArchive.data.profile.avatar || "");
+                removeButton.hidden = !StudyArchive.data.profile.avatar;
+                const message = document.getElementById("profileFormMessage");
+                message.textContent = "";
+                modal.classList.add("open");
+                modal.setAttribute("aria-hidden", "false");
+                document.getElementById("profileName").focus();
+            });
+
+        document.getElementById("closeProfileModal")
+            .addEventListener("click", () => this.closeProfileEditor());
+        document.getElementById("cancelProfileEdit")
+            .addEventListener("click", () => this.closeProfileEditor());
+        modal.addEventListener("click", event => {
+            if (event.target === modal) this.closeProfileEditor();
+        });
+
+        photoInput.addEventListener("change", () => {
+            const file = photoInput.files[0];
+            photoInput.dataset.removeImage = "false";
+            if (!file) return;
+            this.setProfilePreview(URL.createObjectURL(file));
+            removeButton.hidden = false;
+        });
+
+        removeButton.addEventListener("click", () => {
+            photoInput.value = "";
+            photoInput.dataset.removeImage = "true";
+            this.setProfilePreview("");
+            removeButton.hidden = true;
+        });
+
+        form.addEventListener("submit", event => this.saveProfile(event));
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") this.closeProfileEditor();
+        });
+    },
+
+    setProfilePreview(source) {
+        const preview = document.getElementById("profilePhotoPreview");
+        if (preview.src.startsWith("blob:")) {
+            URL.revokeObjectURL(preview.src);
+        }
+        preview.src = source;
+        preview.hidden = !source;
+    },
+
+    closeProfileEditor() {
+        const modal = document.getElementById("profileModal");
+        if (!modal) return;
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        this.setProfilePreview("");
+    },
+
+    async saveProfile(event) {
+        event.preventDefault();
+        const name = document.getElementById("profileName").value.trim();
+        const photoInput = document.getElementById("profilePhoto");
+        const message = document.getElementById("profileFormMessage");
+        message.textContent = "";
+
+        if (!name) {
+            message.textContent = "Enter a display name.";
+            document.getElementById("profileName").focus();
+            return;
+        }
+
+        const previousProfile = { ...StudyArchive.data.profile };
+        try {
+            let avatar = photoInput.dataset.removeImage === "true"
+                ? ""
+                : previousProfile.avatar || "";
+            if (photoInput.files[0]) {
+                avatar = await StudyArchive.imageToDataURL(photoInput.files[0]);
+            }
+
+            StudyArchive.data.profile = { name, avatar };
+            StudyArchive.save();
+            this.closeProfileEditor();
+        } catch (error) {
+            StudyArchive.data.profile = previousProfile;
+            StudyArchive.updateDisplay();
+            message.textContent = error.message || "Your profile could not be saved.";
+        }
     },
 
     dateKey(date) {

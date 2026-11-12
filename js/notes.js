@@ -66,6 +66,26 @@ const Notes = {
         document.getElementById("deleteNoteButton")
             .addEventListener("click", () => this.deleteNote());
 
+        document.getElementById("noteImage")
+            .addEventListener("change", event => {
+                const file = event.target.files[0];
+                const removeButton = document.getElementById("removeNoteImage");
+                event.target.dataset.removeImage = "false";
+
+                if (!file) return;
+                this.setImagePreview(URL.createObjectURL(file));
+                removeButton.hidden = false;
+            });
+
+        document.getElementById("removeNoteImage")
+            .addEventListener("click", () => {
+                const input = document.getElementById("noteImage");
+                input.value = "";
+                input.dataset.removeImage = "true";
+                this.setImagePreview("");
+                document.getElementById("removeNoteImage").hidden = true;
+            });
+
         document.getElementById("notesSearch")
             .addEventListener("input", event => {
                 this.searchQuery = event.target.value.toLowerCase();
@@ -137,6 +157,13 @@ const Notes = {
 
     saveData() {
         StudyArchive.save();
+    },
+
+    dateKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
     },
 
     addFolder() {
@@ -350,6 +377,7 @@ const Notes = {
 
                 <h3>${safeTitle}</h3>
 
+                ${note.image ? `<img class="note-card-image" src="${this.escapeHTML(note.image)}" alt="">` : ""}
                 <p class="note-preview">${this.escapeHTML(preview)}</p>
 
                 <div class="note-card-footer">
@@ -367,6 +395,17 @@ const Notes = {
         const form = document.getElementById("noteForm");
 
         form.reset();
+
+        const imageInput = document.getElementById("noteImage");
+        imageInput.dataset.removeImage = "false";
+        const noteImage = id
+            ? StudyArchive.data.notes.find(item => item.id === id)?.image || ""
+            : "";
+        this.setImagePreview(noteImage);
+        document.getElementById("removeNoteImage").hidden = !noteImage;
+        const message = document.getElementById("noteFormMessage");
+        message.textContent = "";
+        message.classList.remove("error");
 
         const note = id
             ? StudyArchive.data.notes.find(item => item.id === id)
@@ -403,31 +442,63 @@ const Notes = {
 
         modal.classList.remove("open");
         modal.setAttribute("aria-hidden", "true");
+        this.setImagePreview("");
     },
 
-    saveNote() {
+    setImagePreview(source) {
+        const preview = document.getElementById("noteImagePreview");
+        if (preview.src.startsWith("blob:")) {
+            URL.revokeObjectURL(preview.src);
+        }
+        preview.src = source;
+        preview.hidden = !source;
+    },
+
+    async saveNote() {
         const id = document.getElementById("noteId").value;
         const title = document.getElementById("noteTitle").value.trim();
         const content = document.getElementById("noteContent").value.trim();
 
         if (!title || !content) return;
 
-        const now = new Date().toISOString();
+        const message = document.getElementById("noteFormMessage");
+        message.textContent = "";
+        message.classList.remove("error");
 
+        const imageInput = document.getElementById("noteImage");
         const existing = id
             ? StudyArchive.data.notes.find(note => note.id === id)
             : null;
+        let image = imageInput.dataset.removeImage === "true"
+            ? ""
+            : existing?.image || "";
 
+        try {
+            if (imageInput.files[0]) {
+                image = await StudyArchive.imageToDataURL(imageInput.files[0]);
+            }
+        } catch (error) {
+            message.textContent = error.message || "The photo could not be added.";
+            message.classList.add("error");
+            return;
+        }
+
+        const now = new Date().toISOString();
         const note = {
             id: id || `note-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
             title,
             content,
+            image,
             subject: document.getElementById("noteSubject").value,
             tag: document.getElementById("noteTag").value,
             pinned: document.getElementById("notePinned").checked,
             createdAt: existing ? existing.createdAt : now,
             updatedAt: now
         };
+        const previousNotes = StudyArchive.data.notes.map(item => ({ ...item }));
+        const previousFolders = [...StudyArchive.data.noteFolders];
+        const previousCrystals = StudyArchive.data.crystals;
+        const previousMissions = [...StudyArchive.data.completedMissions];
 
         if (existing) {
             Object.assign(existing, note);
@@ -439,7 +510,31 @@ const Notes = {
             StudyArchive.data.noteFolders.push(note.subject);
         }
 
-        this.saveData();
+        let earnedDailyReward = false;
+        try {
+            if (!existing) {
+                earnedDailyReward = StudyArchive.completeMission(
+                    `${this.dateKey(new Date())}:note`,
+                    15
+                );
+            }
+
+            if (!earnedDailyReward) this.saveData();
+        } catch (error) {
+            StudyArchive.data.notes = previousNotes;
+            StudyArchive.data.noteFolders = previousFolders;
+            StudyArchive.data.crystals = previousCrystals;
+            StudyArchive.data.completedMissions = previousMissions;
+            message.textContent = error.message || "The note could not be saved.";
+            message.classList.add("error");
+            return;
+        }
+
+        if (earnedDailyReward) {
+            document.getElementById("noteRewardMessage").textContent =
+                "You earned 15 crystals for today's new note!";
+        }
+
         this.closeModal();
         this.render();
     },

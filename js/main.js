@@ -15,6 +15,10 @@ const StudyArchive = {
         calendarEvents: [],
         notes: [],
         quizSets: [],
+        profile: {
+            name: "Scholar",
+            avatar: ""
+        },
         characters: [],
         wishHistory: [],
         achievements: []
@@ -41,6 +45,20 @@ const StudyArchive = {
                 this.data[key] = [];
             }
         });
+
+        const savedProfile = this.data.profile &&
+            typeof this.data.profile === "object" &&
+            !Array.isArray(this.data.profile)
+            ? this.data.profile
+            : {};
+        this.data.profile = {
+            name: typeof savedProfile.name === "string" && savedProfile.name.trim()
+                ? savedProfile.name.trim()
+                : this.defaultData.profile.name,
+            avatar: typeof savedProfile.avatar === "string"
+                ? savedProfile.avatar
+                : ""
+        };
 
         if (typeof this.data.crystals !== "number") {
             this.data.crystals = 0;
@@ -90,10 +108,57 @@ const StudyArchive = {
         const balance = document.getElementById("crystalBalance");
         const count = document.getElementById("crystalCount");
         const wishBalance = document.getElementById("wishCrystalBalance");
+        const profileInitial = document.getElementById("profileInitial");
+        const profileAvatar = document.getElementById("profileAvatarImage");
+        const welcomeTitle = document.getElementById("welcomeTitle");
+        const profileName = this.data.profile?.name?.trim() || "Scholar";
 
         if (balance) balance.textContent = this.data.crystals;
         if (count) count.textContent = this.data.crystals;
         if (wishBalance) wishBalance.textContent = this.data.crystals;
+        if (profileInitial) profileInitial.textContent = profileName.charAt(0).toUpperCase();
+        if (profileAvatar) {
+            profileAvatar.src = this.data.profile.avatar || "";
+            profileAvatar.hidden = !this.data.profile.avatar;
+        }
+        if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${profileName}.`;
+    },
+
+    imageToDataURL(file) {
+        if (!file || !file.type.startsWith("image/")) {
+            return Promise.reject(new Error("Choose an image file."));
+        }
+        if (file.size > 8 * 1024 * 1024) {
+            return Promise.reject(new Error("Choose an image smaller than 8 MB."));
+        }
+
+        return createImageBitmap(file).then(bitmap => {
+            const scale = Math.min(1, 1200 / Math.max(bitmap.width, bitmap.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+            canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+
+            const context = canvas.getContext("2d");
+            if (!context) {
+                bitmap.close();
+                throw new Error("Your browser could not process this image.");
+            }
+
+            context.fillStyle = "#ffffff";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+            bitmap.close();
+
+            for (const quality of [0.8, 0.68, 0.56, 0.44]) {
+                const image = canvas.toDataURL("image/jpeg", quality);
+                if (image.length <= 1_200_000) return image;
+            }
+
+            throw new Error("This image is too large to save. Choose a smaller image.");
+        }).catch(error => {
+            if (error instanceof Error && error.message) throw error;
+            throw new Error("This image could not be opened.");
+        });
     },
 
     completeMission(missionId, reward = 10) {

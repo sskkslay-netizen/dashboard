@@ -22,6 +22,38 @@ const QuizCenter = {
         document.getElementById("quizImportForm")
             .addEventListener("submit", event => this.importSet(event));
 
+        document.getElementById("quizCreateForm")
+            .addEventListener("submit", event => this.createSet(event));
+
+        document.getElementById("addQuizQuestion")
+            .addEventListener("click", () => this.addQuestionCard());
+
+        document.getElementById("quizQuestionBuilder")
+            .addEventListener("click", event => {
+                const button = event.target.closest("[data-remove-question]");
+                if (button && this.questionCardCount() > 2) {
+                    const card = button.closest(".quiz-question-editor");
+                    const preview = card.querySelector(".quiz-question-image-preview");
+                    if (preview.src.startsWith("blob:")) URL.revokeObjectURL(preview.src);
+                    card.remove();
+                    this.updateQuestionCardControls();
+                }
+            });
+
+        document.getElementById("quizQuestionBuilder")
+            .addEventListener("change", event => {
+                const input = event.target.closest(".quiz-question-image-input");
+                if (!input?.files?.[0]) return;
+
+                const preview = input.closest(".quiz-question-editor")
+                    .querySelector(".quiz-question-image-preview");
+                if (preview.src.startsWith("blob:")) {
+                    URL.revokeObjectURL(preview.src);
+                }
+                preview.src = URL.createObjectURL(input.files[0]);
+                preview.hidden = false;
+            });
+
         document.getElementById("quizSetList")
             .addEventListener("click", event => this.handleSetAction(event));
 
@@ -36,7 +68,141 @@ const QuizCenter = {
                 if (this.currentSet) this.startQuiz(this.currentSet.id);
             });
 
+        this.addQuestionCard();
+        this.addQuestionCard();
         this.renderSets();
+    },
+
+    questionCardCount() {
+        return document.querySelectorAll(".quiz-question-editor").length;
+    },
+
+    addQuestionCard() {
+        const container = document.getElementById("quizQuestionBuilder");
+        const card = document.createElement("fieldset");
+        card.className = "quiz-question-editor";
+
+        const legend = document.createElement("legend");
+        legend.textContent = `Question ${this.questionCardCount() + 1}`;
+
+        const termLabel = document.createElement("label");
+        termLabel.textContent = "Question or term";
+        const term = document.createElement("input");
+        term.type = "text";
+        term.className = "quiz-question-term";
+        term.maxLength = 300;
+        term.placeholder = "e.g. What is photosynthesis?";
+        term.required = true;
+        termLabel.appendChild(term);
+
+        const answerLabel = document.createElement("label");
+        answerLabel.textContent = "Correct answer";
+        const answer = document.createElement("input");
+        answer.type = "text";
+        answer.className = "quiz-question-answer";
+        answer.maxLength = 500;
+        answer.placeholder = "Write the answer";
+        answer.required = true;
+        answerLabel.appendChild(answer);
+
+        const photoLabel = document.createElement("label");
+        photoLabel.textContent = "Photo (optional)";
+        const photo = document.createElement("input");
+        photo.type = "file";
+        photo.accept = "image/*";
+        photo.className = "quiz-question-image-input";
+        photoLabel.appendChild(photo);
+
+        const preview = document.createElement("img");
+        preview.className = "quiz-question-image-preview";
+        preview.alt = "Question photo preview";
+        preview.hidden = true;
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "quiz-remove-question";
+        remove.dataset.removeQuestion = "";
+        remove.textContent = "Remove question";
+
+        card.append(legend, termLabel, answerLabel, photoLabel, preview, remove);
+        container.appendChild(card);
+        this.updateQuestionCardControls();
+    },
+
+    updateQuestionCardControls() {
+        const cards = [...document.querySelectorAll(".quiz-question-editor")];
+        cards.forEach((card, index) => {
+            card.querySelector("legend").textContent = `Question ${index + 1}`;
+            card.querySelector("[data-remove-question]").disabled = cards.length <= 2;
+        });
+    },
+
+    async createSet(event) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const message = document.getElementById("quizCreateMessage");
+        const name = document.getElementById("newQuizName").value.trim();
+        const editors = [...document.querySelectorAll(".quiz-question-editor")];
+        const cards = editors.map(editor => ({
+            term: editor.querySelector(".quiz-question-term").value.trim(),
+            definition: editor.querySelector(".quiz-question-answer").value.trim(),
+            imageFile: editor.querySelector(".quiz-question-image-input").files[0] || null
+        }));
+
+        message.classList.remove("error");
+        if (!name) {
+            message.textContent = "Enter a name for your quiz.";
+            document.getElementById("newQuizName").focus();
+            return;
+        }
+        if (cards.some(card => !card.term || !card.definition)) {
+            message.textContent = "Add both a question and answer to every card.";
+            message.classList.add("error");
+            return;
+        }
+        if (new Set(cards.map(card => card.definition.toLowerCase())).size < 2) {
+            message.textContent = "Use at least two different answers so the quiz can be played.";
+            message.classList.add("error");
+            return;
+        }
+
+        try {
+            const quizCards = await Promise.all(cards.map(async card => ({
+                term: card.term,
+                definition: card.definition,
+                image: card.imageFile
+                    ? await StudyArchive.imageToDataURL(card.imageFile)
+                    : ""
+            })));
+            const studySet = {
+                id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+                name,
+                cards: quizCards,
+                createdAt: new Date().toISOString()
+            };
+
+            StudyArchive.data.quizSets.unshift(studySet);
+            try {
+                StudyArchive.save();
+            } catch (error) {
+                StudyArchive.data.quizSets =
+                    StudyArchive.data.quizSets.filter(item => item.id !== studySet.id);
+                throw error;
+            }
+
+            document.querySelectorAll(".quiz-question-image-preview").forEach(preview => {
+                if (preview.src.startsWith("blob:")) URL.revokeObjectURL(preview.src);
+            });
+            form.reset();
+            document.getElementById("quizQuestionBuilder").replaceChildren();
+            this.addQuestionCard();
+            this.addQuestionCard();
+            message.textContent = `Created "${name}" with ${quizCards.length} questions.`;
+            this.renderSets();
+        } catch (error) {
+            message.textContent = error.message || "The quiz could not be saved.";
+            message.classList.add("error");
+        }
     },
 
     parseQuizletExport(text) {
@@ -59,7 +225,7 @@ const QuizCenter = {
                 throw new Error(`Line ${index + 1} needs both a term and a definition.`);
             }
 
-            cards.push({ term, definition });
+            cards.push({ term, definition, image: "" });
         });
 
         if (!cards.length) {
@@ -242,6 +408,9 @@ const QuizCenter = {
         document.getElementById("quizProgressFill").style.width =
             `${(this.questionIndex / total) * 100}%`;
         document.getElementById("quizTerm").textContent = card.term;
+        const image = document.getElementById("quizQuestionImage");
+        image.src = card.image || "";
+        image.hidden = !card.image;
         document.getElementById("quizFeedback").textContent = "";
         document.getElementById("nextQuestion").hidden = true;
         document.getElementById("nextQuestion").textContent =

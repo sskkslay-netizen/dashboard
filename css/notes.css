@@ -32,6 +32,13 @@
     margin: 0;
 }
 
+.notes-reward-message {
+    color: #668d61;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 7px 0 0;
+}
+
 .eyebrow {
     color: #8ba9c5;
     font-size: 10px;
@@ -368,6 +375,14 @@
     overflow-wrap: anywhere;
 }
 
+.note-card-image {
+    width: 100%;
+    max-height: 125px;
+    margin: 0 0 12px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
 .note-preview {
     color: #8998a7;
     font-size: 11px;
@@ -517,6 +532,41 @@
 .note-modal textarea {
     resize: vertical;
     line-height: 1.7;
+}
+
+.note-image-preview-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 9px;
+}
+
+.note-image-preview-wrap img {
+    max-width: min(100%, 240px);
+    max-height: 160px;
+    border-radius: 9px;
+    object-fit: contain;
+}
+
+.note-image-preview-wrap button {
+    padding: 7px 10px;
+    border: 1px solid #e6dada;
+    border-radius: 8px;
+    background: #fff8f8;
+    color: #a26d73;
+    font: inherit;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.note-form-message {
+    min-height: 16px;
+    color: #5e819e;
+    font-size: 11px;
+}
+
+.note-form-message.error {
+    color: #a65e65;
 }
 
 .note-form-row {

@@ -150,6 +150,31 @@
                 </section>
             </div>
 
+            <section class="quiz-create-card" aria-labelledby="createQuizHeading">
+                <div class="quiz-section-heading">
+                    <div class="quiz-section-icon"><i data-lucide="square-pen" aria-hidden="true"></i></div>
+                    <div>
+                        <p class="eyebrow">MAKE YOUR OWN</p>
+                        <h2 id="createQuizHeading">Create a quiz</h2>
+                    </div>
+                </div>
+                <p class="quiz-builder-help">Add at least two questions. Each question can include an optional photo.</p>
+                <form id="quizCreateForm">
+                    <label for="newQuizName">Quiz name</label>
+                    <input id="newQuizName" type="text" maxlength="80" placeholder="e.g. Cell Biology" required>
+                    <div class="quiz-question-builder" id="quizQuestionBuilder"></div>
+                    <div class="quiz-builder-actions">
+                        <button class="quiz-secondary-button" type="button" id="addQuizQuestion">
+                            <i data-lucide="plus" aria-hidden="true"></i> Add question
+                        </button>
+                        <button class="quiz-primary-button" type="submit">
+                            <i data-lucide="file-plus-2" aria-hidden="true"></i> Create quiz
+                        </button>
+                    </div>
+                    <p class="quiz-form-message" id="quizCreateMessage" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+
             <section class="quiz-session-card" id="quizSession" aria-live="polite" hidden>
                 <div class="quiz-session-top">
                     <div>
@@ -166,6 +191,7 @@
                 <div class="quiz-question-card" id="quizQuestionCard">
                     <p class="quiz-question-label">What does this term mean?</p>
                     <h3 id="quizTerm"></h3>
+                    <img class="quiz-question-image" id="quizQuestionImage" alt="" hidden>
                     <div class="quiz-answer-list" id="quizAnswers"></div>
                     <p class="quiz-answer-feedback" id="quizFeedback" aria-live="polite"></p>
                     <button class="quiz-primary-button quiz-next-button" id="nextQuestion" type="button" hidden>Next question</button>

@@ -106,7 +106,10 @@
                         <span id="crystalBalance">160</span>
                     </div>
 
-                    <div class="profile-icon">A</div>
+                    <button class="profile-icon" id="editProfileButton" type="button" aria-label="Edit profile" title="Edit profile">
+                        <span id="profileInitial">S</span>
+                        <img id="profileAvatarImage" alt="" hidden>
+                    </button>
 
                 </div>
 
@@ -126,7 +129,7 @@
                             YOUR PERSONAL ACADEMIC ARCHIVE
                         </p>
 
-                        <h1>Welcome back, Scholar.</h1>
+                        <h1 id="welcomeTitle">Welcome back, Scholar.</h1>
 
                         <p class="welcome-description">
                             Every little step counts. Take your time,
@@ -511,6 +514,32 @@
 
     </div>
 
+    <div class="profile-modal-overlay" id="profileModal" aria-hidden="true">
+        <section class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+            <div class="profile-modal-heading">
+                <div>
+                    <p class="eyebrow">YOUR ACCOUNT</p>
+                    <h2 id="profileModalTitle">Edit profile</h2>
+                </div>
+                <button type="button" id="closeProfileModal" aria-label="Close profile editor">×</button>
+            </div>
+            <form id="profileForm">
+                <label for="profileName">Display name</label>
+                <input id="profileName" type="text" maxlength="40" required>
+                <label for="profilePhoto">Profile photo (optional)</label>
+                <input id="profilePhoto" type="file" accept="image/*">
+                <div class="profile-preview-wrap">
+                    <img id="profilePhotoPreview" alt="Profile photo preview" hidden>
+                    <button type="button" id="removeProfilePhoto" hidden>Remove photo</button>
+                </div>
+                <p class="profile-form-message" id="profileFormMessage" role="status" aria-live="polite"></p>
+                <div class="profile-modal-actions">
+                    <button type="button" id="cancelProfileEdit">Cancel</button>
+                    <button type="submit">Save profile</button>
+                </div>
+            </form>
+        </section>
+    </div>
 
     <!-- SHARED JAVASCRIPT -->
     <script src="js/main.js"></script>

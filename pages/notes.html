@@ -89,7 +89,8 @@
                 <div>
                     <p class="eyebrow">YOUR PERSONAL LIBRARY</p>
                     <h1>My Notes</h1>
-                    <p class="notes-subtitle">A little place for everything you're learning.</p>
+                    <p class="notes-subtitle">A little place for everything you're learning. Create a new note each day for +15 crystals.</p>
+                    <p class="notes-reward-message" id="noteRewardMessage" role="status" aria-live="polite"></p>
                 </div>
 
                 <button class="notes-primary-button" id="newNoteButton">
@@ -288,6 +289,14 @@
                 placeholder="Start writing your thoughts here..."
                 required
             ></textarea>
+
+            <label for="noteImage">Photo (optional)</label>
+            <input type="file" id="noteImage" accept="image/*">
+            <div class="note-image-preview-wrap">
+                <img id="noteImagePreview" alt="Note photo preview" hidden>
+                <button type="button" id="removeNoteImage" hidden>Remove photo</button>
+            </div>
+            <p class="note-form-message" id="noteFormMessage" role="status" aria-live="polite"></p>
 
             <label class="pin-note-option">
                 <input type="checkbox" id="notePinned">
