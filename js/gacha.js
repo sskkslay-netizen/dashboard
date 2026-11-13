@@ -56,7 +56,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Rashomon",
             description: "A formidable Port Mafia member whose ability turns his coat into a weapon called Rashomon. His stern resolve hides a difficult past.",
-            image: "../assets/characters/bsd_akutagawa.PNG"
+            image: "../assets/characters/default-character.svg"
         },
         {
             id: "bsd_kunikida",
@@ -93,6 +93,51 @@ const Gacha = {
             title: "The Undefeated by the Rain",
             description: "A cheerful country-raised detective whose strength grows when he is hungry. His direct kindness makes him a steady friend to the Agency.",
             image: "../assets/characters/bsd_kenji.PNG"
+        },
+        {
+            id: "bsd_fukuzawa",
+            name: "Yukichi Fukuzawa",
+            series: "Bungou Stray Dogs",
+            rarity: "SSR",
+            title: "All Men Are Equal",
+            description: "The calm president of the Armed Detective Agency. His ability helps regulate the powers of Agency members who accept his leadership.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "bsd_kyoka",
+            name: "Kyoka Izumi",
+            series: "Bungou Stray Dogs",
+            rarity: "SR",
+            title: "Demon Snow",
+            description: "A former assassin who finds a new purpose with the Armed Detective Agency. Her ability summons the sword-wielding Demon Snow.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "bsd_mori",
+            name: "Ougai Mori",
+            series: "Bungou Stray Dogs",
+            rarity: "SSR",
+            title: "Vita Sexualis",
+            description: "The strategic leader of the Port Mafia. His ability, Vita Sexualis, allows him to summon and direct Elise.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "bsd_tanizaki",
+            name: "Junichiro Tanizaki",
+            series: "Bungou Stray Dogs",
+            rarity: "R",
+            title: "Light Snow",
+            description: "A capable member of the Armed Detective Agency whose ability, Light Snow, creates convincing visual illusions.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "bsd_naomi",
+            name: "Naomi Tanizaki",
+            series: "Bungou Stray Dogs",
+            rarity: "R",
+            title: "Agency Supporter",
+            description: "Junichiro's outgoing younger sister, who works at the Armed Detective Agency and brings plenty of energy to the office.",
+            image: "../assets/characters/default-character.svg"
         },
 
         // DEMON SLAYER
@@ -168,6 +213,60 @@ const Gacha = {
             description: "The Love Hashira, an affectionate and optimistic swordswoman whose unusual flexibility supports her distinctive combat style.",
             image: "../assets/characters/kny-mitsuri.PNG"
         },
+        {
+            id: "kny_kanao",
+            name: "Kanao Tsuyuri",
+            series: "Demon Slayer",
+            rarity: "SR",
+            title: "Flower Breathing",
+            description: "A skilled Demon Slayer trained at the Butterfly Mansion. Kanao uses Flower Breathing and gradually learns to trust her own choices.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "kny_tengen",
+            name: "Tengen Uzui",
+            series: "Demon Slayer",
+            rarity: "SSR",
+            title: "Sound Hashira",
+            description: "The flamboyant Sound Hashira, who combines exceptional hearing with his distinctive dual swords and musical combat sense.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "kny_muichiro",
+            name: "Muichiro Tokito",
+            series: "Demon Slayer",
+            rarity: "SSR",
+            title: "Mist Hashira",
+            description: "The exceptionally talented Mist Hashira. Muichiro's quiet focus and Mist Breathing make him a formidable swordsman.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "kny_sanemi",
+            name: "Sanemi Shinazugawa",
+            series: "Demon Slayer",
+            rarity: "SSR",
+            title: "Wind Hashira",
+            description: "The fierce Wind Hashira, whose relentless fighting style and Wind Breathing reflect his uncompromising determination.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "kny_aoi",
+            name: "Aoi Kanzaki",
+            series: "Demon Slayer",
+            rarity: "R",
+            title: "Butterfly Mansion Helper",
+            description: "A practical, determined member of the Butterfly Mansion team who helps injured Demon Slayers recover and train.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "kny_murata",
+            name: "Murata",
+            series: "Demon Slayer",
+            rarity: "R",
+            title: "Steady Demon Slayer",
+            description: "A dependable Demon Slayer who faces dangerous missions with persistence, even without a flashy breathing technique.",
+            image: "../assets/characters/default-character.svg"
+        },
 
         // MY HERO ACADEMIA
         {
@@ -232,6 +331,69 @@ const Gacha = {
             title: "Fierce Wings",
             description: "A relaxed, observant pro hero who moves quickly with his Fierce Wings Quirk. He often gathers information while helping people behind the scenes.",
             image: "../assets/characters/mha-hawks.PNG"
+        },
+        {
+            id: "mha_allmight",
+            name: "All Might",
+            series: "My Hero Academia",
+            rarity: "SSR",
+            title: "Symbol of Peace",
+            description: "A legendary pro hero who inspires hope with his courageous public presence. He passes the power One For All to Izuku Midoriya.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "mha_kirishima",
+            name: "Eijiro Kirishima",
+            series: "My Hero Academia",
+            rarity: "SR",
+            title: "Red Riot",
+            description: "A brave student whose Hardening Quirk strengthens his body. He values courage, loyalty, and standing up for others.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "mha_jiro",
+            name: "Kyoka Jiro",
+            series: "My Hero Academia",
+            rarity: "SR",
+            title: "Earphone Jack",
+            description: "A practical student and musician whose Earphone Jack Quirk lets her listen through and transmit sound with her earphone-like jacks.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "mha_endeavor",
+            name: "Endeavor",
+            series: "My Hero Academia",
+            rarity: "SSR",
+            title: "Hellflame",
+            description: "A powerful pro hero whose Hellflame Quirk produces intense fire. He is driven to prove himself through heroic work.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "mha_kaminari",
+            name: "Denki Kaminari",
+            series: "My Hero Academia",
+            rarity: "R",
+            title: "Electrification",
+            description: "A friendly student whose Electrification Quirk lets him discharge electricity. He brings enthusiasm and humor to Class 1-A.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "mha_asui",
+            name: "Tsuyu Asui",
+            series: "My Hero Academia",
+            rarity: "R",
+            title: "Frog",
+            description: "A straightforward and observant student whose Frog Quirk gives her frog-like abilities, including jumping, swimming, and a long-reaching tongue.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "mha_mineta",
+            name: "Minoru Mineta",
+            series: "My Hero Academia",
+            rarity: "R",
+            title: "Pop Off",
+            description: "A small but inventive student whose Pop Off Quirk creates sticky spheres that can be used to trap opponents or help him move.",
+            image: "../assets/characters/default-character.svg"
         },
 
         // ALIEN STAGE
@@ -308,6 +470,42 @@ const Gacha = {
             title: "The Moon Prince",
             description: "A graceful palace official whose charm and intelligence help him navigate court life. He often turns to Maomao when a mystery needs a discerning eye.",
             image: "../assets/characters/ap-jinshi.PNG"
+        },
+        {
+            id: "ap_xiaolan",
+            name: "Xiaolan",
+            series: "The Apothecary Diaries",
+            rarity: "R",
+            title: "Palace Friend",
+            description: "A cheerful young woman serving in the inner palace. Xiaolan becomes one of Maomao's friendly companions and shares everyday palace news.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "ap_lihaku",
+            name: "Lihaku",
+            series: "The Apothecary Diaries",
+            rarity: "SR",
+            title: "The Loyal Officer",
+            description: "An earnest military officer known for his strength and straightforward manner. He becomes a trusted ally to Maomao.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "ap_lakan",
+            name: "Lakan",
+            series: "The Apothecary Diaries",
+            rarity: "SSR",
+            title: "The Unreadable Strategist",
+            description: "A brilliant military strategist whose unusual way of seeing people makes him difficult to read. His connection to Maomao is important to her past.",
+            image: "../assets/characters/default-character.svg"
+        },
+        {
+            id: "ap_gaoshun",
+            name: "Gaoshun",
+            series: "The Apothecary Diaries",
+            rarity: "R",
+            title: "Jinshi's Attendant",
+            description: "Jinshi's capable and composed attendant. Gaoshun keeps palace duties in order and often helps smooth over his employer's requests.",
+            image: "../assets/characters/default-character.svg"
         },
 
         // ADD MORE SERIES BELOW
@@ -589,7 +787,7 @@ const Gacha = {
 
     getImage(character) {
         return character.image ||
-            "../assets/characters/default-character.png";
+            "../assets/characters/default-character.svg";
     },
 
     // ======================================
@@ -617,7 +815,7 @@ const Gacha = {
 
         const newCharacter = {
             title: "New Character",
-            image: "../assets/characters/default-character.png",
+            image: "../assets/characters/default-character.svg",
             ...character
         };
         custom.push(newCharacter);

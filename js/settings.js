@@ -36,7 +36,7 @@
     }
 
     function validImagePath(value) {
-        if (!value) return "../assets/characters/default-character.png";
+        if (!value) return "../assets/characters/default-character.svg";
         if (/^(https?:\/\/|\.{1,2}\/|\/)/i.test(value)) return value;
         throw new Error("Use an http(s) image URL or a relative/absolute image path.");
     }

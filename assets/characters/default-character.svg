@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" role="img" aria-labelledby="title description">
+  <title id="title">Character portrait placeholder</title>
+  <desc id="description">A soft blue and ivory decorative portrait frame for character cards without custom artwork.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e4f0f7"/>
+      <stop offset=".55" stop-color="#f8f6ef"/>
+      <stop offset="1" stop-color="#d8e5ee"/>
+    </linearGradient>
+    <linearGradient id="portrait" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fa9bb"/>
+      <stop offset="1" stop-color="#526d82"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="800" fill="url(#background)"/>
+  <circle cx="320" cy="285" r="165" fill="#ffffff" fill-opacity=".48"/>
+  <path d="M320 168c-68 0-112 52-112 125v45c0 25-17 42-37 52 33 12 60 8 81-10 14 60 63 102 126 102s112-42 126-102c21 18 48 22 81 10-20-10-37-27-37-52v-45c0-73-44-125-112-125-24-25-92-25-116 0Z" fill="url(#portrait)"/>
+  <path d="M122 700c16-123 88-185 198-185s182 62 198 185" fill="#526d82" fill-opacity=".82"/>
+  <path d="M111 700h418" stroke="#fff" stroke-opacity=".72" stroke-width="3"/>
+  <path d="m320 72 8 19 20 2-15 13 5 20-18-11-18 11 5-20-15-13 20-2z" fill="#fff" fill-opacity=".86"/>
+  <circle cx="112" cy="186" r="5" fill="#fff" fill-opacity=".8"/>
+  <circle cx="531" cy="294" r="7" fill="#fff" fill-opacity=".8"/>
+  <circle cx="500" cy="125" r="4" fill="#fff" fill-opacity=".8"/>
+  <text x="320" y="755" fill="#536f85" font-family="Georgia,serif" font-size="22" letter-spacing="4" text-anchor="middle">STUDY ARCHIVE</text>
+</svg>
