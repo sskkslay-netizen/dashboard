@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f8">
+    <title>Settings | Study Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/settings.css">
+    <link rel="stylesheet" href="../css/polish.css">
+</head>
+<body>
+<div class="app-layout">
+    <aside class="sidebar" aria-label="Main sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon"><i data-lucide="book-open" aria-hidden="true"></i></span>
+            <div><h2>STUDY ARCHIVE</h2><span>YOUR PERSONAL WORKSPACE</span></div>
+        </div>
+        <div class="sidebar-section">
+            <p class="sidebar-heading">WORKSPACE</p>
+            <nav class="sidebar-nav" aria-label="Workspace">
+                <a href="../index.html" class="nav-link" title="Dashboard"><i class="nav-icon" data-lucide="house" aria-hidden="true"></i><span class="nav-link-label">Dashboard</span></a>
+                <a href="assignments.html" class="nav-link" title="Assignments"><i class="nav-icon" data-lucide="list-checks" aria-hidden="true"></i><span class="nav-link-label">Assignments</span></a>
+                <a href="calendar.html" class="nav-link" title="Calendar"><i class="nav-icon" data-lucide="calendar-days" aria-hidden="true"></i><span class="nav-link-label">Calendar</span></a>
+                <a href="notes.html" class="nav-link" title="Notes"><i class="nav-icon" data-lucide="notebook-pen" aria-hidden="true"></i><span class="nav-link-label">Notes</span></a>
+                <a href="focus.html" class="nav-link" title="Focus Room"><i class="nav-icon" data-lucide="timer" aria-hidden="true"></i><span class="nav-link-label">Focus Room</span></a>
+                <a href="quizzes.html" class="nav-link" title="Study Quizzes"><i class="nav-icon" data-lucide="clipboard-check" aria-hidden="true"></i><span class="nav-link-label">Study Quizzes</span></a>
+            </nav>
+        </div>
+        <div class="sidebar-section">
+            <p class="sidebar-heading">COLLECTION</p>
+            <nav class="sidebar-nav" aria-label="Collection">
+                <a href="wish.html" class="nav-link" title="Wish Room"><i class="nav-icon" data-lucide="star" aria-hidden="true"></i><span class="nav-link-label">Wish Room</span></a>
+                <a href="characters.html" class="nav-link" title="Character Archive"><i class="nav-icon" data-lucide="library" aria-hidden="true"></i><span class="nav-link-label">Character Archive</span></a>
+                <a href="history.html" class="nav-link" title="Wish History"><i class="nav-icon" data-lucide="history" aria-hidden="true"></i><span class="nav-link-label">Wish History</span></a>
+            </nav>
+        </div>
+        <div class="sidebar-section">
+            <p class="sidebar-heading">PERSONAL</p>
+            <nav class="sidebar-nav" aria-label="Personal">
+                <a href="achievements.html" class="nav-link" title="Achievements"><i class="nav-icon" data-lucide="trophy" aria-hidden="true"></i><span class="nav-link-label">Achievements</span></a>
+                <a href="settings.html" class="nav-link active" aria-current="page" title="Settings"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-link-label">Settings</span></a>
+            </nav>
+        </div>
+    </aside>
+    <main class="main-content">
+        <header class="topbar">
+            <div><span class="page-eyebrow">YOUR WORKSPACE</span><h2>Settings</h2></div>
+            <div class="topbar-right"><div class="crystal-display"><i data-lucide="gem" aria-hidden="true"></i> <span id="crystalBalance">0</span></div></div>
+        </header>
+        <section class="app-settings-content">
+            <header class="settings-intro">
+                <p class="section-eyebrow">A MORE PERSONAL ARCHIVE</p>
+                <h1>Make this space yours.</h1>
+                <p>Manage character visibility and, on this device, add characters to your Wish Room pool.</p>
+            </header>
+
+            <section class="app-setting-card" aria-labelledby="privacyHeading">
+                <div class="app-setting-heading">
+                    <div><p class="setting-kicker">PRIVACY</p><h2 id="privacyHeading">Incognito mode</h2>
+                        <p>Hide the Wish Room, Character Archive, wish history, and their navigation links on this device. Study tools and crystal earning remain available.</p></div>
+                    <label class="setting-switch" for="incognitoToggle">
+                        <input id="incognitoToggle" type="checkbox">
+                        <span class="setting-switch-track" aria-hidden="true"></span>
+                        <span class="sr-only">Enable Incognito mode</span>
+                    </label>
+                </div>
+                <p class="setting-message" id="incognitoMessage" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="app-setting-card" aria-labelledby="developerHeading">
+                <div class="app-setting-heading">
+                    <div><p class="setting-kicker">LOCAL CHARACTER POOL</p><h2 id="developerHeading">Developer mode</h2>
+                        <p>Enter the developer code to add an original character card to the Wish Room on this browser.</p></div>
+                </div>
+                <div class="developer-notice" role="note">
+                    <strong>Browser-only mode</strong>
+                    <p>This site has no shared server. Cards added here are saved only in this browser and will not appear for other people. The code is a casual interface lock, not secure authentication.</p>
+                </div>
+                <form id="developerUnlockForm" class="developer-unlock-form">
+                    <label for="developerCode">Developer code
+                        <input class="setting-input" id="developerCode" name="code" type="password" inputmode="numeric" autocomplete="off" required>
+                    </label>
+                    <button class="setting-button setting-button-primary" type="submit">Unlock developer mode</button>
+                </form>
+                <p class="setting-message" id="developerMessage" role="status" aria-live="polite"></p>
+                <section id="developerWorkspace" class="developer-workspace" hidden aria-labelledby="addCharacterHeading">
+                    <div class="developer-workspace-heading">
+                        <div><h3 id="addCharacterHeading">Add a character</h3><p>All fields except image are required.</p></div>
+                        <button class="setting-button" id="lockDeveloperMode" type="button">Lock</button>
+                    </div>
+                    <form id="addCharacterForm" class="add-character-form">
+                        <label for="newCharacterName">Character name
+                            <input class="setting-input" id="newCharacterName" name="name" maxlength="60" required>
+                        </label>
+                        <label for="newCharacterSeries">Series
+                            <input class="setting-input" id="newCharacterSeries" name="series" maxlength="60" required>
+                        </label>
+                        <label for="newCharacterRarity">Rarity
+                            <select class="setting-input" id="newCharacterRarity" name="rarity" required><option>SSR</option><option>SR</option><option>R</option></select>
+                        </label>
+                        <label for="newCharacterTitle">Card title
+                            <input class="setting-input" id="newCharacterTitle" name="title" maxlength="80" required>
+                        </label>
+                        <label class="setting-field-wide" for="newCharacterDescription">Character description
+                            <textarea class="setting-input" id="newCharacterDescription" name="description" rows="3" maxlength="500" required></textarea>
+                        </label>
+                        <label class="setting-field-wide" for="newCharacterImage">Image URL or local path <span>(optional)</span>
+                            <input class="setting-input" id="newCharacterImage" name="image" type="text" maxlength="500" placeholder="../assets/characters/example.png">
+                        </label>
+                        <div class="setting-field-wide"><button class="setting-button setting-button-primary" type="submit">Add to local pull pool</button></div>
+                    </form>
+                    <p class="setting-message" id="addCharacterMessage" role="status" aria-live="polite"></p>
+                    <div class="custom-character-list">
+                        <h3>Custom characters on this device</h3>
+                        <ul id="customCharacterList"></ul>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </main>
+</div>
+<script src="../js/main.js"></script>
+<script src="../js/gacha.js"></script>
+<script src="../js/settings.js"></script>
+<script src="https://unpkg.com/lucide@1.72.0/dist/umd/lucide.min.js" defer></script>
+<script src="../js/icons.js" defer></script>
+</body>
+</html>

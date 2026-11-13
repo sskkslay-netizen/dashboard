@@ -380,13 +380,14 @@ const Gacha = {
     // ======================================
 
     getRandomCharacter(rarity) {
+        const characters = this.getAvailableCharacters();
         const fallbackRarities = {
             SSR: ["SR", "R"],
             SR: ["R", "SSR"],
             R: ["SR", "SSR"]
         };
         const availableRarity = [rarity, ...(fallbackRarities[rarity] || [])]
-            .find(candidate => this.characters.some(character =>
+            .find(candidate => characters.some(character =>
                 character.rarity === candidate
             ));
 
@@ -395,11 +396,18 @@ const Gacha = {
             return null;
         }
 
-        const pool = this.characters.filter(character =>
+        const pool = characters.filter(character =>
             character.rarity === availableRarity
         );
 
         return pool[Math.floor(Math.random() * pool.length)];
+    },
+
+    getAvailableCharacters() {
+        const custom = Array.isArray(StudyArchive.data.customCharacters)
+            ? StudyArchive.data.customCharacters
+            : [];
+        return [...this.characters, ...custom];
     },
 
     // ======================================
@@ -601,16 +609,24 @@ const Gacha = {
             return false;
         }
 
-        if (this.characters.some(item => item.id === character.id)) {
+        const custom = StudyArchive.data.customCharacters;
+        if (this.getAvailableCharacters().some(item => item.id === character.id)) {
             console.error("That character ID already exists.");
             return false;
         }
 
-        this.characters.push({
+        const newCharacter = {
             title: "New Character",
             image: "../assets/characters/default-character.png",
             ...character
-        });
+        };
+        custom.push(newCharacter);
+        try {
+            StudyArchive.save();
+        } catch (error) {
+            custom.pop();
+            throw new Error("The new character could not be saved in this browser.", { cause: error });
+        }
 
         return true;
     }

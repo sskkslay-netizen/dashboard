@@ -24,7 +24,9 @@ const StudyArchive = {
         characters: [],
         wishHistory: [],
         achievements: [],
-        characterCardLevels: {}
+        characterCardLevels: {},
+        customCharacters: [],
+        incognitoMode: false
     },
 
     data: {},
@@ -54,6 +56,10 @@ const StudyArchive = {
             !Array.isArray(this.data.characterCardLevels)
                 ? { ...this.data.characterCardLevels }
                 : {};
+        if (!Array.isArray(this.data.customCharacters)) {
+            this.data.customCharacters = [];
+        }
+        this.data.incognitoMode = this.data.incognitoMode === true;
 
         const savedProfile = this.data.profile &&
             typeof this.data.profile === "object" &&
@@ -85,6 +91,7 @@ const StudyArchive = {
             this.updateDisplay();
         }
 
+        this.applyPrivacyMode();
         console.log("Study Archive initialized!");
     },
 
@@ -138,6 +145,92 @@ const StudyArchive = {
             profileAvatar.hidden = !this.data.profile.avatar;
         }
         if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${profileName}.`;
+    },
+
+    applyPrivacyMode() {
+        const personalNav = document.querySelector('.sidebar-nav[aria-label="Personal"]');
+        if (personalNav && !personalNav.querySelector('[data-settings-link], a[href$="settings.html"]')) {
+            const settingsLink = document.createElement("a");
+            const isPageRoute = window.location.pathname.includes("/pages/");
+            settingsLink.href = isPageRoute ? "settings.html" : "pages/settings.html";
+            settingsLink.className = "nav-link";
+            settingsLink.title = "Settings";
+            settingsLink.dataset.settingsLink = "true";
+            settingsLink.innerHTML = '<span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-link-label">Settings</span>';
+            personalNav.appendChild(settingsLink);
+        }
+
+        if (!this.data.incognitoMode) {
+            document.body.classList.remove("incognito-mode");
+            document.querySelectorAll("[data-incognito-hidden]").forEach(element => {
+                element.hidden = false;
+                element.removeAttribute("data-incognito-hidden");
+            });
+            document.querySelectorAll("[data-incognito-section-hidden]").forEach(element => {
+                element.hidden = false;
+                element.removeAttribute("data-incognito-section-hidden");
+            });
+            document.querySelectorAll("[data-incognito-content]").forEach(element => {
+                element.hidden = false;
+                element.removeAttribute("data-incognito-content");
+            });
+            document.querySelectorAll(".incognito-notice").forEach(element => element.remove());
+            return;
+        }
+
+        document.body.classList.add("incognito-mode");
+        document.querySelectorAll("a[href]").forEach(link => {
+            let pathname;
+            try {
+                pathname = new URL(link.href, window.location.href).pathname;
+            } catch (error) {
+                return;
+            }
+            if (/\/pages\/(wish|characters|history)\.html$/.test(pathname)) {
+                link.hidden = true;
+                link.dataset.incognitoHidden = "true";
+                const section = link.closest(".sidebar-section");
+                if (section && !section.querySelector("a:not([hidden])")) {
+                    section.hidden = true;
+                    section.dataset.incognitoSectionHidden = "true";
+                }
+                const card = link.closest(".quick-access-card");
+                if (card) card.hidden = true;
+            }
+        });
+
+        const privateContent = document.querySelector(".wish-content, .collection-content");
+        if (privateContent) {
+            privateContent.hidden = true;
+            privateContent.dataset.incognitoContent = "true";
+            document.getElementById("wishResultOverlay")?.setAttribute("hidden", "");
+            const notice = document.createElement("section");
+            notice.className = "incognito-notice";
+            notice.setAttribute("role", "status");
+            notice.innerHTML = `
+                <span class="incognito-mark" aria-hidden="true">◌</span>
+                <p class="page-eyebrow">INCOGNITO MODE</p>
+                <h1>Character pages are hidden.</h1>
+                <p>Wish pulling, characters, and wish history are hidden on this device. Your study tools and crystal rewards still work.</p>
+                <a class="collection-wish-link" href="${window.location.pathname.includes("/pages/act/") ? "../../pages/settings.html" : "settings.html"}">Open Settings</a>`;
+            const topbar = document.querySelector(".main-content > .topbar");
+            if (topbar) topbar.insertAdjacentElement("afterend", notice);
+        }
+    },
+
+    setIncognitoMode(enabled) {
+        if (typeof enabled !== "boolean") {
+            throw new Error("Choose whether Incognito mode should be on or off.");
+        }
+        const previousValue = this.data.incognitoMode;
+        this.data.incognitoMode = enabled;
+        try {
+            this.save();
+        } catch (error) {
+            this.data.incognitoMode = previousValue;
+            throw error;
+        }
+        this.applyPrivacyMode();
     },
 
     imageToDataURL(file) {
