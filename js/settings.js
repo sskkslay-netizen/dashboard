@@ -41,9 +41,120 @@
         throw new Error("Use an http(s) image URL or a relative/absolute image path.");
     }
 
+    function firebaseErrorMessage(error) {
+        const messages = {
+            "auth/email-already-in-use": "An account already exists for this email.",
+            "auth/invalid-credential": "The email or password is incorrect.",
+            "auth/invalid-email": "Enter a valid email address.",
+            "auth/weak-password": "Choose a password with at least 6 characters.",
+            "auth/too-many-requests": "Too many attempts. Wait a little and try again.",
+            "auth/network-request-failed": "Could not connect to Firebase. Check your connection."
+        };
+        return messages[error.code] || error.message || "Firebase could not complete that request.";
+    }
+
+    async function initAccount() {
+        const firebase = await window.FirebaseSyncReady;
+        const form = document.getElementById("accountForm");
+        const setupNotice = document.getElementById("firebaseSetupNotice");
+        const signedIn = document.getElementById("accountSignedIn");
+        const emailDisplay = document.getElementById("accountEmail");
+        const passwordInput = document.getElementById("accountPassword");
+        const resetButton = document.getElementById("resetPasswordButton");
+        const signOutButton = document.getElementById("signOutButton");
+
+        if (!firebase || !firebase.configured) {
+            setupNotice.textContent = firebase?.getStatus().message ||
+                "Firebase could not start. Check the browser console for details.";
+            showMessage("accountMessage", setupNotice.textContent, true);
+            form.querySelectorAll("button, input").forEach(control => {
+                control.disabled = true;
+            });
+            resetButton.disabled = true;
+            return;
+        }
+
+        setupNotice.hidden = true;
+        const setBusy = busy => {
+            form.querySelectorAll("button, input").forEach(control => {
+                control.disabled = busy || Boolean(firebase.getCurrentUser());
+            });
+            resetButton.disabled = busy;
+            signOutButton.disabled = busy;
+        };
+
+        firebase.subscribeToAuth(user => {
+            const isSignedIn = Boolean(user);
+            form.hidden = isSignedIn;
+            resetButton.hidden = isSignedIn;
+            signedIn.hidden = !isSignedIn;
+            emailDisplay.hidden = !isSignedIn;
+            emailDisplay.textContent = isSignedIn ? `Signed in as ${user.email}` : "";
+            if (isSignedIn) passwordInput.value = "";
+        });
+        firebase.subscribeToStatus(syncStatus => {
+            showMessage("syncMessage", syncStatus.message, syncStatus.isError);
+        });
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            const submitter = event.submitter;
+            const action = submitter?.dataset.authAction;
+            const email = document.getElementById("accountEmailInput").value.trim();
+            const password = passwordInput.value;
+            setBusy(true);
+            showMessage("accountMessage", action === "create-account"
+                ? "Creating your account and syncing data..."
+                : "Signing in and loading your saved data...");
+            try {
+                if (action === "create-account") await firebase.createAccount(email, password);
+                else await firebase.signIn(email, password);
+                showMessage("accountMessage", "Signed in. Your data is synced to Firebase.");
+            } catch (error) {
+                showMessage("accountMessage", firebaseErrorMessage(error), true);
+            } finally {
+                setBusy(false);
+            }
+        });
+
+        signOutButton.addEventListener("click", async () => {
+            signOutButton.disabled = true;
+            try {
+                await firebase.signOut();
+                showMessage("accountMessage", "You have been signed out. Your browser data is unchanged.");
+            } catch (error) {
+                showMessage("accountMessage", firebaseErrorMessage(error), true);
+            } finally {
+                signOutButton.disabled = false;
+            }
+        });
+
+        resetButton.addEventListener("click", async () => {
+            const email = document.getElementById("accountEmailInput").value.trim();
+            if (!email) {
+                showMessage("accountMessage", "Enter your email address first.", true);
+                document.getElementById("accountEmailInput").focus();
+                return;
+            }
+            resetButton.disabled = true;
+            try {
+                await firebase.sendPasswordReset(email);
+                showMessage("accountMessage", "Password reset email sent.");
+            } catch (error) {
+                showMessage("accountMessage", firebaseErrorMessage(error), true);
+            } finally {
+                resetButton.disabled = false;
+            }
+        });
+    }
+
     function init() {
         StudyArchive.init();
         Gacha.init();
+        void initAccount().catch(error => {
+            showMessage("accountMessage", firebaseErrorMessage(error), true);
+            console.error(error);
+        });
         document.getElementById("incognitoToggle").checked =
             StudyArchive.data.incognitoMode === true;
         renderCustomCharacters();

@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/data/{dataId} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isSupportedRecord() {
+        return dataId in ['studyArchiveData', 'studyArchiveACT']
+          && request.resource.data.keys().hasOnly(['payload', 'updatedAt'])
+          && request.resource.data.payload is string
+          && request.resource.data.payload.size() <= 870400;
+      }
+
+      allow read: if isOwner()
+        && dataId in ['studyArchiveData', 'studyArchiveACT'];
+      allow create, update: if isOwner() && isSupportedRecord();
+      allow delete: if false;
+    }
+  }
+}

@@ -19,6 +19,12 @@
 .developer-notice { margin: 18px 0; padding: 13px 15px; border: 1px solid #ebdfc3; border-radius: 10px; background: #fcf8ee; }
 .developer-notice strong { color: #806b43; font-size: 11px; }
 .developer-notice p { margin: 4px 0 0; color: #827a68; font-size: 10px; line-height: 1.7; }
+.app-setting-card > .developer-notice { color: #827a68; font-size: 10px; line-height: 1.7; }
+.account-email { margin: 14px 0 0; color: #516579; font-size: 12px; font-weight: 700; }
+.account-signed-in { margin-top: 12px; }
+.setting-text-button { margin-top: 10px; padding: 0; border: 0; background: none; color: #607c92; font-size: 10px; text-decoration: underline; }
+.setting-text-button:hover { color: #344b63; }
+.setting-text-button:disabled, .setting-button:disabled { cursor: wait; opacity: .6; }
 .developer-unlock-form { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; }
 .developer-unlock-form label, .add-character-form label { display: grid; flex: 1; min-width: 190px; gap: 6px; color: #748394; font-size: 10px; font-weight: 600; }
 .setting-input { width: 100%; min-width: 0; min-height: 40px; padding: 9px 11px; border: 1px solid #dfe6eb; border-radius: 8px; background: white; color: #40566d; font: 400 12px "DM Sans", sans-serif; }

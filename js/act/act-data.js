@@ -198,6 +198,7 @@
         } catch (error) {
             throw new Error("ACT study data could not be saved in this browser.", { cause: error });
         }
+        window.FirebaseSync?.save(STORAGE_KEY, state);
         listeners.forEach(listener => listener(clone(state)));
     }
 
@@ -269,6 +270,7 @@
             } catch (error) {
                 throw new Error("ACT crystals could not be saved to the Study Archive wallet.", { cause: error });
             }
+            window.FirebaseSync?.save("studyArchiveData", wallet);
         }
 
         update(data => {
@@ -567,6 +569,7 @@
                     ? parsed.crystalRewards
                     : defaults.crystalRewards
             };
+            listeners.forEach(listener => listener(clone(state)));
         } catch (error) {
             throw new Error(`Saved ACT study data could not be loaded: ${error.message}`, { cause: error });
         }
@@ -596,4 +599,9 @@
         toggleStrategyBookmark,
         setSkillLevel
     };
+
+    window.FirebaseSyncReady = window.FirebaseSyncReady || import("../firebase-sync.js").catch(error => {
+        console.error("Firebase sync could not start:", error);
+        return null;
+    });
 }());

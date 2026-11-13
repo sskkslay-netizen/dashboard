@@ -101,6 +101,7 @@ const StudyArchive = {
             JSON.stringify(this.data)
         );
 
+        window.FirebaseSync?.save(this.STORAGE_KEY, this.data);
         this.updateDisplay();
         this.checkAchievements();
     },
@@ -303,6 +304,11 @@ const StudyArchive = {
         this.save();
     }
 };
+
+window.FirebaseSyncReady = import("./firebase-sync.js").catch(error => {
+    console.error("Firebase sync could not start:", error);
+    return null;
+});
 
 // Start the application.
 document.addEventListener("DOMContentLoaded", () => {

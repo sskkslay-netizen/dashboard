@@ -147,6 +147,7 @@ const Achievements = {
                     StudyArchive.STORAGE_KEY,
                     JSON.stringify(StudyArchive.data)
                 );
+                window.FirebaseSync?.save(StudyArchive.STORAGE_KEY, StudyArchive.data);
 
                 StudyArchive.updateDisplay();
             }

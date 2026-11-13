@@ -54,8 +54,33 @@
             <header class="settings-intro">
                 <p class="section-eyebrow">A MORE PERSONAL ARCHIVE</p>
                 <h1>Make this space yours.</h1>
-                <p>Manage character visibility and, on this device, add characters to your Wish Room pool.</p>
+                <p>Manage your account, character visibility, and local character pool.</p>
             </header>
+
+            <section class="app-setting-card" aria-labelledby="accountHeading">
+                <div class="app-setting-heading">
+                    <div><p class="setting-kicker">CLOUD BACKUP</p><h2 id="accountHeading">Account & data sync</h2>
+                        <p>Sign in with email and password to sync your Study Archive and ACT data across devices.</p></div>
+                </div>
+                <p class="developer-notice" id="firebaseSetupNotice" role="note">Firebase needs to be configured before accounts can be used.</p>
+                <p class="account-email" id="accountEmail" hidden></p>
+                <form id="accountForm" class="developer-unlock-form">
+                    <label for="accountEmailInput">Email
+                        <input class="setting-input" id="accountEmailInput" name="email" type="email" autocomplete="email" required>
+                    </label>
+                    <label for="accountPassword">Password
+                        <input class="setting-input" id="accountPassword" name="password" type="password" minlength="6" autocomplete="current-password" required>
+                    </label>
+                    <button class="setting-button setting-button-primary" type="submit" data-auth-action="sign-in">Sign in</button>
+                    <button class="setting-button" type="submit" data-auth-action="create-account">Create account</button>
+                </form>
+                <div class="account-signed-in" id="accountSignedIn" hidden>
+                    <button class="setting-button" id="signOutButton" type="button">Sign out</button>
+                </div>
+                <button class="setting-text-button" id="resetPasswordButton" type="button">Send password reset email</button>
+                <p class="setting-message" id="accountMessage" role="status" aria-live="polite"></p>
+                <p class="setting-message" id="syncMessage" role="status" aria-live="polite"></p>
+            </section>
 
             <section class="app-setting-card" aria-labelledby="privacyHeading">
                 <div class="app-setting-heading">
