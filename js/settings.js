@@ -92,6 +92,7 @@
             emailDisplay.textContent = isSignedIn ? `Signed in as ${user.email}` : "";
             if (isSignedIn) passwordInput.value = "";
         });
+        initSharedCardEditor(firebase);
         firebase.subscribeToStatus(syncStatus => {
             showMessage("syncMessage", syncStatus.message, syncStatus.isError);
         });
@@ -144,6 +145,146 @@
                 showMessage("accountMessage", firebaseErrorMessage(error), true);
             } finally {
                 resetButton.disabled = false;
+            }
+        });
+    }
+
+    function initSharedCardEditor(firebase) {
+        const editor = document.getElementById("sharedCardEditor");
+        const accessMessage = document.getElementById("sharedCardAccess");
+        const select = document.getElementById("sharedCardSelect");
+        const form = document.getElementById("sharedCardForm");
+        const idInput = document.getElementById("sharedCardId");
+        const deleteButton = document.getElementById("deleteSharedCard");
+        let catalog = null;
+        let selectedId = "";
+        let creating = false;
+
+        const getCatalog = () => catalog || Gacha.getSharedCharacters();
+
+        function renderSelect() {
+            const cards = getCatalog();
+            const ready = firebase.sharedCardsReady;
+            if (!cards.some(card => card.id === selectedId)) {
+                selectedId = cards[0]?.id || "";
+            }
+            select.disabled = !ready;
+            select.innerHTML = cards.map(card =>
+                `<option value="${escapeHTML(card.id)}">${escapeHTML(card.name)} · ${escapeHTML(card.series)}</option>`
+            ).join("");
+            select.value = selectedId;
+            form.querySelectorAll("input, select, textarea, button").forEach(control => {
+                control.disabled = !ready;
+            });
+            document.getElementById("newSharedCard").disabled = !ready;
+            deleteButton.disabled = !ready || !selectedId;
+            accessMessage.textContent = ready
+                ? "You can edit the shared catalog. Changes are visible to everyone using this Firebase project."
+                : "Loading the shared card catalog...";
+        }
+
+        function loadCard(cardId) {
+            const card = getCatalog().find(item => item.id === cardId);
+            if (!card) return;
+            creating = false;
+            selectedId = card.id;
+            form.elements.name.value = card.name;
+            form.elements.series.value = card.series;
+            form.elements.rarity.value = card.rarity;
+            form.elements.title.value = card.title;
+            form.elements.description.value = card.description;
+            form.elements.image.value = card.image;
+            idInput.value = card.id;
+            idInput.readOnly = true;
+            deleteButton.hidden = false;
+            renderSelect();
+        }
+
+        function startNewCard() {
+            creating = true;
+            selectedId = "";
+            form.reset();
+            idInput.readOnly = false;
+            deleteButton.hidden = true;
+            renderSelect();
+            document.getElementById("sharedCardName").focus();
+        }
+
+        firebase.subscribeToAuth(() => {
+            const canEdit = firebase.isDeveloper;
+            editor.hidden = !canEdit;
+            accessMessage.textContent = canEdit
+                ? "You can edit the shared catalog. Changes are visible to everyone using this Firebase project."
+                : firebase.getCurrentUser()
+                    ? "This account is not authorized to edit shared cards. Add its Firebase Auth UID to both developer allowlists."
+                    : "Sign in with an authorized developer account to edit shared cards.";
+        });
+
+        firebase.subscribeToSharedCards(cards => {
+            catalog = cards;
+            renderSelect();
+            if (creating) return;
+            if (selectedId) loadCard(selectedId);
+            else if (getCatalog().length) loadCard(getCatalog()[0].id);
+        });
+
+        select.addEventListener("change", () => loadCard(select.value));
+        document.getElementById("newSharedCard").addEventListener("click", startNewCard);
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            const submitButton = form.querySelector('[type="submit"]');
+            submitButton.disabled = true;
+            const values = new FormData(form);
+            const name = String(values.get("name") || "").trim();
+            const series = String(values.get("series") || "").trim();
+            const card = {
+                id: creating ? String(values.get("id") || "").trim() ||
+                    makeCharacterId(name, series) : selectedId,
+                name,
+                series,
+                rarity: String(values.get("rarity")),
+                title: String(values.get("title") || "").trim(),
+                description: String(values.get("description") || "").trim(),
+                image: validImagePath(String(values.get("image") || "").trim())
+            };
+            try {
+                if (!card.name || !card.series || !card.title || !card.description) {
+                    throw new Error("Complete the name, series, title, and description.");
+                }
+                if (!/^[a-z0-9][a-z0-9_-]*$/i.test(card.id)) {
+                    throw new Error("Use letters, numbers, hyphens, or underscores for the card ID.");
+                }
+                if (!["SSR", "SR", "R"].includes(card.rarity)) {
+                    throw new Error("Choose a valid card rarity.");
+                }
+                if (creating) {
+                    await firebase.addSharedCard(card, getCatalog());
+                    selectedId = card.id;
+                    creating = false;
+                } else {
+                    await firebase.updateSharedCard(card, getCatalog());
+                }
+                showMessage("sharedCardMessage", `${card.name} was saved to the shared catalog.`);
+                loadCard(card.id);
+            } catch (error) {
+                showMessage("sharedCardMessage", error.message, true);
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+
+        deleteButton.addEventListener("click", async () => {
+            const card = getCatalog().find(item => item.id === selectedId);
+            if (!card || !window.confirm(`Remove ${card.name} from the shared catalog?`)) return;
+            deleteButton.disabled = true;
+            try {
+                await firebase.deleteSharedCard(card.id, getCatalog());
+                showMessage("sharedCardMessage", `${card.name} was removed from the shared catalog.`);
+            } catch (error) {
+                showMessage("sharedCardMessage", error.message, true);
+            } finally {
+                deleteButton.disabled = false;
             }
         });
     }

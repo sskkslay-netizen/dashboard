@@ -4,3 +4,5 @@ export const firebaseConfig = {
     projectId: "YOUR_FIREBASE_PROJECT_ID",
     appId: "YOUR_FIREBASE_APP_ID"
 };
+
+export const developerUids = [];

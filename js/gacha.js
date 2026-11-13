@@ -7,7 +7,7 @@ const Gacha = {
 
     // ======================================
     // CHARACTER DATABASE
-    // Add new characters inside this array!
+    // This array is the fallback catalog before shared data loads.
     // ======================================
 
     characters: [
@@ -601,11 +601,24 @@ const Gacha = {
         return pool[Math.floor(Math.random() * pool.length)];
     },
 
+    getSharedCharacters() {
+        return this.sharedCharacters || this.characters;
+    },
+
+    setSharedCharacters(characters) {
+        if (!Array.isArray(characters)) return;
+        this.sharedCharacters = characters;
+        document.dispatchEvent(new CustomEvent("sharedcardschange"));
+    },
+
     getAvailableCharacters() {
         const custom = Array.isArray(StudyArchive.data.customCharacters)
             ? StudyArchive.data.customCharacters
             : [];
-        return [...this.characters, ...custom];
+        const shared = this.getSharedCharacters();
+        return [...shared, ...custom.filter(character =>
+            !shared.some(item => item.id === character.id)
+        )];
     },
 
     // ======================================
@@ -831,6 +844,12 @@ const Gacha = {
 };
 
 window.Gacha = Gacha;
+
+window.FirebaseSyncReady?.then(firebase => {
+    firebase?.subscribeToSharedCards(cards => {
+        if (cards) Gacha.setSharedCharacters(cards);
+    });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     Gacha.init();

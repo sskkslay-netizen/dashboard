@@ -91,11 +91,13 @@ const CharacterArchive = {
             if (!character.id) return;
 
             if (!collected.has(character.id)) {
-                const profile = Gacha.characters.find(item => item.id === character.id);
+                const profile = Gacha.getAvailableCharacters().find(
+                    item => item.id === character.id
+                );
                 collected.set(character.id, {
-                    ...profile,
                     ...character,
-                    description: character.description || profile?.description ||
+                    ...profile,
+                    description: profile?.description || character.description ||
                         `${character.name} is a character from ${character.series}.`,
                     obtainedAt: entry.obtainedAt || "",
                     count: 1,
@@ -105,8 +107,10 @@ const CharacterArchive = {
                 const saved = collected.get(character.id);
                 saved.count++;
                 if (!saved.description) {
-                    const profile = Gacha.characters.find(item => item.id === character.id);
-                    saved.description = profile?.description ||
+                    const profile = Gacha.getAvailableCharacters().find(
+                        item => item.id === character.id
+                    );
+                    saved.description = profile?.description || saved.description ||
                         `${character.name} is a character from ${character.series}.`;
                 }
             }
@@ -314,5 +318,6 @@ const CharacterArchive = {
 document.addEventListener("DOMContentLoaded", () => {
     if (window.Gacha) {
         CharacterArchive.init();
+        document.addEventListener("sharedcardschange", () => CharacterArchive.render());
     }
 });

@@ -82,6 +82,48 @@
                 <p class="setting-message" id="syncMessage" role="status" aria-live="polite"></p>
             </section>
 
+            <section class="app-setting-card" id="sharedCardEditor" hidden aria-labelledby="sharedCardsHeading">
+                <div class="app-setting-heading">
+                    <div><p class="setting-kicker">GLOBAL CATALOG</p><h2 id="sharedCardsHeading">Shared card editor</h2>
+                        <p>Edit any card in the shared catalog. Saved changes are delivered to everyone using this Firebase project.</p></div>
+                </div>
+                <p class="setting-message" id="sharedCardAccess" role="status"></p>
+                <div class="shared-card-toolbar">
+                    <label for="sharedCardSelect">Card
+                        <select class="setting-input" id="sharedCardSelect"></select>
+                    </label>
+                    <button class="setting-button" id="newSharedCard" type="button">New card</button>
+                </div>
+                <form id="sharedCardForm" class="add-character-form">
+                    <label for="sharedCardId">Card ID <span>(locked when editing an existing card)</span>
+                        <input class="setting-input" id="sharedCardId" name="id" maxlength="80">
+                    </label>
+                    <label for="sharedCardName">Character name
+                        <input class="setting-input" id="sharedCardName" name="name" maxlength="60" required>
+                    </label>
+                    <label for="sharedCardSeries">Series
+                        <input class="setting-input" id="sharedCardSeries" name="series" maxlength="60" required>
+                    </label>
+                    <label for="sharedCardRarity">Rarity
+                        <select class="setting-input" id="sharedCardRarity" name="rarity" required><option>SSR</option><option>SR</option><option>R</option></select>
+                    </label>
+                    <label for="sharedCardTitle">Card title
+                        <input class="setting-input" id="sharedCardTitle" name="title" maxlength="80" required>
+                    </label>
+                    <label class="setting-field-wide" for="sharedCardDescription">Character description
+                        <textarea class="setting-input" id="sharedCardDescription" name="description" rows="3" maxlength="500" required></textarea>
+                    </label>
+                    <label class="setting-field-wide" for="sharedCardImage">Image URL or local path
+                        <input class="setting-input" id="sharedCardImage" name="image" type="text" maxlength="500">
+                    </label>
+                    <div class="setting-field-wide shared-card-actions">
+                        <button class="setting-button setting-button-primary" type="submit">Save shared card</button>
+                        <button class="setting-button" id="deleteSharedCard" type="button">Delete shared card</button>
+                    </div>
+                </form>
+                <p class="setting-message" id="sharedCardMessage" role="status" aria-live="polite"></p>
+            </section>
+
             <section class="app-setting-card" aria-labelledby="privacyHeading">
                 <div class="app-setting-heading">
                     <div><p class="setting-kicker">PRIVACY</p><h2 id="privacyHeading">Incognito mode</h2>

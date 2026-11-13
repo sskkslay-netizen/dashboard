@@ -19,5 +19,24 @@ service cloud.firestore {
       allow create, update: if isOwner() && isSupportedRecord();
       allow delete: if false;
     }
+
+    match /sharedData/{dataId} {
+      function isDeveloper() {
+        return request.auth != null
+          && request.auth.uid in [];
+      }
+
+      function isValidCardCatalog() {
+        return request.resource.data.keys().hasOnly(['payload', 'updatedAt'])
+          && request.resource.data.payload is string
+          && request.resource.data.payload.size() <= 870400;
+      }
+
+      allow read: if dataId == 'cards';
+      allow create, update: if dataId == 'cards'
+        && isDeveloper()
+        && isValidCardCatalog();
+      allow delete: if false;
+    }
   }
 }
