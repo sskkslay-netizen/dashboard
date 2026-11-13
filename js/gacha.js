@@ -19,6 +19,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SSR",
             title: "No Longer Human",
+            description: "A quick-witted former Port Mafia executive who now works with the Armed Detective Agency. His ability, No Longer Human, nullifies other abilities through touch.",
             image: "../assets/characters/bsd_dazai.PNG"
         },
         {
@@ -27,6 +28,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SSR",
             title: "Upon the Tainted Sorrow",
+            description: "A bold, sharp-tempered executive of the Port Mafia. His ability, Upon the Tainted Sorrow, lets him manipulate gravity.",
             image: "../assets/characters/bsd_chuuya.PNG"
         },
         {
@@ -35,6 +37,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SR",
             title: "Super Deduction",
+            description: "A celebrated detective of the Armed Detective Agency, known for solving cases through keen observation and confidence in his reasoning.",
             image: "../assets/characters/bsd_ranpo.PNG"
         },
         {
@@ -43,6 +46,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SR",
             title: "Beast Beneath the Moonlight",
+            description: "A kind young detective learning to trust his own strength. His ability lets him transform into a powerful white tiger.",
             image: "../assets/characters/bsd_atsushi.PNG"
         },
         {
@@ -51,6 +55,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SSR",
             title: "Rashomon",
+            description: "A formidable Port Mafia member whose ability turns his coat into a weapon called Rashomon. His stern resolve hides a difficult past.",
             image: "../assets/characters/bsd_akutagawa.PNG"
         },
         {
@@ -59,6 +64,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SR",
             title: "Ideal",
+            description: "A methodical detective who records his goals in a notebook. His ability, The Matchless Poet, can bring written plans to life.",
             image: "../assets/characters/bsd_kunikida.PNG"
         },
         {
@@ -67,6 +73,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SR",
             title: "Thou Shalt Not Die",
+            description: "A brilliant doctor of the Armed Detective Agency with a fearless bedside manner. Her ability can heal severe injuries under specific conditions.",
             image: "../assets/characters/bsd_yosano.PNG"
         },
         {
@@ -75,6 +82,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SSR",
             title: "Crime and Punishment",
+            description: "A calculating leader of the mysterious Rats in the House of the Dead. He prefers careful plans and psychological games to direct confrontation.",
             image: "../assets/characters/bsd_fyodor.PNG"
         },
         {
@@ -83,6 +91,7 @@ const Gacha = {
             series: "Bungou Stray Dogs",
             rarity: "SSR",
             title: "The Undefeated by the Rain",
+            description: "A cheerful country-raised detective whose strength grows when he is hungry. His direct kindness makes him a steady friend to the Agency.",
             image: "../assets/characters/bsd_kenji.PNG"
         },
 
@@ -93,6 +102,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Hinokami Kagura",
+            description: "A compassionate Demon Slayer who keeps moving forward to protect others and find a way to help his sister. He fights with keen senses and determined resolve.",
             image: "../assets/characters/kny-tanjiro.PNG"
         },
         {
@@ -101,6 +111,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Demon Form",
+            description: "Tanjiro's younger sister, who retains a strong bond with her family despite becoming a demon. She protects people and can fight with remarkable strength.",
             image: "../assets/characters/kny-nezuko.PNG"
         },
         {
@@ -109,6 +120,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SR",
             title: "Thunder Breathing",
+            description: "A nervous but devoted Demon Slayer whose Thunder Breathing technique becomes exceptionally fast and powerful when he focuses.",
             image: "../assets/characters/kny-zenitsu.PNG"
         },
         {
@@ -117,6 +129,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SR",
             title: "Beast Breathing",
+            description: "A boisterous fighter raised in the mountains. Inosuke relies on instinct, unusual flexibility, and his self-created Beast Breathing style.",
             image: "../assets/characters/kny-inosuke.PNG"
         },
         {
@@ -125,6 +138,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Water Hashira",
+            description: "The reserved Water Hashira, a highly skilled swordsman who often keeps his thoughts to himself while quietly looking out for others.",
             image: "../assets/characters/kny-giyu.PNG"
         },
         {
@@ -133,6 +147,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Insect Hashira",
+            description: "The Insect Hashira, a poised and observant swordswoman who uses wisteria-based techniques and exceptional knowledge of medicine.",
             image: "../assets/characters/kny-shinobu.PNG"
         },
         {
@@ -141,6 +156,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SSR",
             title: "Flame Hashira",
+            description: "The Flame Hashira, known for his energetic confidence and unwavering sense of duty. He inspires others to meet hardship with courage.",
             image: "../assets/characters/kny-rengoku.PNG"
         },
         {
@@ -149,6 +165,7 @@ const Gacha = {
             series: "Demon Slayer",
             rarity: "SR",
             title: "Love Hashira",
+            description: "The Love Hashira, an affectionate and optimistic swordswoman whose unusual flexibility supports her distinctive combat style.",
             image: "../assets/characters/kny-mitsuri.PNG"
         },
 
@@ -159,6 +176,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "One For All",
+            description: "A thoughtful student who studies heroes closely and acts decisively to help people. He inherits the power One For All and works to master it responsibly.",
             image: "../assets/characters/mha-deku.PNG"
         },
         {
@@ -167,6 +185,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "Explosion",
+            description: "A fiercely competitive student with a powerful Explosion Quirk. Beneath his blunt confidence is a relentless drive to improve and become a top hero.",
             image: "../assets/characters/mha-bakugo.PNG"
         },
         {
@@ -175,6 +194,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "Half-Cold Half-Hot",
+            description: "A composed student whose Half-Cold Half-Hot Quirk lets him control ice and fire from opposite sides of his body.",
             image: "../assets/characters/mha-todoroki.PNG"
         },
         {
@@ -183,6 +203,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SR",
             title: "Zero Gravity",
+            description: "An upbeat student whose Zero Gravity Quirk makes objects she touches weightless. She is motivated by caring for her family and helping others.",
             image: "../assets/characters/mha-uraraka.PNG"
         },
         {
@@ -191,6 +212,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SR",
             title: "Erasure",
+            description: "A practical, sleep-deprived teacher and professional hero. His Erasure Quirk can temporarily disable another person's Quirk while he keeps them in sight.",
             image: "../assets/characters/mha-aizawa.PNG"
         },
         {
@@ -199,6 +221,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SSR",
             title: "Blueflame",
+            description: "A guarded villain who wields intense blue flames. His history and motives connect him to the Todoroki family.",
             image: "../assets/characters/mha-dabi.PNG"
         },
         {
@@ -207,6 +230,7 @@ const Gacha = {
             series: "My Hero Academia",
             rarity: "SR",
             title: "Fierce Wings",
+            description: "A relaxed, observant pro hero who moves quickly with his Fierce Wings Quirk. He often gathers information while helping people behind the scenes.",
             image: "../assets/characters/mha-hawks.PNG"
         },
 
@@ -217,6 +241,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "The Brightest Star",
+            description: "An expressive performer whose bright stage presence and strong emotions make her difficult to overlook in Alien Stage's high-stakes musical competition.",
             image: "../assets/characters/alnst-mizi.PNG"
         },
         {
@@ -225,6 +250,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "A Quiet Melody",
+            description: "A gentle, reserved singer whose deep affection for Mizi shapes many of her choices and performances.",
             image: "../assets/characters/alnst-sua.PNG"
         },
         {
@@ -233,6 +259,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "The Rebel Musician",
+            description: "A rebellious musician who channels frustration and longing into intense performances. Music is one of the ways he expresses himself most clearly.",
             image: "../assets/characters/alnst-till.PNG"
         },
         {
@@ -241,6 +268,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SSR",
             title: "The Silent Observer",
+            description: "A quiet, perceptive performer who watches those around him closely. His restrained manner contrasts with the strong feelings he keeps private.",
             image: "../assets/characters/alnst-ivan.PNG"
         },
         {
@@ -249,6 +277,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SR",
             title: "The Golden Performer",
+            description: "A polished, charismatic singer with a controlled stage presence. Luka knows how to command attention in the competition.",
             image: "../assets/characters/alnst-luka.PNG"
         },
         {
@@ -257,6 +286,7 @@ const Gacha = {
             series: "Alien Stage",
             rarity: "SR",
             title: "The Runaway Star",
+            description: "A determined former performer who refuses to accept the system around her. Hyuna is resourceful, outspoken, and fiercely protective of her companions.",
             image: "../assets/characters/alnst-hyuna.PNG"
         },
 
@@ -267,6 +297,7 @@ const Gacha = {
             series: "The Apothecary Diaries",
             rarity: "SSR",
             title: "The Curious Apothecary",
+            description: "A sharp-eyed palace apothecary fascinated by medicine and poisons. Maomao uses practical knowledge and careful observation to solve mysteries.",
             image: "../assets/characters/ap-maomao.PNG"
         },
         {
@@ -275,6 +306,7 @@ const Gacha = {
             series: "The Apothecary Diaries",
             rarity: "SSR",
             title: "The Moon Prince",
+            description: "A graceful palace official whose charm and intelligence help him navigate court life. He often turns to Maomao when a mystery needs a discerning eye.",
             image: "../assets/characters/ap-jinshi.PNG"
         },
 
@@ -282,6 +314,8 @@ const Gacha = {
         // Copy a character entry and change its details.
 
     ],
+
+    maxCardLevel: 5,
 
     // ======================================
     // GACHA SETTINGS
@@ -328,6 +362,14 @@ const Gacha = {
 
         if (typeof gacha.totalPulls !== "number") {
             gacha.totalPulls = 0;
+        }
+
+        if (
+            !data.characterCardLevels ||
+            typeof data.characterCardLevels !== "object" ||
+            Array.isArray(data.characterCardLevels)
+        ) {
+            data.characterCardLevels = {};
         }
 
         StudyArchive.save();
@@ -474,7 +516,63 @@ const Gacha = {
             }
         });
 
-        return Array.from(owned.values());
+        return Array.from(owned.values()).map(character => ({
+            ...character,
+            level: this.getCardLevel(character.id)
+        }));
+    },
+
+    getCardLevel(characterId) {
+        const savedLevel = Number(
+            StudyArchive.data.characterCardLevels?.[characterId]
+        );
+        return Number.isInteger(savedLevel) &&
+            savedLevel >= 1 &&
+            savedLevel <= this.maxCardLevel
+            ? savedLevel
+            : 1;
+    },
+
+    levelUpCard(characterId) {
+        this.init();
+        if (typeof characterId !== "string" || !characterId) {
+            throw new Error("Choose a character card to level up.");
+        }
+
+        const history = StudyArchive.data.gacha.history;
+        const copies = history.reduce((total, entry) => {
+            const character = entry.character || entry;
+            return total + (character.id === characterId ? 1 : 0);
+        }, 0);
+        if (!copies) throw new Error("You do not own this character card.");
+
+        const currentLevel = this.getCardLevel(characterId);
+        if (currentLevel >= this.maxCardLevel) {
+            throw new Error("This character card is already at max level.");
+        }
+        if (copies <= currentLevel) {
+            throw new Error("You need one unspent duplicate to level up this card.");
+        }
+
+        const data = StudyArchive.data;
+        const previousLevel = data.characterCardLevels[characterId];
+        const level = currentLevel + 1;
+        data.characterCardLevels[characterId] = level;
+        try {
+            StudyArchive.save();
+        } catch (error) {
+            if (previousLevel === undefined) {
+                delete data.characterCardLevels[characterId];
+            } else {
+                data.characterCardLevels[characterId] = previousLevel;
+            }
+            throw new Error("The card level could not be saved.", { cause: error });
+        }
+
+        return {
+            level,
+            duplicatesRemaining: copies - level
+        };
     },
 
     // ======================================

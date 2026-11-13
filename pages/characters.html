@@ -164,6 +164,8 @@
                 </select>
             </section>
 
+            <p class="card-action-message" id="cardActionMessage" role="status" aria-live="polite"></p>
+
             <div class="collection-section-heading">
                 <h2>Collected Characters</h2>
                 <span id="showingCount">0 characters</span>
@@ -181,6 +183,11 @@
         </section>
     </main>
 </div>
+
+<dialog class="character-dialog" id="characterDialog" aria-labelledby="characterDialogName">
+    <button class="character-dialog-close" id="closeCharacterDialog" type="button" aria-label="Close character details">×</button>
+    <div class="character-dialog-content" id="characterDialogContent"></div>
+</dialog>
 
 <script src="../js/main.js"></script>
 <script src="../js/gacha.js"></script>

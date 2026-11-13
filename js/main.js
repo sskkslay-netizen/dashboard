@@ -23,7 +23,8 @@ const StudyArchive = {
         },
         characters: [],
         wishHistory: [],
-        achievements: []
+        achievements: [],
+        characterCardLevels: {}
     },
 
     data: {},
@@ -47,6 +48,12 @@ const StudyArchive = {
                 this.data[key] = [];
             }
         });
+        this.data.characterCardLevels =
+            this.data.characterCardLevels &&
+            typeof this.data.characterCardLevels === "object" &&
+            !Array.isArray(this.data.characterCardLevels)
+                ? { ...this.data.characterCardLevels }
+                : {};
 
         const savedProfile = this.data.profile &&
             typeof this.data.profile === "object" &&

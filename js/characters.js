@@ -8,9 +8,11 @@ const CharacterArchive = {
     series: "all",
     rarity: "all",
     sort: "newest",
+    lastDialogTrigger: null,
 
     init() {
         this.bindEvents();
+        this.bindCharacterDialog();
         this.render();
     },
 
@@ -38,6 +40,45 @@ const CharacterArchive = {
                 this.sort = event.target.value;
                 this.render();
             });
+
+        document.getElementById("characterGrid")
+            ?.addEventListener("click", event => {
+                const openButton = event.target.closest("[data-open-character-id]");
+                if (openButton) {
+                    this.openCharacter(openButton.dataset.openCharacterId, openButton);
+                    return;
+                }
+
+                const button = event.target.closest("[data-level-up-id]");
+                if (!button) return;
+
+                try {
+                    const character = this.getCharacters().find(
+                        item => item.id === button.dataset.levelUpId
+                    );
+                    const result = Gacha.levelUpCard(button.dataset.levelUpId);
+                    this.render();
+                    this.showCardMessage(
+                        `${character?.name || "Character"} reached level ${result.level}. ` +
+                        `${this.frameName(result.level)} frame unlocked.`
+                    );
+                } catch (error) {
+                    this.showCardMessage(error.message, true);
+                }
+            });
+    },
+
+    bindCharacterDialog() {
+        const dialog = document.getElementById("characterDialog");
+        document.getElementById("closeCharacterDialog")
+            ?.addEventListener("click", () => dialog?.close());
+        dialog?.addEventListener("click", event => {
+            if (event.target === dialog) dialog.close();
+        });
+        dialog?.addEventListener("close", () => {
+            this.lastDialogTrigger?.focus();
+            this.lastDialogTrigger = null;
+        });
     },
 
     getCharacters() {
@@ -50,18 +91,35 @@ const CharacterArchive = {
             if (!character.id) return;
 
             if (!collected.has(character.id)) {
+                const profile = Gacha.characters.find(item => item.id === character.id);
                 collected.set(character.id, {
+                    ...profile,
                     ...character,
+                    description: character.description || profile?.description ||
+                        `${character.name} is a character from ${character.series}.`,
                     obtainedAt: entry.obtainedAt || "",
                     count: 1,
                     firstIndex: index
                 });
             } else {
-                collected.get(character.id).count++;
+                const saved = collected.get(character.id);
+                saved.count++;
+                if (!saved.description) {
+                    const profile = Gacha.characters.find(item => item.id === character.id);
+                    saved.description = profile?.description ||
+                        `${character.name} is a character from ${character.series}.`;
+                }
             }
         });
 
-        return Array.from(collected.values());
+        return Array.from(collected.values()).map(character => {
+            const level = Gacha.getCardLevel(character.id);
+            return {
+                ...character,
+                level,
+                duplicatesAvailable: Math.max(0, character.count - level)
+            };
+        });
     },
 
     render() {
@@ -140,28 +198,106 @@ const CharacterArchive = {
         }
 
         grid.innerHTML = characters.map(character => `
-            <article class="character-card rarity-${this.escapeHTML(character.rarity.toLowerCase())}">
-                <div class="character-art">
-                    <img
-                        src="${this.escapeHTML(character.image)}"
-                        alt="${this.escapeHTML(character.name)}"
-                        onerror="this.style.display='none'; this.parentElement.classList.add('no-image');"
-                    >
-                    <span class="character-rarity">
-                        ${this.escapeHTML(character.rarity)}
-                    </span>
-                </div>
+            <article class="character-card rarity-${this.escapeHTML(character.rarity.toLowerCase())} frame-level-${character.level}">
+                <div class="character-card-inner">
+                    <div class="character-art">
+                        <img
+                            src="${this.escapeHTML(character.image)}"
+                            alt="${this.escapeHTML(character.name)}"
+                            onerror="this.style.display='none'; this.parentElement.classList.add('no-image');"
+                        >
+                        <span class="character-rarity">
+                            ${this.escapeHTML(character.rarity)}
+                        </span>
+                        <span class="character-frame-label">${this.frameName(character.level)} FRAME</span>
+                    </div>
 
-                <div class="character-details">
-                    <h3>${this.escapeHTML(character.name)}</h3>
-                    <p>${this.escapeHTML(character.series)}</p>
-                    <span>${this.escapeHTML(character.title)}</span>
-                    ${character.count > 1
-                        ? `<p>Owned ×${character.count}</p>`
-                        : ""}
+                    <div class="character-details">
+                        <div class="character-title-row">
+                            <h3>${this.escapeHTML(character.name)}</h3>
+                            <span class="character-level">LV ${character.level}/${Gacha.maxCardLevel}</span>
+                        </div>
+                        <p>${this.escapeHTML(character.series)}</p>
+                        <span>${this.escapeHTML(character.title)}</span>
+                        <p class="character-copies">
+                            ${character.count} ${character.count === 1 ? "copy" : "copies"} owned
+                            <span>· ${character.duplicatesAvailable} ${character.duplicatesAvailable === 1 ? "duplicate" : "duplicates"} available</span>
+                        </p>
+                    </div>
+
+                    <div class="character-card-actions">
+                        <button class="character-open-card" type="button"
+                            data-open-character-id="${this.escapeHTML(character.id)}"
+                            aria-label="Open ${this.escapeHTML(character.name)} character details">
+                            Open character
+                        </button>
+                        <button class="character-level-up" type="button"
+                            data-level-up-id="${this.escapeHTML(character.id)}"
+                            ${character.duplicatesAvailable < 1 || character.level >= Gacha.maxCardLevel ? "disabled" : ""}
+                            aria-label="Level up ${this.escapeHTML(character.name)} using one duplicate">
+                            ${character.level >= Gacha.maxCardLevel
+                                ? "Max level reached"
+                                : character.duplicatesAvailable > 0
+                                    ? "Level up · 1 duplicate"
+                                    : "Need 1 duplicate"}
+                        </button>
+                    </div>
                 </div>
             </article>
         `).join("");
+    },
+
+    openCharacter(characterId, trigger) {
+        const character = this.getCharacters().find(item => item.id === characterId);
+        const dialog = document.getElementById("characterDialog");
+        const content = document.getElementById("characterDialogContent");
+        if (!character || !dialog || !content) {
+            this.showCardMessage("Character details could not be opened.", true);
+            return;
+        }
+
+        const obtained = character.obtainedAt
+            ? new Date(character.obtainedAt).toLocaleDateString(undefined, {
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            })
+            : "Date not recorded";
+        content.innerHTML = `
+            <div class="character-dialog-art rarity-${this.escapeHTML(character.rarity.toLowerCase())}">
+                <img src="${this.escapeHTML(character.image || Gacha.getImage(character))}"
+                    alt="${this.escapeHTML(character.name)}"
+                    onerror="this.style.display='none'; this.parentElement.classList.add('no-image');">
+                <span class="character-dialog-rarity">${this.escapeHTML(character.rarity)}</span>
+                <span class="character-dialog-frame">${this.frameName(character.level)} frame</span>
+            </div>
+            <div class="character-dialog-details">
+                <p class="character-dialog-series">${this.escapeHTML(character.series)}</p>
+                <h2 id="characterDialogName">${this.escapeHTML(character.name)}</h2>
+                <p class="character-dialog-title">${this.escapeHTML(character.title || "Character Archive")}</p>
+                <p class="character-dialog-description">${this.escapeHTML(character.description)}</p>
+                <dl class="character-dialog-facts">
+                    <div><dt>Card level</dt><dd>${character.level} / ${Gacha.maxCardLevel} · ${this.frameName(character.level)} frame</dd></div>
+                    <div><dt>Rarity</dt><dd>${this.escapeHTML(character.rarity)}</dd></div>
+                    <div><dt>Copies owned</dt><dd>${character.count}</dd></div>
+                    <div><dt>Duplicates available</dt><dd>${character.duplicatesAvailable}</dd></div>
+                    <div><dt>First discovered</dt><dd>${this.escapeHTML(obtained)}</dd></div>
+                </dl>
+            </div>`;
+        this.lastDialogTrigger = trigger;
+        dialog.showModal();
+        document.getElementById("closeCharacterDialog").focus();
+    },
+
+    frameName(level) {
+        return ["", "Archive", "Bronze", "Silver", "Gold", "Starlight"][level] || "Archive";
+    },
+
+    showCardMessage(message, isError = false) {
+        const element = document.getElementById("cardActionMessage");
+        if (!element) return;
+        element.textContent = message;
+        element.classList.toggle("error", isError);
     },
 
     escapeHTML(value) {
