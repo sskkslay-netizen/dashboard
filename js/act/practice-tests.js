@@ -132,8 +132,10 @@
         const compositeScore = Math.round(values.reduce((sum, score) => sum + score, 0) / values.length);
         const score = Math.round(correctCount / activeQuestions.length * 100);
         const flaggedCount = Object.values(reviewFlags).filter(Boolean).length;
+        let crystalReward = 0;
+        let savedTest;
         try {
-            ACTData.recordPracticeTest({
+            const saved = ACTData.recordPracticeTest({
                 name: activeSubject === "all" ? "Full ACT practice" : `${activeSubject} practice`,
                 subject: activeSubject === "all" ? "Full" : activeSubject,
                 source: "ACT Study Center",
@@ -145,9 +147,16 @@
                 correctCount,
                 flaggedCount
             });
+            savedTest = saved.practiceTests.at(-1);
         } catch (error) {
             showMessage("testMessage", error.message, true);
             return;
+        }
+        let rewardError = "";
+        try {
+            crystalReward = ACTData.awardCrystals(savedTest.id, 20 + correctCount * 2);
+        } catch (error) {
+            rewardError = ` The test was saved, but crystals could not be added: ${error.message}`;
         }
 
         submitted = true;
@@ -156,16 +165,58 @@
         const sectionCards = ["English", "Math", "Reading", "Science"].map(subject =>
             `<div class="test-result-score"><strong>${sectionScores[subject] ?? "—"}</strong><span>${subject}</span></div>`
         ).join("");
+        const answerReview = activeQuestions.map((question, index) => {
+            const correct = answers[index] === question.answer;
+            const selectedAnswer = answers[index] === undefined
+                ? "No answer selected"
+                : question.options[answers[index]];
+            return `<article class="test-answer-review ${correct ? "correct" : "incorrect"}">
+                <h4>Question ${index + 1} · ${correct ? "Correct" : "Review"}</h4>
+                <p>${escapeHTML(question.prompt)}</p>
+                <p><strong>Your answer:</strong> ${escapeHTML(selectedAnswer)}</p>
+                <p><strong>Correct answer:</strong> ${escapeHTML(question.options[question.answer])}</p>
+                <p>${escapeHTML(question.explanation)}</p>
+                ${!correct ? `<button class="act-button" type="button" data-save-test-question="${index}">Save to incorrect answers</button>` : ""}
+            </article>`;
+        }).join("");
         results.innerHTML = `
             <h3>Composite ${compositeScore}</h3>
             <p>${correctCount} of ${activeQuestions.length} correct (${score}%). ${flaggedCount} marked ${flaggedCount === 1 ? "question" : "questions"} for review.</p>
+            <p class="test-reward-message">${rewardError || `You earned ${crystalReward} crystals for completing this test.`}</p>
             <div class="test-result-grid">
                 <div class="test-result-score"><strong>${compositeScore}</strong><span>Composite</span></div>
                 ${sectionCards}
             </div>
-            <p>These are approximate practice estimates based on this short original question set, not official ACT score conversions.</p>`;
+            <p>These are approximate practice estimates based on this short original question set, not official ACT score conversions.</p>
+            <h3>Answer review</h3>
+            <div class="test-answer-review-list">${answerReview}</div>`;
         results.hidden = false;
         document.getElementById("testResults").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function saveMissedTestQuestion(index) {
+        const question = activeQuestions[index];
+        if (!question || answers[index] === question.answer) return;
+        try {
+            ACTData.addIncorrectAnswer({
+                subject: question.subject,
+                skill: question.skill,
+                question: question.prompt,
+                originalAnswer: answers[index] === undefined
+                    ? "No answer selected"
+                    : question.options[answers[index]],
+                correctAnswer: question.options[question.answer],
+                whyWrong: "Missed during a practice test.",
+                explanation: question.explanation
+            });
+            const button = document.querySelector(`[data-save-test-question="${index}"]`);
+            if (button) {
+                button.textContent = "Saved to notebook";
+                button.disabled = true;
+            }
+        } catch (error) {
+            showMessage("testMessage", error.message, true);
+        }
     }
 
     function renderSavedTests(data) {
@@ -241,6 +292,10 @@
                 renderQuestion();
             });
             document.getElementById("submitPracticeTest").addEventListener("click", submitTest);
+            document.getElementById("testResults").addEventListener("click", event => {
+                const button = event.target.closest("[data-save-test-question]");
+                if (button) saveMissedTestQuestion(Number(button.dataset.saveTestQuestion));
+            });
             document.getElementById("externalScoreForm").addEventListener("submit", saveExternalScores);
         } catch (error) {
             showMessage("practiceBuilderMessage", error.message, true);

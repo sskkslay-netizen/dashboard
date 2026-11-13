@@ -3,7 +3,10 @@
     "use strict";
 
     let activeSkillId = "";
+    let activeCheckSkillId = "";
+    let activeCheck = null;
     let currentQuizScore = null;
+    let rewardMessage = "";
 
     const GUIDANCE = {
         English: "Read the whole sentence and the surrounding passage before choosing an edit. Identify what the question tests, then choose the clearest option that preserves the writer’s meaning and follows standard English conventions.",
@@ -47,6 +50,18 @@
     }
 
     function checkQuestion(subject, skill) {
+        const topicQuestions = window.ACTQuestionBank?.filter(question =>
+            question.subject === subject && question.skill === skill
+        ) || [];
+        if (topicQuestions.length) {
+            const question = topicQuestions[Math.floor(Math.random() * topicQuestions.length)];
+            return {
+                prompt: question.prompt,
+                options: question.options,
+                answer: question.answer,
+                explanation: question.explanation
+            };
+        }
         const methods = {
             English: "Read in context and check the relevant grammar rule or rhetorical purpose.",
             Math: "Identify the quantities and relationship, solve with valid steps, then check the result.",
@@ -114,7 +129,12 @@
             container.innerHTML = '<div class="lesson-placeholder"><span class="lesson-placeholder-mark" aria-hidden="true">A</span><h2>Pick a skill to begin.</h2><p>Your lesson, example, and short check will open here.</p></div>';
             return;
         }
-        const content = checkQuestion(skill.subject, skill.name);
+        if (activeCheckSkillId !== activeSkillId) {
+            activeCheckSkillId = activeSkillId;
+            activeCheck = checkQuestion(skill.subject, skill.name);
+        }
+        const content = activeCheck;
+        const explainer = window.ACTTopicExplainers?.[skill.subject]?.[skill.name];
         const completed = data.lessons.filter(lesson =>
             lesson.completed && lesson.subject === skill.subject && lesson.skill === skill.name
         ).sort((a, b) => b.date.localeCompare(a.date));
@@ -135,7 +155,7 @@
             </form>` : `
             <div class="lesson-check">
                 <h3>Lesson check · ${currentQuizScore}%</h3>
-                <p class="lesson-check-feedback">${currentQuizScore === 100 ? "Correct. Your lesson check is ready to save." : `Review the approach: ${escapeHTML(content.options[content.answer])}`}</p>
+                <p class="lesson-check-feedback">${currentQuizScore === 100 ? `Correct. ${escapeHTML(content.explanation || "Your lesson check is ready to save.")}` : `Review the approach: ${escapeHTML(content.explanation || content.options[content.answer])}`}</p>
                 <div class="lesson-check-actions">
                     <button class="act-button act-button-primary" id="completeLessonButton" type="button">Mark lesson complete</button>
                     <button class="act-button" id="retryLessonButton" type="button">Try again</button>
@@ -147,10 +167,12 @@
                 <span class="lesson-score-pill">${skill.score}/100</span>
             </header>
             <h3>Core idea</h3>
-            <p class="lesson-detail-copy">${escapeHTML(GUIDANCE[skill.subject])} This lesson focuses on ${escapeHTML(skill.name)}.</p>
+            <p class="lesson-detail-copy">${escapeHTML(explainer?.explanation || `${GUIDANCE[skill.subject]} This lesson focuses on ${skill.name}.`)}</p>
+            ${explainer?.tip ? `<aside class="lesson-tip"><strong>Useful check</strong><p>${escapeHTML(explainer.tip)}</p></aside>` : ""}
             <h3>Worked example</h3>
-            <div class="lesson-example">${escapeHTML(exampleFor(skill.subject, skill.name))}</div>
-            ${latest ? `<p class="lesson-completed-note">Completed ${new Date(`${latest.date}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })} · last lesson check ${latest.score}%.</p>` : ""}
+            <div class="lesson-example">${escapeHTML(explainer?.example || exampleFor(skill.subject, skill.name))}</div>
+            ${latest ? `<p class="lesson-completed-note">Completed ${new Date(`${latest.date}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })} · last lesson check ${latest.score}%${data.crystalRewards.some(reward => reward.id === latest.id) ? ` · earned ${data.crystalRewards.find(reward => reward.id === latest.id).amount} crystals` : ""}.</p>` : ""}
+            ${rewardMessage ? `<p class="lesson-reward-message" role="status">${escapeHTML(rewardMessage)}</p>` : ""}
             ${quizMarkup}`;
         const quizForm = document.getElementById("lessonCheckForm");
         quizForm?.addEventListener("submit", event => {
@@ -167,15 +189,24 @@
         });
         document.getElementById("completeLessonButton")?.addEventListener("click", () => {
             try {
-                ACTData.completeLesson(
+                const score = currentQuizScore;
+                currentQuizScore = null;
+                const saved = ACTData.completeLesson(
                     skill.subject,
                     skill.name,
-                    currentQuizScore,
-                    Math.round((skill.score + currentQuizScore) / 2)
+                    score,
+                    Math.round((skill.score + score) / 2)
                 );
-                currentQuizScore = null;
+                const lesson = saved.lessons.at(-1);
+                try {
+                    const reward = ACTData.awardCrystals(lesson.id, 15 + (score === 100 ? 10 : 0));
+                    rewardMessage = `Lesson saved. You earned ${reward} crystals.`;
+                } catch (error) {
+                    rewardMessage = `Lesson saved, but crystals could not be added: ${error.message}`;
+                }
                 render(ACTData.getState());
             } catch (error) {
+                rewardMessage = "";
                 const message = document.createElement("p");
                 message.className = "lesson-check-feedback error";
                 message.textContent = error.message;
@@ -184,6 +215,7 @@
         });
         document.getElementById("retryLessonButton")?.addEventListener("click", () => {
             currentQuizScore = null;
+            rewardMessage = "";
             render(ACTData.getState());
         });
     }
@@ -212,7 +244,10 @@
                 const button = event.target.closest("[data-lesson-id]");
                 if (!button) return;
                 activeSkillId = button.dataset.lessonId;
+                activeCheckSkillId = "";
+                activeCheck = null;
                 currentQuizScore = null;
+                rewardMessage = "";
                 render(ACTData.getState());
             });
         } catch (error) {

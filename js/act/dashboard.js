@@ -142,6 +142,12 @@
         document.getElementById("totalStudyTime").textContent = formatStudyTime(data.totalStudyMinutes);
         document.getElementById("lessonsCompleted").textContent = data.lessons.filter(lesson => lesson.completed).length;
         document.getElementById("practiceTestsTaken").textContent = data.practiceTests.length;
+        try {
+            document.getElementById("actCrystalBalance").textContent = ACTData.getCrystalBalance();
+        } catch (error) {
+            document.getElementById("actCrystalBalance").textContent = "Unavailable";
+            showMessage(error.message, true);
+        }
         const skillCount = Object.keys(data.skills).length;
         const completedSkillCount = new Set(
             data.lessons
@@ -174,9 +180,15 @@
             const note = form.elements.note.value.trim();
 
             try {
-                ACTData.recordStudyMinutes(minutes, note);
+                const saved = ACTData.recordStudyMinutes(minutes, note);
+                const session = saved.studySessions.at(-1);
                 form.reset();
-                showMessage("Study time saved to your ACT archive.");
+                try {
+                    const reward = ACTData.awardCrystals(session.id, Math.min(35, 5 + Math.floor(minutes / 10)));
+                    showMessage(`Study time saved to your ACT archive. You earned ${reward} crystals.`);
+                } catch (error) {
+                    showMessage(`Study time saved, but crystals could not be added: ${error.message}`, true);
+                }
             } catch (error) {
                 showMessage(error.message, true);
             }

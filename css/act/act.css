@@ -155,6 +155,20 @@ a { color: inherit; text-decoration: none; }
 
 .act-breadcrumb span { padding: 0 8px; color: #b6c0c8; }
 
+.act-crystal-balance {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 11px;
+    border: 1px solid #e8dfc9;
+    border-radius: 999px;
+    background: #fffaf0;
+    color: #806b43;
+    font-size: 10px;
+}
+
+.act-crystal-balance strong { color: #5f5137; font-size: 12px; }
+
 .act-page-content {
     width: min(1200px, 100%);
     margin: 0 auto;

@@ -176,6 +176,7 @@
             incorrectAnswers: [],
             strategies: [],
             bookmarks: [],
+            crystalRewards: [],
             goals: {
                 dailyMinutes: 30,
                 dailyLessons: 1,
@@ -212,6 +213,74 @@
         return clone(state);
     }
 
+    function getCrystalBalance() {
+        let saved;
+        try {
+            saved = localStorage.getItem("studyArchiveData");
+        } catch (error) {
+            throw new Error("Crystal balance could not be read from the Study Archive wallet.", { cause: error });
+        }
+        if (!saved) return 0;
+
+        try {
+            const wallet = JSON.parse(saved);
+            if (!wallet || typeof wallet !== "object" || Array.isArray(wallet) ||
+                !Number.isFinite(wallet.crystals) || wallet.crystals < 0) {
+                throw new Error("The Study Archive crystal wallet has invalid data.");
+            }
+            return wallet.crystals;
+        } catch (error) {
+            throw new Error(`Crystal balance could not be loaded: ${error.message}`, { cause: error });
+        }
+    }
+
+    function awardCrystals(activityId, amount) {
+        if (typeof activityId !== "string" || !activityId.trim() ||
+            !Number.isInteger(amount) || amount < 1) {
+            throw new Error("A valid ACT activity and whole-number crystal reward are required.");
+        }
+        if (state.crystalRewards.some(reward => reward.id === activityId)) return 0;
+
+        let wallet;
+        let saved;
+        try {
+            saved = localStorage.getItem("studyArchiveData");
+            wallet = saved ? JSON.parse(saved) : { crystals: 0, actCrystalRewards: [] };
+            if (!wallet || typeof wallet !== "object" || Array.isArray(wallet) ||
+                (wallet.crystals !== undefined &&
+                    (!Number.isFinite(wallet.crystals) || wallet.crystals < 0))) {
+                throw new Error("The Study Archive crystal wallet has invalid data.");
+            }
+            wallet.crystals = Number(wallet.crystals) || 0;
+            wallet.actCrystalRewards = Array.isArray(wallet.actCrystalRewards)
+                ? wallet.actCrystalRewards
+                : [];
+        } catch (error) {
+            throw new Error(`ACT crystals could not be added: ${error.message}`, { cause: error });
+        }
+
+        const walletRewardId = `act:${activityId}`;
+        const alreadyInWallet = wallet.actCrystalRewards.includes(walletRewardId);
+        if (!alreadyInWallet) {
+            wallet.crystals += amount;
+            wallet.actCrystalRewards.push(walletRewardId);
+            try {
+                localStorage.setItem("studyArchiveData", JSON.stringify(wallet));
+            } catch (error) {
+                throw new Error("ACT crystals could not be saved to the Study Archive wallet.", { cause: error });
+            }
+        }
+
+        update(data => {
+            data.crystalRewards.push({
+                id: activityId,
+                amount: alreadyInWallet ? 0 : amount,
+                date: new Date().toISOString()
+            });
+        });
+        return alreadyInWallet ? 0 : amount;
+    }
+
     function recordStudyMinutes(minutes, note = "") {
         if (!Number.isInteger(minutes) || minutes < 1 || minutes > 1440) {
             throw new RangeError("Study time must be between 1 and 1,440 whole minutes.");
@@ -220,7 +289,7 @@
         return update(data => {
             data.totalStudyMinutes += minutes;
             data.studySessions.push({
-                id: `study-${Date.now()}`,
+                id: makeId("study"),
                 date: new Date().toISOString(),
                 minutes,
                 note: String(note).trim()
@@ -493,7 +562,10 @@
                 ...defaults,
                 ...parsed,
                 goals: { ...defaults.goals, ...(parsed.goals || {}) },
-                skills: { ...defaults.skills, ...(parsed.skills || {}) }
+                skills: { ...defaults.skills, ...(parsed.skills || {}) },
+                crystalRewards: Array.isArray(parsed.crystalRewards)
+                    ? parsed.crystalRewards
+                    : defaults.crystalRewards
             };
         } catch (error) {
             throw new Error(`Saved ACT study data could not be loaded: ${error.message}`, { cause: error });
@@ -508,6 +580,8 @@
         getSkillLevel,
         init,
         getState,
+        getCrystalBalance,
+        awardCrystals,
         subscribe,
         recordStudyMinutes,
         completeLesson,

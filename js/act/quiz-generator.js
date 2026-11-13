@@ -126,8 +126,9 @@
             perSkill.set(key, result);
         });
 
+        let session;
         try {
-            ACTData.recordQuizSession({
+            const saved = ACTData.recordQuizSession({
                 subject: document.getElementById("quizSubject").value,
                 skill: document.getElementById("quizSkill").value === "all"
                     ? ""
@@ -139,9 +140,21 @@
                 correctCount,
                 skillResults: [...perSkill.values()]
             });
+            session = saved.quizSessions.at(-1);
         } catch (error) {
             showMessage(error.message, true);
             return;
+        }
+
+        let reward = 0;
+        let rewardError = "";
+        try {
+            reward = ACTData.awardCrystals(
+                session.id,
+                10 + correctCount * 5 + (correctCount === activeQuestions.length ? 25 : 0)
+            );
+        } catch (error) {
+            rewardError = ` Your quiz was saved, but crystals could not be added: ${error.message}`;
         }
 
         submitted = true;
@@ -162,7 +175,7 @@
         const results = document.getElementById("quizResults");
         results.innerHTML = `
             <h3>${percentage}% — ${correctCount} of ${activeQuestions.length} correct</h3>
-            <p>Your score and skill results have been saved and your ACT skill progress updated.</p>
+            <p>Your score and skill results have been saved and your ACT skill progress updated. ${rewardError || `You earned ${reward} crystals.`}</p>
             <div class="quiz-results-actions"><button class="act-button" type="button" id="newQuiz">Build another quiz</button></div>`;
         results.hidden = false;
         document.getElementById("newQuiz").addEventListener("click", () => {

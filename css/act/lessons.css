@@ -25,7 +25,11 @@
 .lesson-score-pill { flex: 0 0 auto; padding: 4px 8px; border-radius: 99px; background: #edf4fa; color: #6b8194; font-size: 8px; font-weight: 700; }
 .lesson-detail h3 { margin: 16px 0 6px; color: #465c70; font: 500 14px var(--act-serif); }
 .lesson-detail-copy { color: #718091; font-size: 11px; line-height: 1.8; white-space: pre-wrap; }
+.lesson-tip { margin: 12px 0; padding: 11px 12px; border: 1px solid #e5ebdf; border-radius: 9px; background: #f5f7f1; }
+.lesson-tip strong { color: #657b69; font-size: 9px; letter-spacing: 0.4px; text-transform: uppercase; }
+.lesson-tip p { margin: 4px 0 0; color: #718071; font-size: 10px; line-height: 1.65; }
 .lesson-example { padding: 12px; border-left: 3px solid #afc5d6; border-radius: 0 8px 8px 0; background: #f4f7f9; color: #53687a; font-size: 10px; line-height: 1.7; white-space: pre-wrap; }
+.lesson-reward-message { margin: 10px 0; color: #806b43; font-size: 10px; font-weight: 700; }
 .lesson-check { margin-top: 19px; padding-top: 15px; border-top: 1px solid #edf0f2; }
 .lesson-check legend { margin-bottom: 10px; color: #354d63; font: 500 15px var(--act-serif); }
 .lesson-check-options { display: grid; gap: 7px; }

@@ -182,6 +182,206 @@
             ],
             answer: 0,
             explanation: "Both viewpoints discuss water storage; they differ about when it reduces flooding."
+        },
+        {
+            id: "english-modifiers-1",
+            subject: "English",
+            skill: "Grammar: Modifiers",
+            difficulty: "Medium",
+            prompt: "Which revision makes clear that Lena, not the cabin, cycled for two hours? “After cycling for two hours, the cabin came into view.”",
+            options: [
+                "After cycling for two hours, the cabin came into view for Lena.",
+                "After cycling for two hours, Lena saw the cabin come into view.",
+                "The cabin, after cycling for two hours, came into view.",
+                "The cabin came into view after cycling for two hours."
+            ],
+            answer: 1,
+            explanation: "The opening phrase now sits next to Lena, the person who did the cycling, so the modifier has a clear subject."
+        },
+        {
+            id: "english-pronouns-1",
+            subject: "English",
+            skill: "Grammar: Pronouns",
+            difficulty: "Medium",
+            prompt: "Which revision removes the unclear pronoun in “When Maya called Elena, she was already at the station”?",
+            options: [
+                "When Maya called Elena, she was already waiting at the station.",
+                "Maya called Elena, who was already at the station.",
+                "When Maya called her, Elena was already at the station.",
+                "Maya called Elena because she was already at the station."
+            ],
+            answer: 1,
+            explanation: "Naming Elena as the person at the station makes the reference explicit rather than leaving “she” ambiguous."
+        },
+        {
+            id: "english-parallelism-1",
+            subject: "English",
+            skill: "Grammar: Parallelism",
+            difficulty: "Easy",
+            prompt: "Which choice completes the sentence with parallel structure? “The club plans to recruit volunteers, ___, and to publish a monthly report.”",
+            options: ["raising funds", "to raise funds", "funds are raised", "and raised funds"],
+            answer: 1,
+            explanation: "The list uses infinitive phrases: to recruit, to raise, and to publish."
+        },
+        {
+            id: "english-sentence-structure-1",
+            subject: "English",
+            skill: "Grammar: Sentence Structure",
+            difficulty: "Medium",
+            prompt: "Which choice correctly joins the two complete sentences? “The forecast changed. The hikers chose a shorter route.”",
+            options: [
+                "The forecast changed, the hikers chose a shorter route.",
+                "The forecast changed; the hikers chose a shorter route.",
+                "The forecast changed because, the hikers chose a shorter route.",
+                "The forecast changed the hikers chose, a shorter route."
+            ],
+            answer: 1,
+            explanation: "A semicolon correctly joins two closely related independent clauses."
+        },
+        {
+            id: "math-systems-1",
+            subject: "Math",
+            skill: "Algebra: Solving Systems of Linear Equations",
+            difficulty: "Medium",
+            prompt: "If x + y = 11 and x − y = 3, what is the value of x?",
+            options: ["4", "6", "7", "8"],
+            answer: 2,
+            explanation: "Add the equations to eliminate y: 2x = 14, so x = 7."
+        },
+        {
+            id: "math-slope-1",
+            subject: "Math",
+            skill: "Coordinate Geometry: Lines and Slopes",
+            difficulty: "Easy",
+            prompt: "What is the slope of the line through (2, 1) and (5, 10)?",
+            options: ["2", "3", "4", "9"],
+            answer: 1,
+            explanation: "Slope is (10 − 1)/(5 − 2) = 9/3 = 3."
+        },
+        {
+            id: "math-circles-1",
+            subject: "Math",
+            skill: "Geometry: Circles",
+            difficulty: "Easy",
+            prompt: "A circle has a diameter of 10 units. What is its circumference?",
+            options: ["5π", "10π", "20π", "100π"],
+            answer: 1,
+            explanation: "Circumference is π times diameter, so it is 10π units."
+        },
+        {
+            id: "math-probability-1",
+            subject: "Math",
+            skill: "Data: Categorical Data and Probabilities",
+            difficulty: "Easy",
+            prompt: "A jar contains 3 red tiles and 2 blue tiles. If one tile is selected at random, what is the probability it is red?",
+            options: ["2/5", "3/5", "1/2", "3/2"],
+            answer: 1,
+            explanation: "There are 3 favorable red tiles out of 5 total tiles, giving a probability of 3/5."
+        },
+        {
+            id: "reading-overview-1",
+            subject: "Reading",
+            skill: "Passage Overview",
+            difficulty: "Medium",
+            prompt: "A passage describes a town's rooftop garden project, explains how residents organized it, and reports that nearby summer temperatures later decreased. Which overview best captures the passage?",
+            options: [
+                "A description of how a community garden was organized and what effect it may have had",
+                "A list of every plant grown on one rooftop",
+                "An argument that all cities have identical climates",
+                "A comparison of gardening tools used by residents"
+            ],
+            answer: 0,
+            explanation: "This choice captures both the project and the passage's report about its possible effect without narrowing to a minor detail."
+        },
+        {
+            id: "reading-detail-2",
+            subject: "Reading",
+            skill: "Finding Key Details",
+            difficulty: "Easy",
+            prompt: "The observatory opens its doors to visitors on Friday evenings, when volunteers demonstrate the telescope. On which evenings can visitors attend?",
+            options: ["Monday evenings", "Wednesday evenings", "Friday evenings", "Every evening"],
+            answer: 2,
+            explanation: "The passage directly states that visitors can attend on Friday evenings."
+        },
+        {
+            id: "reading-inference-2",
+            subject: "Reading",
+            skill: "Inference",
+            difficulty: "Medium",
+            prompt: "Before the museum opened, Imani moved the display away from a sunny window and checked the temperature sensor twice. Which inference is best supported?",
+            options: [
+                "She was taking steps to protect the display from heat or sunlight.",
+                "The display had already been damaged.",
+                "The museum was closing permanently.",
+                "She wanted visitors to avoid the gallery."
+            ],
+            answer: 0,
+            explanation: "Moving the display and checking temperature suggest care about its exposure, but the passage does not say it was damaged."
+        },
+        {
+            id: "reading-context-2",
+            subject: "Reading",
+            skill: "Words and Phrases in Context",
+            difficulty: "Easy",
+            prompt: "“After several trials, the engineer refined the design to reduce vibration.” In context, refined most nearly means:",
+            options: ["abandoned", "improved", "measured", "copied"],
+            answer: 1,
+            explanation: "The engineer changed the design to reduce a problem, so refined means improved or made more precise."
+        },
+        {
+            id: "science-fact-finding-1",
+            subject: "Science",
+            skill: "Fact Finding",
+            difficulty: "Easy",
+            prompt: "A data table lists the sample mass as 14 grams in Trial 2. What mass is reported for Trial 2?",
+            options: ["4 grams", "12 grams", "14 grams", "24 grams"],
+            answer: 2,
+            explanation: "The stated Trial 2 value is 14 grams; match the trial and unit rather than using another row."
+        },
+        {
+            id: "science-hypothetical-1",
+            subject: "Science",
+            skill: "Hypothetical Changes",
+            difficulty: "Medium",
+            prompt: "In a set of trials, a reaction took longer at lower temperatures. If the temperature is lowered again and other conditions stay constant, what is best predicted?",
+            options: [
+                "The reaction will likely take longer.",
+                "The reaction will certainly stop producing any product.",
+                "The amount of material will automatically double.",
+                "The relationship cannot be considered at all."
+            ],
+            answer: 0,
+            explanation: "Extending the observed trend supports a longer reaction time, while the data does not justify claims about stopping or doubling."
+        },
+        {
+            id: "science-experiments-1",
+            subject: "Science",
+            skill: "Interpreting Experiments",
+            difficulty: "Medium",
+            prompt: "Two groups of seeds receive the same soil, water, and light. One group receives a new fertilizer and sprouts more often. Which conclusion is best supported?",
+            options: [
+                "The fertilizer is associated with more sprouting under these test conditions.",
+                "The fertilizer will improve every plant in every environment.",
+                "Water has no effect on seed growth.",
+                "The seeds sprouted because the groups used different soil."
+            ],
+            answer: 0,
+            explanation: "The controlled comparison supports an association under the tested conditions, not a universal claim."
+        },
+        {
+            id: "science-viewpoints-1b",
+            subject: "Science",
+            skill: "Understanding Viewpoints",
+            difficulty: "Medium",
+            prompt: "Researcher Lee argues that shade lowers stream temperature. Researcher Ortiz argues that upstream water flow is the main influence. Which statement expresses Lee's viewpoint?",
+            options: [
+                "Shade lowers the temperature of the stream.",
+                "Upstream flow is the main influence on temperature.",
+                "Stream temperature was never measured.",
+                "Shade and water flow are identical factors."
+            ],
+            answer: 0,
+            explanation: "Lee's stated claim links shade to lower stream temperature; Ortiz's contrasting claim should not be attributed to Lee."
         }
     ];
 }());
