@@ -110,7 +110,7 @@ const Gacha = {
             rarity: "SR",
             title: "Demon Snow",
             description: "A former assassin who finds a new purpose with the Armed Detective Agency. Her ability summons the sword-wielding Demon Snow.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/bsd_kyoka.PNG"
         },
         {
             id: "bsd_mori",
@@ -119,7 +119,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Vita Sexualis",
             description: "The strategic leader of the Port Mafia. His ability, Vita Sexualis, allows him to summon and direct Elise.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/bsd_mori.PNG"
         },
         {
             id: "bsd_tanizaki",
@@ -128,7 +128,7 @@ const Gacha = {
             rarity: "R",
             title: "Light Snow",
             description: "A capable member of the Armed Detective Agency whose ability, Light Snow, creates convincing visual illusions.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/bsd_tanizaki.PNG"
         },
         {
             id: "bsd_naomi",
@@ -137,7 +137,7 @@ const Gacha = {
             rarity: "R",
             title: "Agency Supporter",
             description: "Junichiro's outgoing younger sister, who works at the Armed Detective Agency and brings plenty of energy to the office.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/bsd_naomi.PNG"
         },
 
         // DEMON SLAYER
@@ -220,7 +220,7 @@ const Gacha = {
             rarity: "SR",
             title: "Flower Breathing",
             description: "A skilled Demon Slayer trained at the Butterfly Mansion. Kanao uses Flower Breathing and gradually learns to trust her own choices.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/kny_kanao.PNG"
         },
         {
             id: "kny_tengen",
@@ -229,7 +229,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Sound Hashira",
             description: "The flamboyant Sound Hashira, who combines exceptional hearing with his distinctive dual swords and musical combat sense.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/kny_tengen.PNG"
         },
         {
             id: "kny_muichiro",
@@ -238,7 +238,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Mist Hashira",
             description: "The exceptionally talented Mist Hashira. Muichiro's quiet focus and Mist Breathing make him a formidable swordsman.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/kny_muichiro.PNG"
         },
         {
             id: "kny_sanemi",
@@ -247,7 +247,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Wind Hashira",
             description: "The fierce Wind Hashira, whose relentless fighting style and Wind Breathing reflect his uncompromising determination.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/kny_sanemi.PNG"
         },
         {
             id: "kny_aoi",
@@ -256,7 +256,7 @@ const Gacha = {
             rarity: "R",
             title: "Butterfly Mansion Helper",
             description: "A practical, determined member of the Butterfly Mansion team who helps injured Demon Slayers recover and train.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/kny_aoi.PNG"
         },
         {
             id: "kny_murata",
@@ -265,7 +265,7 @@ const Gacha = {
             rarity: "R",
             title: "Steady Demon Slayer",
             description: "A dependable Demon Slayer who faces dangerous missions with persistence, even without a flashy breathing technique.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/kny_murata.PNG"
         },
 
         // MY HERO ACADEMIA
@@ -339,7 +339,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Symbol of Peace",
             description: "A legendary pro hero who inspires hope with his courageous public presence. He passes the power One For All to Izuku Midoriya.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/mha_allmight.PNG"
         },
         {
             id: "mha_kirishima",
@@ -348,7 +348,7 @@ const Gacha = {
             rarity: "SR",
             title: "Red Riot",
             description: "A brave student whose Hardening Quirk strengthens his body. He values courage, loyalty, and standing up for others.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/mha_kirishima.PNG"
         },
         {
             id: "mha_jiro",
@@ -357,7 +357,7 @@ const Gacha = {
             rarity: "SR",
             title: "Earphone Jack",
             description: "A practical student and musician whose Earphone Jack Quirk lets her listen through and transmit sound with her earphone-like jacks.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/mha_jiro.PNG"
         },
         {
             id: "mha_endeavor",
@@ -366,7 +366,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Hellflame",
             description: "A powerful pro hero whose Hellflame Quirk produces intense fire. He is driven to prove himself through heroic work.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/mha_endeavor.PNG"
         },
         {
             id: "mha_kaminari",
@@ -375,7 +375,7 @@ const Gacha = {
             rarity: "R",
             title: "Electrification",
             description: "A friendly student whose Electrification Quirk lets him discharge electricity. He brings enthusiasm and humor to Class 1-A.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/mha_kaminari.PNG"
         },
         {
             id: "mha_asui",
@@ -384,7 +384,7 @@ const Gacha = {
             rarity: "R",
             title: "Frog",
             description: "A straightforward and observant student whose Frog Quirk gives her frog-like abilities, including jumping, swimming, and a long-reaching tongue.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/mha_asui.PNG"
         },
         {
             id: "mha_mineta",
@@ -393,7 +393,7 @@ const Gacha = {
             rarity: "R",
             title: "Pop Off",
             description: "A small but inventive student whose Pop Off Quirk creates sticky spheres that can be used to trap opponents or help him move.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/mha_mineta.PNG"
         },
 
         // ALIEN STAGE
@@ -478,7 +478,7 @@ const Gacha = {
             rarity: "R",
             title: "Palace Friend",
             description: "A cheerful young woman serving in the inner palace. Xiaolan becomes one of Maomao's friendly companions and shares everyday palace news.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/ap_xiaolan.PNG"
         },
         {
             id: "ap_lihaku",
@@ -487,7 +487,7 @@ const Gacha = {
             rarity: "SR",
             title: "The Loyal Officer",
             description: "An earnest military officer known for his strength and straightforward manner. He becomes a trusted ally to Maomao.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/ap_lihaku.PNG"
         },
         {
             id: "ap_lakan",
@@ -496,7 +496,7 @@ const Gacha = {
             rarity: "SSR",
             title: "The Unreadable Strategist",
             description: "A brilliant military strategist whose unusual way of seeing people makes him difficult to read. His connection to Maomao is important to her past.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/ap_lakan.PNG"
         },
         {
             id: "ap_gaoshun",
@@ -505,7 +505,7 @@ const Gacha = {
             rarity: "R",
             title: "Jinshi's Attendant",
             description: "Jinshi's capable and composed attendant. Gaoshun keeps palace duties in order and often helps smooth over his employer's requests.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/ap_gaoshun.PNG"
         },
 
         // ADD MORE SERIES BELOW
