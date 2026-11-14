@@ -56,7 +56,7 @@ const Gacha = {
             rarity: "SSR",
             title: "Rashomon",
             description: "A formidable Port Mafia member whose ability turns his coat into a weapon called Rashomon. His stern resolve hides a difficult past.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/bsd_akutagawa.PNG"
         },
         {
             id: "bsd_kunikida",
@@ -101,7 +101,7 @@ const Gacha = {
             rarity: "SSR",
             title: "All Men Are Equal",
             description: "The calm president of the Armed Detective Agency. His ability helps regulate the powers of Agency members who accept his leadership.",
-            image: "../assets/characters/default-character.svg"
+            image: "../assets/characters/bsd_fukuzawa.PNG"
         },
         {
             id: "bsd_kyoka",
