@@ -26,6 +26,13 @@
         element.classList.toggle("error", isError);
     }
 
+    function sharedCardErrorMessage(error) {
+        if (error?.code === "permission-denied") {
+            return "Firebase denied this change. Publish firestore.rules in the Firebase Console and confirm your developer UID is allowlisted.";
+        }
+        return error?.message || "The shared card change could not be completed.";
+    }
+
     function escapeHTML(value) {
         return String(value ?? "").replace(/[&<>"']/g, character => ({
             "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
@@ -96,15 +103,17 @@
 
     function setBusy(value) {
         busy = value;
-        const ready = canEdit && firebase?.sharedCardsReady && !busy;
+        const canInteract = canEdit && !busy;
         form.querySelectorAll("input, select, textarea, button").forEach(control => {
-            control.disabled = !ready;
+            control.disabled = !canInteract;
         });
-        byId("sharedCardSearch").disabled = !canEdit || busy;
-        byId("newSharedCard").disabled = !ready;
-        byId("importSharedCards").disabled = !ready || !pendingImport;
-        byId("downloadCsvTemplate").disabled = !canEdit || busy;
-        byId("sharedCardImportFile").disabled = !canEdit || busy;
+        byId("deleteSharedCard").disabled =
+            !canInteract || !firebase?.sharedCardsReady || creating;
+        byId("sharedCardSearch").disabled = !canInteract;
+        byId("newSharedCard").disabled = !canInteract;
+        byId("importSharedCards").disabled = !canInteract || !pendingImport;
+        byId("downloadCsvTemplate").disabled = !canInteract;
+        byId("sharedCardImportFile").disabled = !canInteract;
         renderList();
     }
 
@@ -120,7 +129,7 @@
                 <li>
                     <button type="button" data-card-id="${escapeHTML(card.id)}"
                         aria-current="${card.id === selectedId ? "true" : "false"}"
-                        ${!firebase?.sharedCardsReady || busy ? "disabled" : ""}>
+                        ${!canEdit || busy ? "disabled" : ""}>
                         <span><strong>${escapeHTML(card.name)}</strong><small>${escapeHTML(card.series)}</small></span>
                         <em>${escapeHTML(card.rarity)}</em>
                     </button>
@@ -351,7 +360,7 @@
             loadCard(card);
             showMessage("sharedCardMessage", `${card.name} is saved to the shared catalog.`);
         } catch (error) {
-            showMessage("sharedCardMessage", error.message || "The card could not be saved.", true);
+            showMessage("sharedCardMessage", sharedCardErrorMessage(error), true);
         } finally {
             setBusy(false);
         }
@@ -369,7 +378,7 @@
             if (catalog.length) loadCard(catalog[0]);
             else clearForm();
         } catch (error) {
-            showMessage("sharedCardMessage", error.message || "The card could not be deleted.", true);
+            showMessage("sharedCardMessage", sharedCardErrorMessage(error), true);
         } finally {
             setBusy(false);
         }
@@ -396,7 +405,7 @@
                 `Imported ${imported.length} cards: ${added} added and ${updated} updated.`);
             loadCard(imported[0]);
         } catch (error) {
-            showMessage("sharedCardImportMessage", error.message || "The import could not be saved.", true);
+            showMessage("sharedCardImportMessage", sharedCardErrorMessage(error), true);
         } finally {
             setBusy(false);
         }
@@ -444,7 +453,7 @@
             renderList();
             showMessage("sharedCardStatus", firebase.sharedCardsReady
                 ? "Shared catalog is ready."
-                : "Loading the shared catalog…");
+                : "Connecting to Firebase. You can add or edit cards while the catalog loads; delete is enabled after it loads.");
             if (!creating && !dirty) {
                 const current = catalog.find(card => card.id === selectedId);
                 if (current) loadCard(current);

@@ -368,7 +368,10 @@ if (isConfigured) {
             updateStatus(`Shared card catalog could not be loaded: ${error.message}`, true);
         }
     }, error => {
-        updateStatus(`Shared card catalog could not be loaded: ${error.message}`, true);
+        updateStatus(
+            `Shared card catalog could not be loaded: ${error.message}. Check that Firestore rules allow reading sharedData/cards.`,
+            true
+        );
     });
 
     authSdk.onAuthStateChanged(auth, user => {
