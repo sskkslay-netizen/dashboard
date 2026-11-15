@@ -1,0 +1,66 @@
+.shared-cards-content { width: min(1440px, 100%); margin: 0 auto; padding: 28px clamp(18px, 3vw, 42px) 50px; }
+.shared-cards-intro { margin: 10px 0 18px; }
+.shared-cards-access { margin: 0 0 10px; }
+.shared-cards-access.error { border-color: #e8caca; background: #fff5f4; color: #a24f52; }
+.shared-card-settings-link { margin: 0 0 10px; }
+.shared-cards-status { margin: 0 0 14px; }
+.shared-cards-workspace { display: grid; grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); align-items: start; gap: 18px; }
+.shared-cards-workspace[hidden] { display: none; }
+.shared-card-library { position: sticky; top: 88px; max-height: calc(100vh - 110px); overflow: auto; }
+.shared-card-library-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.shared-card-library-heading h2 { margin: 0; color: #26374b; font: 500 21px "Playfair Display", Georgia, serif; }
+.shared-card-library-heading h2 span { color: #8a9baa; font: 600 12px "DM Sans", sans-serif; }
+.shared-card-search-label, .shared-card-import-content > label { display: grid; gap: 6px; margin-top: 16px; color: #748394; font-size: 10px; font-weight: 600; }
+.shared-card-list { display: grid; gap: 5px; max-height: min(60vh, 620px); overflow: auto; margin: 15px -8px 0; padding: 0 8px; list-style: none; }
+.shared-card-list button { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; padding: 10px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: #52677d; text-align: left; cursor: pointer; }
+.shared-card-list button:hover { border-color: #e4e9ed; background: #f8fafb; }
+.shared-card-list button[aria-current="true"] { border-color: #d3e1eb; background: #edf4fa; color: #26374b; }
+.shared-card-list button span { min-width: 0; }
+.shared-card-list strong, .shared-card-list small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shared-card-list strong { font-size: 11px; }
+.shared-card-list small { margin-top: 2px; color: #8996a5; font-size: 9px; }
+.shared-card-list em { flex: 0 0 auto; color: #8596a5; font-size: 9px; font-style: normal; font-weight: 700; }
+.shared-card-empty { padding: 15px 10px; color: #8996a5; font-size: 11px; text-align: center; }
+.shared-card-main { min-width: 0; }
+.shared-card-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; margin-top: 18px; }
+.shared-card-form label { display: grid; gap: 6px; color: #748394; font-size: 10px; font-weight: 600; }
+.shared-card-form label span, .shared-card-form label small { color: #98a2ab; font-weight: 400; }
+.shared-card-form label small { font-size: 9px; line-height: 1.5; }
+.shared-card-form .setting-input:focus-visible, .shared-card-search-label .setting-input:focus-visible, .shared-card-import-content .setting-input:focus-visible { outline: 3px solid #d5e6f2; outline-offset: 1px; border-color: #91b1c8; }
+.shared-card-field-wide { grid-column: 1 / -1; }
+.shared-card-preview-area { display: flex; align-items: center; gap: 14px; min-height: 126px; }
+.shared-card-preview-frame { display: grid; width: 96px; height: 126px; flex: 0 0 96px; place-items: center; overflow: hidden; border: 1px solid #e1e8ed; border-radius: 10px; background: #f4f7f8; color: #9aa8b2; font-size: 10px; text-align: center; }
+.shared-card-preview-frame img { width: 100%; height: 100%; object-fit: cover; }
+.shared-card-image-error { margin: 0; color: #a24f52; font-size: 10px; }
+.shared-card-id { color: #8795a0; font-size: 10px; }
+.shared-card-id code, .shared-card-import-content code { color: #52677d; font-size: 10px; }
+.shared-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+.shared-card-delete { margin-left: auto; }
+.shared-card-form .setting-message { margin: 0; }
+.shared-card-import { padding: 0; }
+.shared-card-import summary { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; color: #344b63; cursor: pointer; list-style: none; }
+.shared-card-import summary::-webkit-details-marker { display: none; }
+.shared-card-import summary::after { color: #8795a0; content: "+"; font-size: 20px; }
+.shared-card-import[open] summary::after { content: "−"; }
+.shared-card-import summary strong, .shared-card-import summary small { display: block; }
+.shared-card-import summary strong { font: 500 17px "Playfair Display", Georgia, serif; }
+.shared-card-import summary small { margin-top: 3px; color: #8996a5; font-size: 10px; }
+.shared-card-import-content { padding: 0 24px 22px; }
+.shared-card-import-content > p:first-child { margin: 0; color: #7c8995; font-size: 10px; line-height: 1.8; }
+.shared-card-import-content input[type="file"] { padding: 7px; }
+.shared-card-import-content .shared-card-actions { margin-top: 12px; }
+.shared-cards-workspace button:disabled { cursor: not-allowed; opacity: .55; }
+@media (max-width: 900px) {
+    .shared-cards-workspace { grid-template-columns: minmax(220px, 270px) minmax(0, 1fr); gap: 12px; }
+    .app-setting-card { padding: 19px; }
+}
+@media (max-width: 680px) {
+    .shared-cards-workspace { grid-template-columns: 1fr; }
+    .shared-card-library { position: static; max-height: none; }
+    .shared-card-list { max-height: 260px; }
+    .shared-card-form { grid-template-columns: 1fr; }
+    .shared-card-field-wide { grid-column: auto; }
+    .shared-card-delete { margin-left: 0; }
+    .shared-card-import summary { padding: 18px 19px; }
+    .shared-card-import-content { padding: 0 19px 19px; }
+}

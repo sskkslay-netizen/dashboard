@@ -211,6 +211,59 @@ async function syncUserData(user) {
     return activeSyncPromise;
 }
 
+async function importSharedCards(importedCards, fallbackCards) {
+    if (!currentUser || !developerUids.includes(currentUser.uid)) {
+        throw new Error("Only an authorized developer account can edit shared cards.");
+    }
+    if (!Array.isArray(fallbackCards) || !fallbackCards.every(isValidCard)) {
+        throw new Error("The shared card catalog is invalid.");
+    }
+    if (!Array.isArray(importedCards) || !importedCards.length ||
+        !importedCards.every(isValidCard)) {
+        throw new Error("The import must contain at least one valid card.");
+    }
+
+    const importedIds = new Set();
+    for (const card of importedCards) {
+        if (importedIds.has(card.id)) {
+            throw new Error(`The import contains duplicate card ID "${card.id}".`);
+        }
+        importedIds.add(card.id);
+    }
+
+    const ref = sharedCardsReference();
+    await firestore.runTransaction(db, async transaction => {
+        const snapshot = await transaction.get(ref);
+        let cards = fallbackCards.map(item => ({ ...item }));
+        if (snapshot.exists()) {
+            try {
+                cards = JSON.parse(snapshot.data().payload);
+            } catch (error) {
+                throw new Error("The shared card catalog could not be read.", { cause: error });
+            }
+            if (!Array.isArray(cards) || !cards.every(isValidCard)) {
+                throw new Error("The shared card catalog has an invalid format.");
+            }
+        }
+
+        const cardIndexes = new Map(cards.map((card, index) => [card.id, index]));
+        for (const card of importedCards) {
+            const existingIndex = cardIndexes.get(card.id);
+            if (existingIndex === undefined) {
+                cardIndexes.set(card.id, cards.length);
+                cards.push(card);
+            } else {
+                cards[existingIndex] = card;
+            }
+        }
+
+        transaction.set(ref, {
+            payload: serializePayload(cards),
+            updatedAt: firestore.serverTimestamp()
+        });
+    });
+}
+
 function save(key, data) {
     if (!STORAGE_KEYS.includes(key) || !currentUser || !db) return;
     let payload;
@@ -251,6 +304,9 @@ const FirebaseSync = {
     },
     async deleteSharedCard(cardId, fallbackCards) {
         await changeSharedCard("delete", cardId, null, fallbackCards);
+    },
+    async importSharedCards(cards, fallbackCards) {
+        await importSharedCards(cards, fallbackCards);
     },
     async createAccount(email, password) {
         if (!isConfigured) throw new Error("Add your Firebase project settings before creating an account.");
