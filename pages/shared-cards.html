@@ -80,7 +80,7 @@
                     <section class="app-setting-card" aria-labelledby="cardEditorHeading">
                         <div class="app-setting-heading">
                             <div><p class="setting-kicker">CARD DETAILS</p><h2 id="cardEditorHeading">Add a shared card</h2>
-                                <p id="cardEditorHint">The card ID is generated from the name and series. You can edit it later by importing a card with that ID.</p></div>
+                                <p id="cardEditorHint">The card ID is generated from the name and series. To update it later, import a card with the same ID.</p></div>
                         </div>
                         <form id="sharedCardForm" class="shared-card-form" novalidate>
                             <label for="sharedCardName">Character name
@@ -101,6 +101,10 @@
                             <label class="shared-card-field-wide" for="sharedCardImage">Image URL or path <span>(optional)</span>
                                 <input class="setting-input" id="sharedCardImage" name="image" type="text" maxlength="500" placeholder="https://… or ../assets/characters/…">
                                 <small>Use an https:// image URL or a path in the site. Leave blank for the default portrait.</small>
+                            </label>
+                            <label class="shared-card-field-wide" for="sharedCardImageFile">Or upload a photo
+                                <input class="setting-input" id="sharedCardImageFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+                                <small>JPEG, PNG, WebP, or GIF; up to 5 MB. The photo uploads when you save the card and is shared with everyone.</small>
                             </label>
                             <div class="shared-card-field-wide shared-card-preview-area">
                                 <div class="shared-card-preview-frame">

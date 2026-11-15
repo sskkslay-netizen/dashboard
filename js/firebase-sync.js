@@ -21,6 +21,10 @@ const writeQueues = new Map();
 let activeSyncUid = "";
 let activeSyncPromise = null;
 let firestore;
+let app;
+let storage;
+let storageSdk;
+let storageReady = null;
 let sharedCards = null;
 let sharedCardsReady = false;
 const sharedCardsListeners = new Set();
@@ -91,6 +95,21 @@ function subscribeToSharedCards(listener) {
 
 function sharedCardsReference() {
     return firestore.doc(db, SHARED_CARDS_PATH);
+}
+
+function initializeStorage() {
+    if (!storageReady) {
+        storageReady = import("https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js")
+            .then(sdk => {
+                storageSdk = sdk;
+                storage = storageSdk.getStorage(app);
+            })
+            .catch(error => {
+                storageReady = null;
+                throw error;
+            });
+    }
+    return storageReady;
 }
 
 async function changeSharedCard(action, cardId, card, fallbackCards) {
@@ -305,6 +324,56 @@ const FirebaseSync = {
     async deleteSharedCard(cardId, fallbackCards) {
         await changeSharedCard("delete", cardId, null, fallbackCards);
     },
+    async uploadSharedCardImage(file, cardId) {
+        if (!currentUser || !developerUids.includes(currentUser.uid)) {
+            throw new Error("Only an authorized developer account can upload shared card images.");
+        }
+        await initializeStorage();
+        if (!/^[a-z0-9][a-z0-9_-]*$/i.test(cardId)) {
+            throw new Error("The card ID is invalid.");
+        }
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+        if (!file || typeof file.name !== "string" || !allowedTypes.includes(file.type) ||
+            !Number.isFinite(file.size) || file.size <= 0) {
+            throw new Error("Choose a JPEG, PNG, WebP, or GIF image.");
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            throw new Error("Choose an image smaller than 5 MB.");
+        }
+        const filename = file.name.replace(/[^a-z0-9._-]/gi, "_").slice(-80) || "photo";
+        const path = `shared-cards/${cardId}/${Date.now()}-${Math.random().toString(36).slice(2, 10)}-${filename}`;
+        const reference = storageSdk.ref(storage, path);
+        await storageSdk.uploadBytes(reference, file, {
+            contentType: file.type,
+            cacheControl: "public,max-age=31536000"
+        });
+        try {
+            return {
+                path,
+                url: await storageSdk.getDownloadURL(reference)
+            };
+        } catch (error) {
+            try {
+                await storageSdk.deleteObject(reference);
+            } catch (cleanupError) {
+                throw new Error(
+                    `The photo uploaded, but its download URL could not be created and the upload could not be removed: ${cleanupError.message}`,
+                    { cause: error }
+                );
+            }
+            throw error;
+        }
+    },
+    async deleteSharedCardImage(path) {
+        if (!currentUser || !developerUids.includes(currentUser.uid)) {
+            throw new Error("Only an authorized developer account can remove shared card images.");
+        }
+        await initializeStorage();
+        if (typeof path !== "string" || !path.startsWith("shared-cards/")) {
+            throw new Error("The shared card image path is invalid.");
+        }
+        await storageSdk.deleteObject(storageSdk.ref(storage, path));
+    },
     async importSharedCards(cards, fallbackCards) {
         await importSharedCards(cards, fallbackCards);
     },
@@ -342,7 +411,7 @@ if (isConfigured) {
         import("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js")
     ]);
 
-    const app = appSdk.initializeApp(firebaseConfig);
+    app = appSdk.initializeApp(firebaseConfig);
     authSdk = loadedAuthSdk;
     firestore = loadedFirestore;
     auth = authSdk.getAuth(app);

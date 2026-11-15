@@ -3,20 +3,26 @@
 
     const DEFAULT_IMAGE = "../assets/characters/default-character.svg";
     const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
+    const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+    const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     let firebase;
     let catalog = null;
+    let selectedCard = null;
     let selectedId = "";
     let creating = true;
     let dirty = false;
     let busy = false;
     let canEdit = false;
     let pendingImport = null;
+    let pendingImageFile = null;
+    let previewObjectUrl = "";
 
     const byId = id => document.getElementById(id);
     const form = byId("sharedCardForm");
     const workspace = byId("sharedCardEditor");
     const list = byId("sharedCardList");
     const imageInput = byId("sharedCardImage");
+    const imageFileInput = byId("sharedCardImageFile");
     const imagePreview = byId("sharedCardPreview");
     const imageEmpty = byId("sharedCardPreviewEmpty");
 
@@ -27,8 +33,14 @@
     }
 
     function sharedCardErrorMessage(error) {
+        if (error?.code === "storage/unauthorized") {
+            return "Firebase Storage denied the photo upload. Publish storage.rules and confirm your developer UID is allowlisted.";
+        }
+        if (["storage/bucket-not-found", "storage/no-default-bucket"].includes(error?.code)) {
+            return "Firebase Storage is not set up for this project yet. Create its Storage bucket, then publish storage.rules.";
+        }
         if (error?.code === "permission-denied") {
-            return "Firebase denied this change. Publish firestore.rules in the Firebase Console and confirm your developer UID is allowlisted.";
+            return "Firebase denied this change. Publish the Firestore rules in the Firebase Console and confirm your developer UID is allowlisted.";
         }
         return error?.message || "The shared card change could not be completed.";
     }
@@ -138,23 +150,35 @@
     }
 
     function refreshImagePreview() {
-        const value = imageInput.value.trim();
         showMessage("sharedCardImageError", "");
-        if (!value) {
+        let source = "";
+        if (pendingImageFile) {
+            if (!previewObjectUrl) previewObjectUrl = URL.createObjectURL(pendingImageFile);
+            source = previewObjectUrl;
+        } else {
+            if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+            previewObjectUrl = "";
+            const value = imageInput.value.trim();
+            if (value) {
+                try {
+                    source = normalizeImage(value);
+                } catch (error) {
+                    imagePreview.hidden = true;
+                    imageEmpty.hidden = false;
+                    showMessage("sharedCardImageError", error.message, true);
+                    return;
+                }
+            }
+        }
+        if (!source) {
             imagePreview.hidden = true;
             imageEmpty.hidden = false;
             return;
         }
-        try {
-            imagePreview.src = normalizeImage(value);
-            imagePreview.alt = `${byId("sharedCardName").value.trim() || "Card"} image preview`;
-            imagePreview.hidden = false;
-            imageEmpty.hidden = true;
-        } catch (error) {
-            imagePreview.hidden = true;
-            imageEmpty.hidden = false;
-            showMessage("sharedCardImageError", error.message, true);
-        }
+        imagePreview.src = source;
+        imagePreview.alt = `${byId("sharedCardName").value.trim() || "Card"} image preview`;
+        imagePreview.hidden = false;
+        imageEmpty.hidden = true;
     }
 
     function updateGeneratedId() {
@@ -165,6 +189,9 @@
 
     function clearForm() {
         form.reset();
+        imageFileInput.value = "";
+        pendingImageFile = null;
+        selectedCard = null;
         byId("sharedCardRarity").value = "SSR";
         selectedId = "";
         creating = true;
@@ -183,8 +210,11 @@
 
     function loadCard(card) {
         creating = false;
+        selectedCard = card;
         selectedId = card.id;
         dirty = false;
+        imageFileInput.value = "";
+        pendingImageFile = null;
         byId("sharedCardName").value = card.name;
         byId("sharedCardSeries").value = card.series;
         byId("sharedCardRarity").value = card.rarity;
@@ -336,6 +366,9 @@
         if (!form.reportValidity()) return;
         const name = byId("sharedCardName").value.trim();
         const series = byId("sharedCardSeries").value.trim();
+        const previousCard = creating ? null : selectedCard;
+        let uploadedImage = null;
+        let firestoreSaved = false;
         try {
             const card = {
                 id: creating ? makeCardId(name, series) : selectedId,
@@ -344,12 +377,23 @@
                 rarity: byId("sharedCardRarity").value,
                 title: byId("sharedCardTitle").value.trim(),
                 description: byId("sharedCardDescription").value.trim(),
-                image: normalizeImage(imageInput.value)
+                image: pendingImageFile ? DEFAULT_IMAGE : normalizeImage(imageInput.value)
             };
+            if (previousCard?.imagePath && card.image === previousCard.image) {
+                card.imagePath = previousCard.imagePath;
+            }
             validateCard(card);
             setBusy(true);
+            if (pendingImageFile) {
+                showMessage("sharedCardMessage", "Uploading photo...");
+                uploadedImage = await firebase.uploadSharedCardImage(pendingImageFile, card.id);
+                card.image = uploadedImage.url;
+                card.imagePath = uploadedImage.path;
+            }
+            showMessage("sharedCardMessage", "Saving shared card...");
             if (creating) await firebase.addSharedCard(card, getCards());
             else await firebase.updateSharedCard(card, getCards());
+            firestoreSaved = true;
             const updatedCards = new Map(getCards().map(existing => [existing.id, existing]));
             updatedCards.set(card.id, card);
             catalog = [...updatedCards.values()];
@@ -358,9 +402,28 @@
             creating = false;
             dirty = false;
             loadCard(card);
+
+            if (previousCard?.imagePath && card.imagePath !== previousCard.imagePath) {
+                try {
+                    await firebase.deleteSharedCardImage(previousCard.imagePath);
+                } catch (error) {
+                    showMessage("sharedCardMessage",
+                        `${card.name} was saved, but its previous photo could not be removed: ${sharedCardErrorMessage(error)}`,
+                        true);
+                    return;
+                }
+            }
             showMessage("sharedCardMessage", `${card.name} is saved to the shared catalog.`);
         } catch (error) {
-            showMessage("sharedCardMessage", sharedCardErrorMessage(error), true);
+            let message = sharedCardErrorMessage(error);
+            if (uploadedImage && !firestoreSaved) {
+                try {
+                    await firebase.deleteSharedCardImage(uploadedImage.path);
+                } catch (cleanupError) {
+                    message += ` The uploaded photo could not be cleaned up: ${sharedCardErrorMessage(cleanupError)}`;
+                }
+            }
+            showMessage("sharedCardMessage", message, true);
         } finally {
             setBusy(false);
         }
@@ -374,9 +437,19 @@
             await firebase.deleteSharedCard(card.id, getCards());
             catalog = getCards().filter(item => item.id !== card.id);
             Gacha.setSharedCharacters(catalog);
-            showMessage("sharedCardStatus", `${card.name} was removed from the shared catalog.`);
             if (catalog.length) loadCard(catalog[0]);
             else clearForm();
+            if (card.imagePath) {
+                try {
+                    await firebase.deleteSharedCardImage(card.imagePath);
+                } catch (error) {
+                    showMessage("sharedCardStatus",
+                        `${card.name} was removed, but its photo could not be deleted: ${sharedCardErrorMessage(error)}`,
+                        true);
+                    return;
+                }
+            }
+            showMessage("sharedCardStatus", `${card.name} was removed from the shared catalog.`);
         } catch (error) {
             showMessage("sharedCardMessage", sharedCardErrorMessage(error), true);
         } finally {
@@ -386,10 +459,20 @@
 
     async function importCards() {
         if (!pendingImport || !pendingImport.length) return;
-        const imported = pendingImport;
+        const existingCards = new Map(getCards().map(card => [card.id, card]));
+        const imported = pendingImport.map(card => {
+            const existing = existingCards.get(card.id);
+            return existing?.imagePath && card.image === existing.image
+                ? { ...card, imagePath: existing.imagePath }
+                : card;
+        });
         const ids = new Set(getCards().map(card => card.id));
         const updated = imported.filter(card => ids.has(card.id)).length;
         const added = imported.length - updated;
+        const obsoleteImagePaths = imported
+            .filter(card => existingCards.get(card.id)?.imagePath &&
+                card.image !== existingCards.get(card.id).image)
+            .map(card => existingCards.get(card.id).imagePath);
         try {
             setBusy(true);
             await firebase.importSharedCards(imported, getCards());
@@ -404,6 +487,16 @@
             showMessage("sharedCardImportMessage",
                 `Imported ${imported.length} cards: ${added} added and ${updated} updated.`);
             loadCard(imported[0]);
+            for (const path of obsoleteImagePaths) {
+                try {
+                    await firebase.deleteSharedCardImage(path);
+                } catch (error) {
+                    showMessage("sharedCardImportMessage",
+                        `Cards imported, but an old photo could not be removed: ${sharedCardErrorMessage(error)}`,
+                        true);
+                    break;
+                }
+            }
         } catch (error) {
             showMessage("sharedCardImportMessage", sharedCardErrorMessage(error), true);
         } finally {
@@ -494,6 +587,43 @@
         });
         byId("deleteSharedCard").addEventListener("click", deleteCard);
         byId("sharedCardSearch").addEventListener("input", renderList);
+        imageInput.addEventListener("input", () => {
+            if (!pendingImageFile) return;
+            pendingImageFile = null;
+            imageFileInput.value = "";
+            if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+            previewObjectUrl = "";
+        });
+        imageFileInput.addEventListener("change", event => {
+            const file = event.currentTarget.files[0];
+            if (!file) {
+                pendingImageFile = null;
+                if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+                previewObjectUrl = "";
+                refreshImagePreview();
+                return;
+            }
+            if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+                imageFileInput.value = "";
+                pendingImageFile = null;
+                refreshImagePreview();
+                showMessage("sharedCardImageError", "Choose a JPEG, PNG, WebP, or GIF image.", true);
+                return;
+            }
+            if (file.size <= 0 || file.size > MAX_IMAGE_BYTES) {
+                imageFileInput.value = "";
+                pendingImageFile = null;
+                refreshImagePreview();
+                showMessage("sharedCardImageError", "Choose a non-empty image up to 5 MB.", true);
+                return;
+            }
+            if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+            previewObjectUrl = "";
+            pendingImageFile = file;
+            dirty = true;
+            refreshImagePreview();
+            showMessage("sharedCardImageError", "Selected photo will replace the image when you save.");
+        });
         list.addEventListener("click", event => {
             const button = event.target.closest("button[data-card-id]");
             if (!button || !confirmDiscard()) return;
