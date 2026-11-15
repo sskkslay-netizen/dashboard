@@ -15,6 +15,24 @@ service firebase.storage {
       allow delete: if isDeveloper();
     }
 
+    match /users/{userId}/files/{fileName} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isAllowedFileType() {
+        return request.resource.contentType.matches(
+          '(application/pdf|text/(plain|markdown|csv)|application/rtf|application/msword|application/vnd[.]ms-excel|application/vnd[.]ms-powerpoint|application/vnd[.]openxmlformats-officedocument[.](wordprocessingml[.]document|spreadsheetml[.]sheet|presentationml[.]presentation)|image/(jpeg|png|webp|gif))'
+        );
+      }
+
+      allow read: if isOwner();
+      allow create, update: if isOwner()
+        && request.resource.size <= 20 * 1024 * 1024
+        && isAllowedFileType();
+      allow delete: if isOwner();
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

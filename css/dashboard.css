@@ -524,6 +524,70 @@
     gap: 8px;
 }
 
+.today-section {
+    margin-bottom: 20px;
+    padding: 22px;
+    background: #fff;
+    border: 1px solid #e3e9ed;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(38, 55, 75, 0.035);
+}
+
+.today-plan-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.today-plan-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #e9edf0;
+    border-left: 3px solid #a9bfd8;
+    border-radius: 10px;
+    background: #fbfcfd;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.today-plan-item.assignment {
+    border-left-color: #b5cba9;
+}
+
+.today-plan-item.overdue {
+    border-left-color: #d7a29a;
+}
+
+.today-plan-item:hover {
+    transform: translateY(-1px);
+    background: #f2f7fb;
+    border-color: #d6e3ed;
+}
+
+.today-plan-item > span:first-child {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.today-plan-item strong {
+    overflow: hidden;
+    color: #44586d;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.today-plan-item small {
+    color: #929eaa;
+    font-size: 9px;
+}
+
 .upcoming-item {
     display: flex;
     align-items: center;

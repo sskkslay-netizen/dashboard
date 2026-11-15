@@ -88,7 +88,7 @@
                 <div>
                     <p class="eyebrow">LEARN A LITTLE EVERY DAY</p>
                     <h1>Study Quizzes</h1>
-                    <p>Bring your Quizlet cards here and turn them into a quick practice quiz.</p>
+                    <p>Study with flashcards, write answers, take a quiz, race the clock, or match pairs.</p>
                 </div>
                 <div class="quiz-heading-icon" aria-hidden="true">
                     <i data-lucide="clipboard-check"></i>
@@ -97,7 +97,7 @@
 
             <p class="quiz-reward-info">
                 <i data-lucide="gem" aria-hidden="true"></i>
-                Earn 50 crystals for every correct answer, 25 for finishing, and 100 extra for a perfect score. Replay quizzes to earn more.
+                Written, multiple-choice, timed, and matching rounds earn 50 crystals per correct answer or pair, 25 for finishing, and 100 extra for a perfect score.
             </p>
 
             <div class="quiz-layout">
@@ -144,8 +144,10 @@
                             <p class="eyebrow">YOUR LIBRARY</p>
                             <h2 id="setsHeading">My study sets</h2>
                         </div>
-                        <span class="quiz-set-count" id="quizSetCount">0 sets</span>
+                        <span class="quiz-set-count" id="quizSetCount" aria-live="polite">0 sets</span>
                     </div>
+                    <label class="quiz-search-label" for="quizSearch">Find a set, term, or definition</label>
+                    <input class="quiz-search" id="quizSearch" type="search" placeholder="Search your library" autocomplete="off">
                     <div class="quiz-set-list" id="quizSetList"></div>
                 </section>
             </div>
@@ -158,7 +160,7 @@
                         <h2 id="createQuizHeading">Create a quiz</h2>
                     </div>
                 </div>
-                <p class="quiz-builder-help">Add at least two questions. Each question can include an optional photo.</p>
+                <p class="quiz-builder-help">Add at least two cards. Each card can include an optional photo.</p>
                 <form id="quizCreateForm">
                     <label for="newQuizName">Quiz name</label>
                     <input id="newQuizName" type="text" maxlength="80" placeholder="e.g. Cell Biology" required>
@@ -178,6 +180,7 @@
             <section class="quiz-session-card" id="quizSession" aria-live="polite" hidden>
                 <div class="quiz-session-top">
                     <div>
+                        <p class="eyebrow" id="quizSessionEyebrow">PRACTICE QUIZ</p>
                         <p class="eyebrow" id="quizProgressLabel">QUESTION 1</p>
                         <h2 id="quizSessionTitle"></h2>
                     </div>
@@ -188,18 +191,62 @@
                     <div class="quiz-progress-fill" id="quizProgressFill"></div>
                 </div>
 
+                <div class="flashcard-study" id="flashcardStudy" hidden>
+                    <p class="flashcard-summary" id="flashcardSummary"></p>
+                    <button class="flashcard" id="flashcard" type="button" aria-label="Flip flashcard">
+                        <span class="flashcard-side" id="flashcardSide">TERM</span>
+                        <strong id="flashcardText"></strong>
+                        <img class="quiz-question-image" id="flashcardImage" alt="" hidden>
+                        <span class="flashcard-flip-hint">Click to flip</span>
+                    </button>
+                    <p class="flashcard-status" id="flashcardStatus" aria-live="polite"></p>
+                    <div class="flashcard-controls">
+                        <button class="quiz-secondary-button" type="button" id="flashcardPrevious">Previous</button>
+                        <button class="quiz-secondary-button" type="button" id="flashcardShuffle">Shuffle</button>
+                        <button class="quiz-secondary-button" type="button" id="flashcardNext">Next</button>
+                    </div>
+                    <div class="flashcard-mark-actions">
+                        <button class="flashcard-mark-review" type="button" id="flashcardReview">Still learning</button>
+                        <button class="flashcard-mark-known" type="button" id="flashcardKnown">Know it</button>
+                    </div>
+                </div>
+
+                <section class="match-game" id="matchGame" hidden aria-labelledby="matchGameHeading">
+                    <div class="match-game-intro">
+                        <h3 id="matchGameHeading">Find the matching pairs</h3>
+                        <p>Reveal two tiles at a time. Match every term to its definition using as few moves as you can.</p>
+                    </div>
+                    <div class="match-game-stats" aria-live="polite">
+                        <span id="matchPairsFound">0 pairs</span>
+                        <span id="matchMoveCount">0 moves</span>
+                        <span><span class="sr-only">Time </span><span id="matchElapsedTime">0:00</span></span>
+                    </div>
+                    <div class="match-board" id="matchBoard" aria-label="Term and definition match cards"></div>
+                </section>
+
                 <div class="quiz-question-card" id="quizQuestionCard">
-                    <p class="quiz-question-label">What does this term mean?</p>
+                    <p class="quiz-question-label" id="quizQuestionLabel">What does this term mean?</p>
+                    <div class="quiz-blitz-stats" id="quizBlitzStats" hidden>
+                        <span><strong id="quizTimer">15s</strong> left</span>
+                        <span id="quizPoints">0 pts</span>
+                        <span id="quizStreak">0 streak</span>
+                    </div>
                     <h3 id="quizTerm"></h3>
                     <img class="quiz-question-image" id="quizQuestionImage" alt="" hidden>
                     <div class="quiz-answer-list" id="quizAnswers"></div>
+                    <form class="quiz-written-answer-form" id="quizWrittenAnswerForm" hidden>
+                        <label class="sr-only" for="quizWrittenInput">Type the definition</label>
+                        <input id="quizWrittenInput" type="text" maxlength="500" autocomplete="off" placeholder="Type your answer" required>
+                        <p class="field-help">Answers ignore capitalization, extra spaces, and ending punctuation. You get two tries.</p>
+                        <button class="quiz-primary-button" id="checkWrittenAnswer" type="submit">Check answer</button>
+                    </form>
                     <p class="quiz-answer-feedback" id="quizFeedback" aria-live="polite"></p>
                     <button class="quiz-primary-button quiz-next-button" id="nextQuestion" type="button" hidden>Next question</button>
                 </div>
 
                 <div class="quiz-results" id="quizResults" hidden>
                     <i data-lucide="badge-check" aria-hidden="true"></i>
-                    <p class="eyebrow">PRACTICE COMPLETE</p>
+                    <p class="eyebrow" id="quizResultsEyebrow">PRACTICE COMPLETE</p>
                     <h3 id="quizScore"></h3>
                     <p class="quiz-reward-earned" id="quizReward"></p>
                     <p id="quizResultMessage"></p>

@@ -12,6 +12,7 @@ const Dashboard = {
         this.setupMissions();
         this.setupProfileEditor();
         this.updateProgress();
+        this.renderTodayPlan();
         this.renderUpcoming();
         this.updateRecentActivity();
     },
@@ -210,21 +211,42 @@ const Dashboard = {
     updateStats() {
         const data = StudyArchive.data;
 
-        const subjectCount = document.getElementById("subjectCount");
+        const taskCount = document.getElementById("taskCount");
         const focusMinutes = document.getElementById("focusMinutes");
-        const characterCount = document.getElementById("characterCount");
+        const journalCount = document.getElementById("journalCount");
+        const eventCount = document.getElementById("eventCount");
 
-        if (subjectCount) {
-            subjectCount.textContent =
-                document.querySelectorAll(".subject-card").length;
+        if (taskCount) {
+            taskCount.textContent = String(
+                (Array.isArray(data.assignments) ? data.assignments : [])
+                    .filter(item => item.status !== "completed").length
+            );
         }
 
         if (focusMinutes) {
             focusMinutes.textContent = data.totalFocusMinutes;
         }
 
-        if (characterCount) {
-            characterCount.textContent = data.characters.length;
+        if (journalCount) {
+            journalCount.textContent = String(
+                Array.isArray(data.journalEntries) ? data.journalEntries.length : 0
+            );
+        }
+
+        if (eventCount) {
+            const todayKey = this.dateKey(new Date());
+            const assignments = Array.isArray(data.assignments) ? data.assignments : [];
+            const events = Array.isArray(data.calendarEvents) ? data.calendarEvents : [];
+            eventCount.textContent = String(
+                assignments.filter(item => {
+                    const date = this.parseDate(item.dueDate);
+                    return item.status !== "completed" && date && this.dateKey(date) >= todayKey;
+                }).length +
+                events.filter(item => {
+                    const date = this.parseDate(item.date);
+                    return date && this.dateKey(date) >= todayKey;
+                }).length
+            );
         }
 
         StudyArchive.updateDisplay();
@@ -384,6 +406,80 @@ const Dashboard = {
             subtitle.textContent = item.type === "assignment"
                 ? `Assignment · Due ${dateLabel}`
                 : `${item.start ? `${this.formatTime(item.start)} · ` : "All day · "}${dateLabel}`;
+            details.append(title, subtitle);
+            link.append(details, this.makeElement("span", "upcoming-arrow", "↗"));
+            container.appendChild(link);
+        });
+    },
+
+    renderTodayPlan() {
+        const container = document.getElementById("todayPlan");
+        const count = document.getElementById("todayPlanCount");
+        if (!container) return;
+
+        const todayKey = this.dateKey(new Date());
+        const assignments = Array.isArray(StudyArchive.data.assignments)
+            ? StudyArchive.data.assignments
+            : [];
+        const calendarEvents = Array.isArray(StudyArchive.data.calendarEvents)
+            ? StudyArchive.data.calendarEvents
+            : [];
+        const items = [
+            ...assignments
+                .filter(item => item.status !== "completed")
+                .map(item => {
+                    const date = this.parseDate(item.dueDate);
+                    return date && this.dateKey(date) <= todayKey
+                        ? {
+                            type: "assignment",
+                            title: item.title,
+                            date: this.dateKey(date),
+                            overdue: this.dateKey(date) < todayKey
+                        }
+                        : null;
+                })
+                .filter(Boolean),
+            ...calendarEvents
+                .filter(item => item.date === todayKey)
+                .map(item => ({
+                    type: "event",
+                    title: item.title,
+                    start: item.allDay ? "" : item.start || ""
+                }))
+        ].sort((a, b) =>
+            (a.type === "event" ? a.start : "99:99")
+                .localeCompare(b.type === "event" ? b.start : "99:99")
+        );
+
+        container.replaceChildren();
+        if (count) count.textContent = String(items.length);
+
+        if (!items.length) {
+            const empty = this.makeElement(
+                "p",
+                "empty-state",
+                "Your day is open. Add a task or plan something on your calendar."
+            );
+            container.appendChild(empty);
+            return;
+        }
+
+        items.forEach(item => {
+            const link = document.createElement("a");
+            const details = document.createElement("span");
+            const title = this.makeElement("strong", "", item.title || "Untitled");
+            const subtitle = this.makeElement(
+                "small",
+                "",
+                item.type === "assignment"
+                    ? item.overdue ? "Overdue task" : "Task due today"
+                    : item.start ? this.formatTime(item.start) : "All day"
+            );
+
+            link.className = `today-plan-item ${item.type}${item.overdue ? " overdue" : ""}`;
+            link.href = item.type === "assignment"
+                ? "pages/assignments.html"
+                : "pages/calendar.html";
             details.append(title, subtitle);
             link.append(details, this.makeElement("span", "upcoming-arrow", "↗"));
             container.appendChild(link);

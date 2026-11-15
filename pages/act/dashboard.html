@@ -147,6 +147,49 @@
                     </section>
                 </div>
 
+                <section class="act-card focus-sprint-card" aria-labelledby="focusSprintHeading">
+                    <div class="act-card-heading">
+                        <div>
+                            <h2 id="focusSprintHeading">ACT focus sprint</h2>
+                            <p>Pick a focus area, set a short timer, and your completed sprint will be added to your study log.</p>
+                        </div>
+                    </div>
+                    <div class="focus-sprint-layout">
+                        <div class="focus-clock-panel">
+                            <span class="focus-clock-label">TIME REMAINING</span>
+                            <strong class="focus-clock" id="focusClock" role="timer" aria-live="off">25:00</strong>
+                            <div class="progress-track" id="focusProgressTrack" role="progressbar" aria-label="Focus sprint time elapsed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                <span id="focusProgressBar" style="width: 0%"></span>
+                            </div>
+                        </div>
+                        <div class="focus-sprint-controls">
+                            <label for="focusDuration">Sprint length
+                                <select class="act-form-control" id="focusDuration">
+                                    <option value="15">15 minutes</option>
+                                    <option value="25" selected>25 minutes</option>
+                                    <option value="45">45 minutes</option>
+                                </select>
+                            </label>
+                            <label for="focusArea">Focus area
+                                <select class="act-form-control" id="focusArea">
+                                    <option>General ACT practice</option>
+                                    <option>English</option>
+                                    <option>Math</option>
+                                    <option>Reading</option>
+                                    <option>Science</option>
+                                    <option>Practice test</option>
+                                </select>
+                            </label>
+                            <div class="focus-sprint-actions">
+                                <button class="act-button act-button-primary" id="startFocusSprint" type="button">Start sprint</button>
+                                <button class="act-button" id="pauseFocusSprint" type="button" disabled>Pause</button>
+                                <button class="act-button" id="resetFocusSprint" type="button">Reset</button>
+                            </div>
+                            <p class="focus-sprint-status" id="focusSprintStatus" role="status" aria-live="polite">Ready when you are. Keep this page open during your sprint.</p>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="act-card" aria-labelledby="logTimeHeading">
                     <div class="act-card-heading">
                         <div>

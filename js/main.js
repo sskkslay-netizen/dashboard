@@ -15,6 +15,7 @@ const StudyArchive = {
         completedMissions: [],
         assignments: [],
         calendarEvents: [],
+        journalEntries: [],
         notes: [],
         quizSets: [],
         profile: {
@@ -150,15 +151,48 @@ const StudyArchive = {
 
     applyPrivacyMode() {
         const personalNav = document.querySelector('.sidebar-nav[aria-label="Personal"]');
-        if (personalNav && !personalNav.querySelector('[data-settings-link], a[href$="settings.html"]')) {
-            const settingsLink = document.createElement("a");
+        if (personalNav) {
             const isPageRoute = window.location.pathname.includes("/pages/");
-            settingsLink.href = isPageRoute ? "settings.html" : "pages/settings.html";
-            settingsLink.className = "nav-link";
-            settingsLink.title = "Settings";
-            settingsLink.dataset.settingsLink = "true";
-            settingsLink.innerHTML = '<span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-link-label">Settings</span>';
-            personalNav.appendChild(settingsLink);
+            const basePath = window.location.pathname.includes("/pages/act/")
+                ? "../../pages/"
+                : isPageRoute
+                    ? ""
+                    : "pages/";
+            const personalLinks = [
+                { label: "Diary", route: "journal.html", icon: "book-heart" },
+                { label: "My Files", route: "files.html", icon: "folder-open" }
+            ];
+
+            personalLinks.forEach(({ label, route, icon }) => {
+                if (personalNav.querySelector(
+                    `[data-personal-link="${route}"], a[href="${route}"], a[href$="/${route}"]`
+                )) return;
+                const link = document.createElement("a");
+                link.href = `${basePath}${route}`;
+                link.className = "nav-link";
+                link.title = label;
+                link.dataset.personalLink = route;
+                link.innerHTML = `<i class="nav-icon" data-lucide="${icon}" aria-hidden="true"></i><span class="nav-link-label">${label}</span>`;
+
+                if (window.location.pathname.endsWith(`/pages/${route}`)) {
+                    link.classList.add("active");
+                    link.setAttribute("aria-current", "page");
+                }
+
+                personalNav.appendChild(link);
+            });
+
+            if (!personalNav.querySelector('[data-settings-link], a[href$="settings.html"]')) {
+                const settingsLink = document.createElement("a");
+                settingsLink.href = `${basePath}settings.html`;
+                settingsLink.className = "nav-link";
+                settingsLink.title = "Settings";
+                settingsLink.dataset.settingsLink = "true";
+                settingsLink.innerHTML = '<span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-link-label">Settings</span>';
+                personalNav.appendChild(settingsLink);
+            }
+
+            window.lucide?.createIcons();
         }
 
         if (!this.data.incognitoMode) {

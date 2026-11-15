@@ -8,6 +8,12 @@
         Reading: "reading",
         Science: "science"
     };
+    let focusInterval = null;
+    let focusDurationSeconds = 25 * 60;
+    let focusRemainingSeconds = 25 * 60;
+    let focusEndTimestamp = null;
+    let focusRunning = false;
+    let focusCompleted = false;
 
     function escapeHTML(value) {
         return String(value).replace(/[&<>"']/g, character => ({
@@ -172,7 +178,162 @@
         element.classList.toggle("error", isError);
     }
 
+    function showFocusStatus(message, isError = false) {
+        const element = document.getElementById("focusSprintStatus");
+        element.textContent = message;
+        element.classList.toggle("error", isError);
+    }
+
+    function formatCountdown(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = String(seconds % 60).padStart(2, "0");
+        return `${String(minutes).padStart(2, "0")}:${remainingSeconds}`;
+    }
+
+    function renderFocusTimer() {
+        const startButton = document.getElementById("startFocusSprint");
+        const pauseButton = document.getElementById("pauseFocusSprint");
+        const durationSelect = document.getElementById("focusDuration");
+        const elapsedPercentage = Math.round(
+            (focusDurationSeconds - focusRemainingSeconds) / focusDurationSeconds * 100
+        );
+
+        document.getElementById("focusClock").textContent =
+            formatCountdown(focusRemainingSeconds);
+        document.getElementById("focusProgressBar").style.width = `${elapsedPercentage}%`;
+        document.getElementById("focusProgressTrack")
+            .setAttribute("aria-valuenow", elapsedPercentage);
+        startButton.disabled = focusRunning || focusCompleted;
+        startButton.textContent = focusCompleted
+            ? "Sprint complete"
+            : focusRunning
+                ? "Sprint in progress"
+                : focusRemainingSeconds < focusDurationSeconds
+                    ? "Resume sprint"
+                    : "Start sprint";
+        pauseButton.disabled = !focusRunning;
+        durationSelect.disabled = focusRunning;
+    }
+
+    function clearFocusInterval() {
+        if (focusInterval !== null) {
+            window.clearInterval(focusInterval);
+            focusInterval = null;
+        }
+    }
+
+    function updateFocusTimer() {
+        if (!focusRunning) return;
+        focusRemainingSeconds = Math.max(
+            0,
+            Math.ceil((focusEndTimestamp - Date.now()) / 1000)
+        );
+        renderFocusTimer();
+        if (focusRemainingSeconds === 0) completeFocusSprint();
+    }
+
+    function startFocusSprint() {
+        if (focusRunning || focusCompleted) return;
+
+        focusRunning = true;
+        focusEndTimestamp = Date.now() + focusRemainingSeconds * 1000;
+        showFocusStatus("Sprint in progress. You can pause whenever you need.");
+        renderFocusTimer();
+        focusInterval = window.setInterval(updateFocusTimer, 1000);
+        updateFocusTimer();
+    }
+
+    function pauseFocusSprint() {
+        if (!focusRunning) return;
+        focusRemainingSeconds = Math.max(
+            0,
+            Math.ceil((focusEndTimestamp - Date.now()) / 1000)
+        );
+        if (focusRemainingSeconds === 0) {
+            completeFocusSprint();
+            return;
+        }
+
+        focusRunning = false;
+        focusEndTimestamp = null;
+        clearFocusInterval();
+        renderFocusTimer();
+        showFocusStatus("Sprint paused. Resume when you are ready.");
+    }
+
+    function resetFocusSprint() {
+        focusRunning = false;
+        focusCompleted = false;
+        focusEndTimestamp = null;
+        clearFocusInterval();
+        focusDurationSeconds = Number(document.getElementById("focusDuration").value) * 60;
+        focusRemainingSeconds = focusDurationSeconds;
+        renderFocusTimer();
+        showFocusStatus("Timer reset. Ready when you are.");
+    }
+
+    function saveStudySession(minutes, note) {
+        const saved = ACTData.recordStudyMinutes(minutes, note);
+        const session = saved.studySessions.at(-1);
+        try {
+            const reward = ACTData.awardCrystals(
+                session.id,
+                Math.min(35, 5 + Math.floor(minutes / 10))
+            );
+            return {
+                message: `Study time saved to your ACT archive. You earned ${reward} crystals.`,
+                isError: false
+            };
+        } catch (error) {
+            return {
+                message: `Study time saved, but crystals could not be added: ${error.message}`,
+                isError: true
+            };
+        }
+    }
+
+    function completeFocusSprint() {
+        focusRunning = false;
+        focusCompleted = true;
+        focusEndTimestamp = null;
+        focusRemainingSeconds = 0;
+        clearFocusInterval();
+        renderFocusTimer();
+
+        const minutes = Number(document.getElementById("focusDuration").value);
+        const focusArea = document.getElementById("focusArea").value;
+        try {
+            const result = saveStudySession(minutes, `ACT focus sprint: ${focusArea}`);
+            showFocusStatus(
+                result.isError
+                    ? `Sprint complete. ${result.message}`
+                    : `Sprint complete and logged. ${result.message}`,
+                result.isError
+            );
+        } catch (error) {
+            showFocusStatus(
+                `Sprint complete, but study time could not be saved: ${error.message}`,
+                true
+            );
+        }
+    }
+
     function bindEvents() {
+        document.getElementById("focusDuration").addEventListener("change", () => {
+            focusDurationSeconds = Number(document.getElementById("focusDuration").value) * 60;
+            focusRemainingSeconds = focusDurationSeconds;
+            focusCompleted = false;
+            renderFocusTimer();
+            showFocusStatus("Sprint length updated. Ready when you are.");
+        });
+        document.getElementById("startFocusSprint")
+            .addEventListener("click", startFocusSprint);
+        document.getElementById("pauseFocusSprint")
+            .addEventListener("click", pauseFocusSprint);
+        document.getElementById("resetFocusSprint")
+            .addEventListener("click", resetFocusSprint);
+        document.addEventListener("visibilitychange", updateFocusTimer);
+
         document.getElementById("studyTimeForm").addEventListener("submit", event => {
             event.preventDefault();
             const form = event.currentTarget;
@@ -180,15 +341,9 @@
             const note = form.elements.note.value.trim();
 
             try {
-                const saved = ACTData.recordStudyMinutes(minutes, note);
-                const session = saved.studySessions.at(-1);
+                const result = saveStudySession(minutes, note);
                 form.reset();
-                try {
-                    const reward = ACTData.awardCrystals(session.id, Math.min(35, 5 + Math.floor(minutes / 10)));
-                    showMessage(`Study time saved to your ACT archive. You earned ${reward} crystals.`);
-                } catch (error) {
-                    showMessage(`Study time saved, but crystals could not be added: ${error.message}`, true);
-                }
+                showMessage(result.message, result.isError);
             } catch (error) {
                 showMessage(error.message, true);
             }
@@ -201,6 +356,7 @@
             render(ACTData.getState());
             ACTData.subscribe(render);
             bindEvents();
+            renderFocusTimer();
         } catch (error) {
             showMessage(error.message, true);
             console.error(error);

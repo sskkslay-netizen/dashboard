@@ -14,6 +14,71 @@
         Reading: "Use the passage as your evidence. Locate the relevant lines, separate what the author states from what you infer, and choose the option supported by those details.",
         Science: "Start with the question, then inspect the relevant experiment or data display. Check variables, units, labels, and comparisons before drawing a conclusion."
     };
+    const LESSON_ROUTINES = {
+        EnglishGrammar: [
+            "Read the complete sentence and the sentence around it.",
+            "Name the grammar rule the underlined part is testing.",
+            "Check how each option changes meaning and sentence structure.",
+            "Choose the standard construction that keeps the writer's intended meaning."
+        ],
+        EnglishRhetoric: [
+            "Identify the paragraph's main point and purpose.",
+            "Look at how the sentence connects to the ideas around it.",
+            "Compare choices for logic, relevance, tone, and clarity.",
+            "Keep the choice that best supports the passage without adding a new idea."
+        ],
+        Math: [
+            "List what the question gives and exactly what it asks for.",
+            "Choose a relationship, formula, or representation that connects them.",
+            "Solve one step at a time and keep signs and units visible.",
+            "Substitute your result into the original problem to check it."
+        ],
+        Reading: [
+            "Identify what the question is asking: a detail, inference, meaning, or purpose.",
+            "Return to the relevant lines and reread the surrounding context.",
+            "State the evidence in your own words before looking at the choices.",
+            "Eliminate choices that add assumptions or go beyond the passage."
+        ],
+        Science: [
+            "Read the question first and locate the relevant experiment or display.",
+            "Check axis labels, units, variables, and which groups are being compared.",
+            "Describe the pattern or calculate the requested value from the data.",
+            "Choose a conclusion the evidence supports, without extending it too far."
+        ]
+    };
+
+    function lessonRoutine(skill) {
+        if (skill.subject === "English") {
+            return skill.name.startsWith("Grammar:")
+                ? LESSON_ROUTINES.EnglishGrammar
+                : LESSON_ROUTINES.EnglishRhetoric;
+        }
+        return LESSON_ROUTINES[skill.subject];
+    }
+
+    function commonTrap(skill) {
+        if (skill.subject === "English") {
+            return skill.name.startsWith("Grammar:")
+                ? "Choosing an option because it sounds familiar without checking the subject, clause, or modifier the rule actually concerns."
+                : "Picking a sentence that sounds polished but changes the writer's point or does not fit the paragraph's purpose.";
+        }
+        if (skill.subject === "Math") {
+            return "Using a familiar formula before checking that it fits the quantities, signs, and units in this question.";
+        }
+        if (skill.subject === "Reading") {
+            if (skill.name === "Inference") {
+                return "Treating a plausible guess as a fact. The best inference stays close to what the passage supports.";
+            }
+            if (skill.name === "Words and Phrases in Context") {
+                return "Choosing the most familiar dictionary meaning without checking how the word works in this sentence.";
+            }
+            if (skill.name === "Analyzing Text Structure and Purpose") {
+                return "Naming a paragraph's topic instead of explaining what it contributes to the passage.";
+            }
+            return "Choosing a true-sounding detail that is not actually supported by the passage.";
+        }
+        return "Describing a pattern accurately, then making a broader claim than the experiment or data can support.";
+    }
 
     function escapeHTML(value) {
         return String(value).replace(/[&<>"']/g, character => ({
@@ -135,6 +200,7 @@
         }
         const content = activeCheck;
         const explainer = window.ACTTopicExplainers?.[skill.subject]?.[skill.name];
+        const routine = lessonRoutine(skill);
         const completed = data.lessons.filter(lesson =>
             lesson.completed && lesson.subject === skill.subject && lesson.skill === skill.name
         ).sort((a, b) => b.date.localeCompare(a.date));
@@ -168,9 +234,14 @@
             </header>
             <h3>Core idea</h3>
             <p class="lesson-detail-copy">${escapeHTML(explainer?.explanation || `${GUIDANCE[skill.subject]} This lesson focuses on ${skill.name}.`)}</p>
-            ${explainer?.tip ? `<aside class="lesson-tip"><strong>Useful check</strong><p>${escapeHTML(explainer.tip)}</p></aside>` : ""}
+            <h3>Explore the idea further</h3>
+            <p class="lesson-expansion">${escapeHTML(explainer?.lesson || GUIDANCE[skill.subject])}</p>
+            <h3>Step-by-step approach</h3>
+            <ol class="lesson-steps">${routine.map(step => `<li>${escapeHTML(step)}</li>`).join("")}</ol>
             <h3>Worked example</h3>
             <div class="lesson-example">${escapeHTML(explainer?.example || exampleFor(skill.subject, skill.name))}</div>
+            <aside class="lesson-trap"><strong>Common trap</strong><p>${escapeHTML(commonTrap(skill))}</p></aside>
+            ${explainer?.tip ? `<aside class="lesson-tip"><strong>Useful check</strong><p>${escapeHTML(explainer.tip)}</p></aside>` : ""}
             ${latest ? `<p class="lesson-completed-note">Completed ${new Date(`${latest.date}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })} · last lesson check ${latest.score}%${data.crystalRewards.some(reward => reward.id === latest.id) ? ` · earned ${data.crystalRewards.find(reward => reward.id === latest.id).amount} crystals` : ""}.</p>` : ""}
             ${rewardMessage ? `<p class="lesson-reward-message" role="status">${escapeHTML(rewardMessage)}</p>` : ""}
             ${quizMarkup}`;

@@ -1,7 +1,27 @@
 import { developerUids, firebaseConfig } from "./firebase-config.js";
 
 const STORAGE_KEYS = ["studyArchiveData", "studyArchiveACT"];
+const LEGACY_MIGRATED_KEY = "studyArchiveLegacyMigrated";
+const ACTIVE_USER_KEY = "studyArchiveActiveUid";
 const MAX_PAYLOAD_BYTES = 850 * 1024;
+const MAX_USER_FILE_BYTES = 20 * 1024 * 1024;
+const ALLOWED_USER_FILE_TYPES = new Set([
+    "application/pdf",
+    "text/plain",
+    "text/markdown",
+    "text/csv",
+    "application/rtf",
+    "application/msword",
+    "application/vnd.ms-excel",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif"
+]);
 const SHARED_CARDS_PATH = "sharedData/cards";
 const isConfigured = Object.values(firebaseConfig).every(value =>
     typeof value === "string" &&
@@ -20,6 +40,8 @@ const statusListeners = new Set();
 const writeQueues = new Map();
 let activeSyncUid = "";
 let activeSyncPromise = null;
+let readyUserUid = "";
+let pendingAccountSwitchUid = "";
 let firestore;
 let app;
 let storage;
@@ -33,6 +55,25 @@ function updateStatus(message, isError = false) {
     status = { message, isError };
     statusListeners.forEach(listener => listener(status));
     if (isError) console.error(message);
+}
+
+function showAccountSyncFailure(userUid, error) {
+    if (pendingAccountSwitchUid !== userUid || !document.body) return;
+
+    document.documentElement.style.visibility = "";
+    const panel = document.createElement("main");
+    panel.setAttribute("role", "alert");
+    panel.style.cssText = "max-width:36rem;margin:15vh auto;padding:2rem;font:16px/1.5 system-ui,sans-serif;color:#222;background:#fff;border:1px solid #bbb;border-radius:12px";
+    const heading = document.createElement("h1");
+    heading.textContent = "Your account data could not be loaded";
+    const message = document.createElement("p");
+    message.textContent = `${error.message} Reload this page after checking your connection.`;
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.textContent = "Reload page";
+    retry.addEventListener("click", () => window.location.reload());
+    panel.append(heading, message, retry);
+    document.body.replaceChildren(panel);
 }
 
 function notifyAuthListeners() {
@@ -64,6 +105,27 @@ function localPayload(key) {
         return localStorage.getItem(key);
     } catch (error) {
         throw new Error(`Could not read ${key} from this browser.`, { cause: error });
+    }
+}
+
+function accountCacheKey(uid, key) {
+    return `studyArchiveAccount:${uid}:${key}`;
+}
+
+function accountPayload(uid, key) {
+    try {
+        return localStorage.getItem(accountCacheKey(uid, key));
+    } catch (error) {
+        throw new Error(`Could not read the saved ${key} data for this account.`, { cause: error });
+    }
+}
+
+function cacheAccountPayload(uid, key, payload) {
+    try {
+        localStorage.setItem(key, payload);
+        localStorage.setItem(accountCacheKey(uid, key), payload);
+    } catch (error) {
+        throw new Error(`Could not cache the saved ${key} data for this account.`, { cause: error });
     }
 }
 
@@ -110,6 +172,19 @@ function initializeStorage() {
             });
     }
     return storageReady;
+}
+
+function userFilesReference(uid) {
+    return storageSdk.ref(storage, `users/${uid}/files`);
+}
+
+function userFileReference(path, uid) {
+    const prefix = `users/${uid}/files/`;
+    if (typeof path !== "string" || !path.startsWith(prefix) ||
+        path.includes("..") || path.endsWith("/")) {
+        throw new Error("The file path is invalid for this account.");
+    }
+    return storageSdk.ref(storage, path);
 }
 
 async function changeSharedCard(action, cardId, card, fallbackCards) {
@@ -191,40 +266,78 @@ async function syncUserData(user) {
 
     activeSyncUid = user.uid;
     activeSyncPromise = (async () => {
+        const previousUid = localStorage.getItem(ACTIVE_USER_KEY);
+        const legacyMigrated = localStorage.getItem(LEGACY_MIGRATED_KEY) === "true";
+        const accountChanged = previousUid
+            ? previousUid !== user.uid
+            : legacyMigrated;
+        if (accountChanged) {
+            pendingAccountSwitchUid = user.uid;
+            document.documentElement.style.visibility = "hidden";
+        }
+        const legacyPayloads = legacyMigrated
+            ? null
+            : STORAGE_KEYS.map(key => localPayload(key));
+
         updateStatus("Loading your saved data from Firebase...");
         const snapshots = await Promise.all(
             STORAGE_KEYS.map(key => firestore.getDoc(dataReference(user.uid, key)))
         );
-        const restoredKeys = [];
+        if (currentUser?.uid !== user.uid) return;
+
+        let shouldReload = accountChanged;
 
         for (const [index, key] of STORAGE_KEYS.entries()) {
             const snapshot = snapshots[index];
+            const cachedPayload = accountPayload(user.uid, key);
+            let payload;
+
             if (snapshot.exists()) {
-                const payload = snapshot.data().payload;
+                payload = snapshot.data().payload;
                 if (typeof payload !== "string") {
                     throw new Error(`The saved ${key} record has an invalid format.`);
                 }
-                if (localPayload(key) !== payload) {
-                    localStorage.setItem(key, payload);
-                    restoredKeys.push(key);
-                }
-            } else {
-                const payload = localPayload(key);
+            } else if (cachedPayload !== null) {
+                payload = cachedPayload;
+                await writePayload(user.uid, key, payload);
+            } else if (!legacyMigrated) {
+                payload = legacyPayloads[index];
                 if (payload !== null) await writePayload(user.uid, key, payload);
+            } else if (!accountChanged && previousUid === user.uid) {
+                payload = localPayload(key);
+                if (payload !== null) await writePayload(user.uid, key, payload);
+            } else {
+                payload = null;
             }
+
+            if (payload === null) {
+                if (localPayload(key) !== null) {
+                    localStorage.removeItem(key);
+                    shouldReload = true;
+                }
+                continue;
+            }
+
+            if (localPayload(key) !== payload) shouldReload = true;
+            cacheAccountPayload(user.uid, key, payload);
         }
 
-        if (restoredKeys.length) {
-            window.StudyArchive?.init();
-            window.ACTData?.init();
-        }
+        if (!legacyMigrated) localStorage.setItem(LEGACY_MIGRATED_KEY, "true");
+        localStorage.setItem(ACTIVE_USER_KEY, user.uid);
+        readyUserUid = user.uid;
+        pendingAccountSwitchUid = "";
+
+        if (shouldReload) window.location.reload();
         updateStatus("Your data is synced to Firebase.");
     })().catch(error => {
         updateStatus(`Firebase sync failed to finish: ${error.message}`, true);
+        showAccountSyncFailure(user.uid, error);
         throw error;
     }).finally(() => {
-        activeSyncUid = "";
-        activeSyncPromise = null;
+        if (activeSyncUid === user.uid) {
+            activeSyncUid = "";
+            activeSyncPromise = null;
+        }
     });
 
     return activeSyncPromise;
@@ -284,12 +397,14 @@ async function importSharedCards(importedCards, fallbackCards) {
 }
 
 function save(key, data) {
-    if (!STORAGE_KEYS.includes(key) || !currentUser || !db) return;
+    if (!STORAGE_KEYS.includes(key) || !currentUser || !db ||
+        readyUserUid !== currentUser.uid) return;
     let payload;
     try {
         payload = serializePayload(data);
+        localStorage.setItem(accountCacheKey(currentUser.uid, key), payload);
     } catch (error) {
-        updateStatus(error.message, true);
+        updateStatus(`Firebase could not cache your data: ${error.message}`, true);
         return;
     }
     void writePayload(currentUser.uid, key, payload).catch(() => {});
@@ -374,6 +489,82 @@ const FirebaseSync = {
         }
         await storageSdk.deleteObject(storageSdk.ref(storage, path));
     },
+    async uploadUserFile(file) {
+        if (!currentUser) throw new Error("Sign in to upload files to your private library.");
+        const uid = currentUser.uid;
+        await initializeStorage();
+        if (currentUser?.uid !== uid) throw new Error("Your account changed before the file upload could start.");
+        if (!file || typeof file.name !== "string" ||
+            !ALLOWED_USER_FILE_TYPES.has(file.type) ||
+            !Number.isFinite(file.size) || file.size <= 0) {
+            throw new Error("Choose a supported document or image file.");
+        }
+        if (file.size > MAX_USER_FILE_BYTES) {
+            throw new Error("Choose a file smaller than 20 MB.");
+        }
+
+        const safeName = file.name
+            .replace(/[^\w.-]+/g, "_")
+            .replace(/^\.+/, "")
+            .slice(-100) || "file";
+        const path = `users/${uid}/files/${Date.now()}-${Math.random().toString(36).slice(2, 10)}-${safeName}`;
+        const reference = userFileReference(path, uid);
+        await storageSdk.uploadBytes(reference, file, {
+            contentType: file.type,
+            cacheControl: "private,max-age=0",
+            customMetadata: {
+                originalName: file.name.slice(0, 200)
+            }
+        });
+        return {
+            path,
+            name: file.name,
+            size: file.size,
+            type: file.type,
+            uploadedAt: new Date().toISOString()
+        };
+    },
+    async listUserFiles() {
+        if (!currentUser) throw new Error("Sign in to view your private files.");
+        const uid = currentUser.uid;
+        await initializeStorage();
+        if (currentUser?.uid !== uid) throw new Error("Your account changed before your files could load.");
+        const result = await storageSdk.listAll(userFilesReference(uid));
+        const files = await Promise.all(result.items.map(async reference => {
+            const metadata = await storageSdk.getMetadata(reference);
+            return {
+                path: reference.fullPath,
+                name: metadata.customMetadata?.originalName || reference.name,
+                size: metadata.size,
+                type: metadata.contentType || "",
+                uploadedAt: metadata.timeCreated || ""
+            };
+        }));
+        return files.sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt));
+    },
+    async downloadUserFile(path) {
+        if (!currentUser) throw new Error("Sign in to download your private files.");
+        const uid = currentUser.uid;
+        await initializeStorage();
+        if (currentUser?.uid !== uid) throw new Error("Your account changed before the download could start.");
+        const reference = userFileReference(path, uid);
+        const metadata = await storageSdk.getMetadata(reference);
+        if (metadata.size > MAX_USER_FILE_BYTES) {
+            throw new Error("This file is larger than the supported download size.");
+        }
+        const bytes = await storageSdk.getBytes(reference, MAX_USER_FILE_BYTES);
+        return {
+            blob: new Blob([bytes], { type: metadata.contentType || "application/octet-stream" }),
+            name: metadata.customMetadata?.originalName || reference.name
+        };
+    },
+    async deleteUserFile(path) {
+        if (!currentUser) throw new Error("Sign in to delete files from your private library.");
+        const uid = currentUser.uid;
+        await initializeStorage();
+        if (currentUser?.uid !== uid) throw new Error("Your account changed before the file could be deleted.");
+        await storageSdk.deleteObject(userFileReference(path, uid));
+    },
     async importSharedCards(cards, fallbackCards) {
         await importSharedCards(cards, fallbackCards);
     },
@@ -445,10 +636,12 @@ if (isConfigured) {
 
     authSdk.onAuthStateChanged(auth, user => {
         currentUser = user;
+        readyUserUid = "";
         notifyAuthListeners();
         if (user) {
             void syncUserData(user).catch(() => {});
         } else {
+            readyUserUid = "";
             activeSyncUid = "";
             activeSyncPromise = null;
             updateStatus("Sign in to sync your data to Firebase.");

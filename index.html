@@ -129,23 +129,21 @@
                     <div class="welcome-text">
 
                         <p class="eyebrow" id="dashboardDate">
-                            YOUR PERSONAL ACADEMIC ARCHIVE
+                            YOUR PERSONAL DASHBOARD
                         </p>
 
                         <h1 id="welcomeTitle">Welcome back, Scholar.</h1>
 
                         <p class="welcome-description">
-                            Every little step counts. Take your time,
-                            discover something new, and build your own
-                            collection of knowledge.
+                            Plan your day, keep important things close, and make room for learning and everything else.
                         </p>
 
                         <a href="pages/assignments.html" class="primary-button">
                             VIEW MY TASKS
                             <span>→</span>
                         </a>
-                        <a href="pages/act/dashboard.html" class="primary-button act-center-button">
-                            OPEN ACT STUDY CENTER
+                        <a href="pages/calendar.html" class="primary-button act-center-button">
+                            OPEN MY CALENDAR
                             <span>→</span>
                         </a>
 
@@ -160,13 +158,13 @@
                     <article class="stat-card">
 
                         <div class="stat-top">
-                            <span>SUBJECTS</span>
-                            <i class="stat-icon" data-lucide="book-open" aria-hidden="true"></i>
+                            <span>OPEN TASKS</span>
+                            <i class="stat-icon" data-lucide="list-checks" aria-hidden="true"></i>
                         </div>
 
-                        <h2 id="subjectCount">04</h2>
+                        <h2 id="taskCount">0</h2>
 
-                        <p>Subjects in your archive</p>
+                        <p>Things still on your list</p>
 
                     </article>
 
@@ -188,13 +186,13 @@
                     <article class="stat-card">
 
                         <div class="stat-top">
-                            <span>CHARACTERS</span>
-                            <i class="stat-icon" data-lucide="users-round" aria-hidden="true"></i>
+                            <span>DIARY ENTRIES</span>
+                            <i class="stat-icon" data-lucide="book-heart" aria-hidden="true"></i>
                         </div>
 
-                        <h2 id="characterCount">0</h2>
+                        <h2 id="journalCount">0</h2>
 
-                        <p>Characters collected</p>
+                        <p>Moments you've written down</p>
 
                     </article>
 
@@ -202,16 +200,30 @@
                     <article class="stat-card">
 
                         <div class="stat-top">
-                            <span>CRYSTALS</span>
-                            <i class="stat-icon" data-lucide="gem" aria-hidden="true"></i>
+                            <span>COMING UP</span>
+                            <i class="stat-icon" data-lucide="calendar-days" aria-hidden="true"></i>
                         </div>
 
-                        <h2 id="crystalCount">160</h2>
+                        <h2 id="eventCount">0</h2>
 
-                        <p>Available wish currency</p>
+                        <p>Tasks and plans on your calendar</p>
 
                     </article>
 
+                </section>
+
+                <section class="dashboard-section today-section" id="todaySection">
+                    <div class="section-header">
+                        <div>
+                            <p class="eyebrow">YOUR DAY, AT A GLANCE</p>
+                            <h2>Today's plan</h2>
+                        </div>
+                        <span class="upcoming-count" id="todayPlanCount">0</span>
+                    </div>
+                    <div class="today-plan-list" id="todayPlan">
+                        <p class="empty-state">Your day is open. Add a task or plan something on your calendar.</p>
+                    </div>
+                    <a href="pages/calendar.html" class="text-link">PLAN YOUR DAY →</a>
                 </section>
 
 
@@ -472,6 +484,16 @@
                                 <strong>Study Quizzes</strong>
                             </a>
 
+                            <a href="pages/journal.html" class="quick-access-card">
+                                <i data-lucide="book-heart" aria-hidden="true"></i>
+                                <strong>Diary</strong>
+                            </a>
+
+                            <a href="pages/files.html" class="quick-access-card">
+                                <i data-lucide="folder-open" aria-hidden="true"></i>
+                                <strong>My Files</strong>
+                            </a>
+
                         </div>
 
                     </section>
@@ -506,7 +528,7 @@
                 <!-- FOOTER -->
                 <footer class="main-footer">
 
-                    <span>STUDY ARCHIVE</span>
+                    <span>YOUR PERSONAL DASHBOARD</span>
 
                     <span>MADE FOR YOUR OWN LITTLE WORLD</span>
 
