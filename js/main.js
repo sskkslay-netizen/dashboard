@@ -305,10 +305,12 @@ const StudyArchive = {
     }
 };
 
-window.FirebaseSyncReady = import("./firebase-sync.js").catch(error => {
-    console.error("Firebase sync could not start:", error);
-    return null;
-});
+window.FirebaseSyncReady = import("./firebase-sync.js")
+    .then(({ FirebaseSync }) => FirebaseSync)
+    .catch(error => {
+        console.error("Firebase sync could not start:", error);
+        return null;
+    });
 
 // Start the application.
 document.addEventListener("DOMContentLoaded", () => {

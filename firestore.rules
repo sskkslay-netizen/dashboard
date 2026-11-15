@@ -23,7 +23,7 @@ service cloud.firestore {
     match /sharedData/{dataId} {
       function isDeveloper() {
         return request.auth != null
-          && request.auth.uid in [];
+          && request.auth.uid in ["akpQXd1NFneCRiQjYPDpBsJU8zD2"];
       }
 
       function isValidCardCatalog() {
